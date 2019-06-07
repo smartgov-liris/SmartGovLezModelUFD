@@ -1,0 +1,34 @@
+{
+	"header": "CATEGORY",
+	"values": 
+	[
+		{
+			"value": "LIGHT_WEIGHT",
+			"rate": 0.75,
+			"subProfile": {
+				"header": "FUEL",
+				"values":
+				[
+					{
+						"value": "DIESEL",
+						"rate": 1
+					}
+				]
+			}
+		},
+		{
+			"value": "HEAVY_DUTY_TRUCK",
+			"rate": 0.25,
+			"subProfile": {
+				"header": "FUEL",
+				"values":
+				[
+					{
+						"value": "DIESEL",
+						"rate": 1
+					}
+				]
+			}
+		}
+	]
+}
