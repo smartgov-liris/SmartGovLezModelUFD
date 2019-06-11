@@ -15,10 +15,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultHandler;
 
 import com.smartgov.lez.controller.SmartGovController;
 
 import smartgov.SmartGov;
+import smartgov.core.events.EventHandler;
+import smartgov.core.main.events.SimulationStep;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -81,5 +85,81 @@ public class SmartGovControllerTest {
 				SmartGov.getRuntime().getTickCount(),
 				equalTo(10)
 				);
+	}
+	
+	@Test
+	public void pause_and_resume_simulation() throws Exception {
+		mvc.perform(
+				put("/api/build")
+				);
+
+		
+		
+		EventTriggeredChecker checker = new EventTriggeredChecker();
+		SmartGov.getRuntime().addSimulationStepListener(new EventHandler<SimulationStep>() {
+
+			@Override
+			public void handle(SimulationStep event) {
+				if (event.getTick() == 5) {
+					checker.triggered = true;
+					try {
+						mvc.perform(
+							put("/api/pause")
+							);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
+					try {
+						TimeUnit.SECONDS.sleep(2);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					assertThat(
+						SmartGov.getRuntime().isRunning(),
+						equalTo(true)
+						);
+					
+					assertThat(
+						SmartGov.getRuntime().getTickCount(),
+						equalTo(5)
+						);
+					
+					try {
+						mvc.perform(
+							put("/api/resume")
+							);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			
+		});
+		
+		mvc.perform(
+				put("/api/start?ticks=100")
+				);
+		
+		while(SmartGov.getRuntime().isRunning()) {
+			TimeUnit.MICROSECONDS.sleep(100);
+		}
+		
+		assertThat(
+			checker.triggered,
+			equalTo(true)
+			);
+		
+		assertThat(
+			SmartGov.getRuntime().getTickCount(),
+			equalTo(100)
+			);
+	}
+	
+	private class EventTriggeredChecker {
+		public boolean triggered = false;
 	}
 }

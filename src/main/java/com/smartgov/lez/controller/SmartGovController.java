@@ -1,7 +1,6 @@
 package com.smartgov.lez.controller;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +21,7 @@ import smartgov.core.agent.core.Agent;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.SmartGovRuntime;
 import smartgov.core.main.events.SimulationStep;
+import smartgov.core.main.events.SimulationStopped;
 import smartgov.models.lez.environment.LezContext;
 
 @Controller
@@ -42,12 +42,14 @@ public class SmartGovController {
     }
     
 	@PutMapping("/build")
-	public ResponseEntity<String> build() {
+	public ResponseEntity<String> build() throws MessagingException, JsonProcessingException {
 		smartGov = new SmartGov(new LezContext("src/main/resources/input/config.properties"));
 
 		SmartGov.getRuntime().setTickDelay(100);
 		SmartGov.getRuntime().setTickDuration(0.5);
 		registerStepListener(SmartGov.getRuntime());
+		registerStopListener(SmartGov.getRuntime());
+		publishAgents(smartGov.getContext().agents.values());
 
 		return new ResponseEntity<>("SmartGov instance built.", HttpStatus.OK);
 	}
@@ -56,7 +58,67 @@ public class SmartGovController {
 	public ResponseEntity<String> start(@RequestParam("ticks") Integer ticks) {
 		if(smartGov != null) {
 			SmartGov.getRuntime().start(ticks);
-			return new ResponseEntity<>("Simulation started.", HttpStatus.OK);
+			return new ResponseEntity<>("Simulation started for " + ticks + "ticks.", HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Call /api/build first.", HttpStatus.BAD_REQUEST);
+	}
+	
+	@PutMapping("/pause")
+	public ResponseEntity<String> pause() {
+		if(smartGov != null) {
+			try {
+				SmartGov.getRuntime().pause();
+			}
+			catch (IllegalStateException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<>("Simulation paused at " + SmartGov.getRuntime().getTickCount() + " ticks.", HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Call /api/build first.", HttpStatus.BAD_REQUEST);
+	}
+	
+	@PutMapping("/resume")
+	public ResponseEntity<String> resume() {
+		if(smartGov != null) {
+			try {
+				SmartGov.getRuntime().resume();
+			}
+			catch (IllegalStateException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<>("Simulation resumed from " + SmartGov.getRuntime().getTickCount() + " ticks.", HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Call /api/build first.", HttpStatus.BAD_REQUEST);
+	}
+	
+	@PutMapping("/step")
+	public ResponseEntity<String> step() {
+		if(smartGov != null) {
+			try {
+				SmartGov.getRuntime().step();
+			}
+			catch (IllegalStateException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<>("Manual step at " + SmartGov.getRuntime().getTickCount() + " ticks.", HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Call /api/build first.", HttpStatus.BAD_REQUEST);
+	}
+	
+	@PutMapping("/stop")
+	public ResponseEntity<String> stop() throws MessagingException, JsonProcessingException {
+		if(smartGov != null) {
+			try {
+				SmartGov.getRuntime().stop();
+			}
+			catch (IllegalStateException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+			// Re-initialize context
+			SmartGov.getSimulationBuilder().build();
+			publishAgents(smartGov.getContext().agents.values());
+			
+			return new ResponseEntity<>("Simulation stopped after " + SmartGov.getRuntime().getTickCount() + " ticks.", HttpStatus.OK);
 		}
 		return new ResponseEntity<>("Call /api/build first.", HttpStatus.BAD_REQUEST);
 	}
@@ -77,8 +139,23 @@ public class SmartGovController {
 		});
 	}
 	
+	private void registerStopListener(SmartGovRuntime runtime) {
+		runtime.addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
+
+			@Override
+			public void handle(SimulationStopped event) {
+				publishStop(runtime);
+			}
+			
+		});
+	}
+	
     private void publishStep(int simulationStep) throws Exception {
         this.template.convertAndSend("/simulation/steps", simulationStep);
+    }
+    
+    private void publishStop(SmartGovRuntime runtime) {
+    	this.template.convertAndSend("/simulation/stop", "{\"stop\":{\"after\":" + runtime.getTickCount() + "}}");
     }
     
     private void publishAgents(Collection<Agent> agents) throws MessagingException, JsonProcessingException {
