@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.events.EventHandler;
-import smartgov.core.main.SmartGovRuntime;
+import smartgov.core.main.SimulationRuntime;
 import smartgov.core.main.events.SimulationStep;
 import smartgov.core.main.events.SimulationStopped;
 import smartgov.models.lez.environment.LezContext;
@@ -123,7 +123,7 @@ public class SmartGovController {
 		return new ResponseEntity<>("Call /api/build first.", HttpStatus.BAD_REQUEST);
 	}
 	
-	private void registerStepListener(SmartGovRuntime runtime) {
+	private void registerStepListener(SimulationRuntime runtime) {
 		runtime.addSimulationStepListener(new EventHandler<SimulationStep>() {
 
 			@Override
@@ -139,7 +139,7 @@ public class SmartGovController {
 		});
 	}
 	
-	private void registerStopListener(SmartGovRuntime runtime) {
+	private void registerStopListener(SimulationRuntime runtime) {
 		runtime.addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 
 			@Override
@@ -154,7 +154,7 @@ public class SmartGovController {
         this.template.convertAndSend("/simulation/steps", simulationStep);
     }
     
-    private void publishStop(SmartGovRuntime runtime) {
+    private void publishStop(SimulationRuntime runtime) {
     	this.template.convertAndSend("/simulation/stop", "{\"stop\":{\"after\":" + runtime.getTickCount() + "}}");
     }
     

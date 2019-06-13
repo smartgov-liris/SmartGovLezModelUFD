@@ -11,7 +11,6 @@ import com.smartgov.lez.core.copert.inputParser.CopertProfile;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
-import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
@@ -68,7 +67,7 @@ public class PollutionScenario extends ScenarioLowAgents {
 	
 	@Override
 	public OsmAgentBody createAgentBody(
-			SmartGovContext environment) {
+			OsmContext environment) {
 		return new DeliveryDriver(
 				vehiclesStock.poll(),
 				(OsmContext) environment);
