@@ -3,15 +3,15 @@ package com.smartgov.lez.core.simulation.scenario;
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.graph.Arc;
-import smartgov.models.lez.agent.DeliveryDriver;
-import smartgov.models.lez.environment.LezContext;
-import smartgov.models.lez.environment.graph.PollutableOsmArc;
-import smartgov.models.lez.simulation.scenario.PollutionScenario;
 
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
+
+import com.smartgov.lez.core.agent.DeliveryDriver;
+import com.smartgov.lez.core.environment.LezContext;
+import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
 public class PollutionScenarioTest {
 	

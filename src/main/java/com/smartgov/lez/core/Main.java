@@ -7,12 +7,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smartgov.lez.core.environment.LezContext;
+import com.smartgov.lez.core.environment.pollution.Pollution;
 
 import smartgov.SmartGov;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.events.SimulationStopped;
-import smartgov.models.lez.environment.LezContext;
-import smartgov.models.lez.environment.pollution.Pollution;
 
 public class Main {
 	

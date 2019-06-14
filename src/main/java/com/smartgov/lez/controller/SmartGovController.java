@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smartgov.lez.core.environment.LezContext;
+import com.smartgov.lez.core.environment.pollution.Pollution;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
@@ -24,8 +26,6 @@ import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationRuntime;
 import smartgov.core.main.events.SimulationStep;
 import smartgov.core.main.events.SimulationStopped;
-import smartgov.models.lez.environment.LezContext;
-import smartgov.models.lez.environment.pollution.Pollution;
 
 @Controller
 @RequestMapping("/api")
