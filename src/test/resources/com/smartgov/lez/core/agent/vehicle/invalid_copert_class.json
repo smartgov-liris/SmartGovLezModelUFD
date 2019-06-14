@@ -1,0 +1,20 @@
+{
+	"header": "CATEGORY",
+	"values": 
+	[
+		{
+			"value": "HEAVY_DUTY_TRUCK",
+			"rate": 1,
+			"subProfile": {
+				"header": "FUEL",
+				"values":
+				[
+					{
+						"value": "PETROL",
+						"rate": 1
+					}
+				]
+			}
+		}
+	]
+}

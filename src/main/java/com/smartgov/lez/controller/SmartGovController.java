@@ -18,11 +18,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationRuntime;
 import smartgov.core.main.events.SimulationStep;
 import smartgov.core.main.events.SimulationStopped;
 import smartgov.models.lez.environment.LezContext;
+import smartgov.models.lez.environment.pollution.Pollution;
 
 @Controller
 @RequestMapping("/api")
@@ -49,8 +52,13 @@ public class SmartGovController {
 		SmartGov.getRuntime().setTickDuration(0.5);
 		registerStepListener(SmartGov.getRuntime());
 		registerStopListener(SmartGov.getRuntime());
-		publishAgents(smartGov.getContext().agents.values());
+		
+		publishNodes(smartGov.getContext().nodes.values());
+		
+		publishArcs(smartGov.getContext().arcs.values());
 
+		publishAgents(smartGov.getContext().agents.values());
+		
 		return new ResponseEntity<>("SmartGov instance built.", HttpStatus.OK);
 	}
 	
@@ -131,6 +139,7 @@ public class SmartGovController {
 				try {
 					// publishStep(runtime.getTickCount());
 					publishAgents(smartGov.getContext().agents.values());
+					// publishArcs(smartGov.getContext().arcs.values());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -145,6 +154,12 @@ public class SmartGovController {
 			@Override
 			public void handle(SimulationStopped event) {
 				publishStop(runtime);
+				try {
+					publishArcs(smartGov.getContext().arcs.values());
+				} catch (MessagingException | JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 		});
@@ -160,5 +175,14 @@ public class SmartGovController {
     
     private void publishAgents(Collection<Agent> agents) throws MessagingException, JsonProcessingException {
     	this.template.convertAndSend("/simulation/agents", objectMapper.writeValueAsString(agents));
+    }
+    
+    private void publishNodes(Collection<Node> nodes) throws MessagingException, JsonProcessingException {
+    	this.template.convertAndSend("/simulation/nodes", objectMapper.writeValueAsString(nodes));
+    }
+    
+    private void publishArcs(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {
+    	this.template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
+    	this.template.convertAndSend("/simulation/arcs", objectMapper.writeValueAsString(arcs));
     }
 }

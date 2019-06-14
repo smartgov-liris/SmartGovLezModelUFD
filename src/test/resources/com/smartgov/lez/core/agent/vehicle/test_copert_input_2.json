@@ -1,0 +1,36 @@
+{
+	"header": "CATEGORY",
+	"values": 
+	[
+		{
+			"value": "LIGHT_WEIGHT",
+			"rate": 1,
+			"subProfile":
+			{
+				"header": "FUEL",
+				"values":
+				[
+					{
+						"value": "PETROL",
+						"rate": 1,
+						"subProfile":
+						{
+							"header": "SEGMENT",
+							"values":
+							[
+							{
+								"value": "N1_I",
+								"rate": 0.5
+							},
+							{
+								"value": "N1_II",
+								"rate": 0.5
+							}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}
