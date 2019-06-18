@@ -1,10 +1,14 @@
 package com.smartgov.lez.core.environment.graph;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 import com.smartgov.lez.core.output.PollutionSerializer;
 
+import smartgov.core.events.EventHandler;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
@@ -19,6 +23,8 @@ public class PollutableOsmArc extends OsmArc {
 	
 	@JsonSerialize(using=PollutionSerializer.class)
 	private Pollution pollution;
+	
+	private Collection<EventHandler<PollutionIncreasedEvent>> pollutionIncreasedListeners;
 
 	public PollutableOsmArc(
 			String id,
@@ -29,6 +35,7 @@ public class PollutableOsmArc extends OsmArc {
 			String type) {
 		super(id, road, startNode, targetNode, lanes, type);
 		pollution = new Pollution();
+		pollutionIncreasedListeners = new ArrayList<>();
 	}
 	
 	public void increasePollution(Pollutant pollutant, double increment) {
@@ -37,5 +44,15 @@ public class PollutableOsmArc extends OsmArc {
 	
 	public Pollution getPollution() {
 		return pollution;
+	}
+	
+	public void addPollutionIncreasedListener(EventHandler<PollutionIncreasedEvent> pollutionIncreasedListener) {
+		this.pollutionIncreasedListeners.add(pollutionIncreasedListener);
+	}
+	
+	public void triggerPollutionIncreasedListeners(PollutionIncreasedEvent event) {
+		for(EventHandler<PollutionIncreasedEvent> listener : pollutionIncreasedListeners) {
+			listener.handle(event);
+		}
 	}
 }

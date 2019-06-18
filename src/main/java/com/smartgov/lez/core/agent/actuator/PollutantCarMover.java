@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.smartgov.lez.core.agent.DeliveryDriver;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
+import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;
 
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.events.ArcLeftEvent;
@@ -88,6 +89,9 @@ public class PollutantCarMover extends CarMover {
 			for (PollutableOsmArc arc : arcsCrossed) {
 				arc.increasePollution(pollutant, emissions * arc.getLength() / traveledDistance);
 			}
+		}
+		for (PollutableOsmArc arc : arcsCrossed) {
+			arc.triggerPollutionIncreasedListeners(new PollutionIncreasedEvent(arc));
 		}
 	}
 

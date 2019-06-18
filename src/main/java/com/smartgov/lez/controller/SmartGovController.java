@@ -1,6 +1,7 @@
 package com.smartgov.lez.controller;
 
 import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartgov.lez.core.environment.LezContext;
+import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
+import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 
 import smartgov.SmartGov;
@@ -37,21 +40,25 @@ public class SmartGovController {
 	
 	static SmartGov smartGov;
 	
+	private ConcurrentLinkedQueue<Arc> pollutedArcQueue;
+	
 
     @Autowired
     public SmartGovController(SimpMessagingTemplate template) {
         this.template = template;
         objectMapper = new ObjectMapper();
+        pollutedArcQueue = new ConcurrentLinkedQueue<>();
     }
     
 	@PutMapping("/build")
 	public ResponseEntity<String> build() throws MessagingException, JsonProcessingException {
 		smartGov = new SmartGov(new LezContext("src/main/resources/input/config.properties"));
 
-		SmartGov.getRuntime().setTickDelay(100);
-		SmartGov.getRuntime().setTickDuration(0.5);
+		SmartGov.getRuntime().setTickDelay(SimulationController.tickDelay);
+
 		registerStepListener(SmartGov.getRuntime());
 		registerStopListener(SmartGov.getRuntime());
+		registerPollutionListeners();
 		
 		publishNodes(smartGov.getContext().nodes.values());
 		
@@ -63,10 +70,11 @@ public class SmartGovController {
 	}
 	
 	@PutMapping("/start")
-	public ResponseEntity<String> start(@RequestParam("ticks") Integer ticks) {
+	public ResponseEntity<String> start(@RequestParam("simulationDuration") Integer simulationDuration, @RequestParam("tickDuration") Integer tickDuration) {
 		if(smartGov != null) {
-			SmartGov.getRuntime().start(ticks);
-			return new ResponseEntity<>("Simulation started for " + ticks + "ticks.", HttpStatus.OK);
+			SmartGov.getRuntime().setTickDuration(tickDuration);
+			SmartGov.getRuntime().start(simulationDuration);
+			return new ResponseEntity<>("Simulation started for " + simulationDuration + "ticks. Tick duration : " + tickDuration, HttpStatus.OK);
 		}
 		return new ResponseEntity<>("Call /api/build first.", HttpStatus.BAD_REQUEST);
 	}
@@ -138,8 +146,19 @@ public class SmartGovController {
 			public void handle(SimulationStep event) {
 				try {
 					// publishStep(runtime.getTickCount());
-					publishAgents(smartGov.getContext().agents.values());
-					// publishArcs(smartGov.getContext().arcs.values());
+					if (event.getTick() % SimulationController.agentsRefreshPeriod == 0) {
+						publishAgents(smartGov.getContext().agents.values());
+					}
+
+					if (event.getTick() % SimulationController.pollutionRefreshPeriod == 0) {
+						try {
+							template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
+							template.convertAndSend("/simulation/pollution", objectMapper.writeValueAsString(smartGov.getContext().arcs.values()));
+						} catch (MessagingException | JsonProcessingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -163,6 +182,18 @@ public class SmartGovController {
 			}
 			
 		});
+	}
+	
+	private void registerPollutionListeners() {
+		for(Arc arc : smartGov.getContext().arcs.values()) {
+			((PollutableOsmArc) arc).addPollutionIncreasedListener(new EventHandler<PollutionIncreasedEvent>() {
+				@Override
+				public void handle(PollutionIncreasedEvent event) {
+					pollutedArcQueue.add(arc);
+				}
+				
+			});
+		}
 	}
 	
     private void publishStep(int simulationStep) throws Exception {
