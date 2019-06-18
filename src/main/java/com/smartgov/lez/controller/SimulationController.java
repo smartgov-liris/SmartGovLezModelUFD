@@ -21,6 +21,8 @@ public class SimulationController {
 		public static int pollutionRefreshPeriod;
 		public static int tickDelay;
 		
+		public static boolean visualisationEnabled;
+		
 		@PutMapping("/agents_refresh_period")
 		public ResponseEntity<String> updateAgentsRefreshPeriod(@RequestParam("period") Integer period) {
 			agentsRefreshPeriod = period;
@@ -50,6 +52,26 @@ public class SimulationController {
 			}
 			
 			String message = "Tick delay set to " + delay;
+			SmartgovLezApplication.logger.info(message);
+			return new ResponseEntity<>(message, HttpStatus.OK);
+		}
+		
+		@PutMapping("/enable_visualisation")
+		public ResponseEntity<String> enableVisualisation(@RequestParam("enabled") Boolean enabled) {
+			visualisationEnabled = enabled;
+			
+			if (enabled) {
+				String message = "Visualisation enabled.";
+				SmartgovLezApplication.logger.info(message);
+				return new ResponseEntity<>(message, HttpStatus.OK);
+			}
+			
+			tickDelay = 0;
+			if (SmartGov.getRuntime() != null) {
+				SmartGov.getRuntime().setTickDelay(tickDelay);
+			}
+			
+			String message = "Visualisation disabled.";
 			SmartgovLezApplication.logger.info(message);
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		}

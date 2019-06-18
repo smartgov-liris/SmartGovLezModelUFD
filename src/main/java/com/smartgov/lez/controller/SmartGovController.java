@@ -66,6 +66,8 @@ public class SmartGovController {
 
 		publishAgents(smartGov.getContext().agents.values());
 		
+		publishPollution(smartGov.getContext().arcs.values());
+		
 		return new ResponseEntity<>("SmartGov instance built.", HttpStatus.OK);
 	}
 	
@@ -132,7 +134,10 @@ public class SmartGovController {
 			}
 			// Re-initialize context
 			SmartGov.getSimulationBuilder().build();
+			
 			publishAgents(smartGov.getContext().agents.values());
+			
+			publishPollution(smartGov.getContext().arcs.values());
 			
 			return new ResponseEntity<>("Simulation stopped after " + SmartGov.getRuntime().getTickCount() + " ticks.", HttpStatus.OK);
 		}
@@ -146,14 +151,13 @@ public class SmartGovController {
 			public void handle(SimulationStep event) {
 				try {
 					// publishStep(runtime.getTickCount());
-					if (event.getTick() % SimulationController.agentsRefreshPeriod == 0) {
+					if (SimulationController.visualisationEnabled && event.getTick() % SimulationController.agentsRefreshPeriod == 0) {
 						publishAgents(smartGov.getContext().agents.values());
 					}
 
-					if (event.getTick() % SimulationController.pollutionRefreshPeriod == 0) {
+					if (SimulationController.visualisationEnabled && event.getTick() % SimulationController.pollutionRefreshPeriod == 0) {
 						try {
-							template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
-							template.convertAndSend("/simulation/pollution", objectMapper.writeValueAsString(smartGov.getContext().arcs.values()));
+							publishPollution(smartGov.getContext().arcs.values());
 						} catch (MessagingException | JsonProcessingException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -174,7 +178,8 @@ public class SmartGovController {
 			public void handle(SimulationStopped event) {
 				publishStop(runtime);
 				try {
-					publishArcs(smartGov.getContext().arcs.values());
+					publishAgents(smartGov.getContext().agents.values());
+					publishPollution(smartGov.getContext().arcs.values());
 				} catch (MessagingException | JsonProcessingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -215,5 +220,10 @@ public class SmartGovController {
     private void publishArcs(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {
     	this.template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
     	this.template.convertAndSend("/simulation/arcs", objectMapper.writeValueAsString(arcs));
+    }
+    
+    private void publishPollution(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {
+    	template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
+		template.convertAndSend("/simulation/pollution", objectMapper.writeValueAsString(smartGov.getContext().arcs.values()));
     }
 }
