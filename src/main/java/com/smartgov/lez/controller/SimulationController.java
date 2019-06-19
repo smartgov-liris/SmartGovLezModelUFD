@@ -21,7 +21,7 @@ public class SimulationController {
 		public static int pollutionRefreshPeriod;
 		public static int tickDelay;
 		
-		public static boolean visualisationEnabled;
+		public static boolean visualisationEnabled = true;
 		
 		@PutMapping("/agents_refresh_period")
 		public ResponseEntity<String> updateAgentsRefreshPeriod(@RequestParam("period") Integer period) {
