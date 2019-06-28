@@ -74,7 +74,7 @@ public class SmartGovControllerTest {
 				);
 		
 		mvc.perform(
-				put("/api/start?ticks=10")
+				put("/api/start?simulationDuration=10&tickDuration=1")
 				);
 		
 		while(SmartGov.getRuntime().isRunning()) {
@@ -141,7 +141,7 @@ public class SmartGovControllerTest {
 		});
 		
 		mvc.perform(
-				put("/api/start?ticks=100")
+				put("/api/start?simulationDuration=100&tickDuration=1")
 				);
 		
 		while(SmartGov.getRuntime().isRunning()) {

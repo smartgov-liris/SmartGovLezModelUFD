@@ -10,7 +10,9 @@ import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.events.ArcLeftEvent;
 import smartgov.core.events.EventHandler;
-import smartgov.urban.geo.agent.event.CarMovedEvent;
+import smartgov.urban.geo.agent.GeoAgentBody;
+import smartgov.urban.geo.agent.event.GeoMoveEvent;
+import smartgov.urban.geo.agent.mover.BasicGeoMover;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.agent.actuator.CarMover;
 
@@ -43,10 +45,10 @@ public class PollutantCarMover extends CarMover {
 	}
 	
 	private void setUpPollutionListeners() {
-		((CarMover) agentBody.getMover()).addCarMovedEventListener(new EventHandler<CarMovedEvent>() {
+		((BasicGeoMover) agentBody.getMover()).addGeoMoveEventListener(new EventHandler<GeoMoveEvent>() {
 
 			@Override
-			public void handle(CarMovedEvent event) {
+			public void handle(GeoMoveEvent event) {
 				if (currentSpeed > 0) {
 					traveledDistance += event.getDistanceCrossed();
 					time += event.getDistanceCrossed() / currentSpeed; // Speed remains constant between each move event.
@@ -73,7 +75,7 @@ public class PollutantCarMover extends CarMover {
 	}
 	
 	@Override
-	public void setAgentBody(OsmAgentBody agentBody) {
+	public void setAgentBody(GeoAgentBody agentBody) {
 		super.setAgentBody(agentBody);
 		setUpPollutionListeners();
 		currentSpeed = agentBody.getSpeed();
