@@ -3,9 +3,9 @@ package com.smartgov.lez.core.agent.vehicle;
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -38,12 +38,12 @@ public class DeliveryVehicleFactoryTest {
 	private CopertProfile loadCopertProfile(String profileTestFile) {
 		CopertInputReader reader = new CopertInputReader();
 		URL url = this.getClass().getResource(profileTestFile);
-		return reader.parseInputFile(url.getFile());
+		return reader.parseInputFile(new File(url.getFile()));
 	}
 	
 	private CopertParser loadCopertParser(String copertTestTable) {
 		URL url = this.getClass().getResource(copertTestTable);
-		return new CopertParser(url.getFile());
+		return new CopertParser(new File(url.getFile()));
 	}
 	
 	/*

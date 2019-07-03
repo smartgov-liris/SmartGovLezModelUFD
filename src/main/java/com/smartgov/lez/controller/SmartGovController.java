@@ -40,14 +40,11 @@ public class SmartGovController {
 	
 	static SmartGov smartGov;
 	
-	private ConcurrentLinkedQueue<Arc> pollutedArcQueue;
-	
 
     @Autowired
     public SmartGovController(SimpMessagingTemplate template) {
         this.template = template;
         objectMapper = new ObjectMapper();
-        pollutedArcQueue = new ConcurrentLinkedQueue<>();
     }
     
 	@PutMapping("/build")
@@ -58,7 +55,6 @@ public class SmartGovController {
 
 		registerStepListener(SmartGov.getRuntime());
 		registerStopListener(SmartGov.getRuntime());
-		registerPollutionListeners();
 		
 		publishNodes(smartGov.getContext().nodes.values());
 		
@@ -189,18 +185,6 @@ public class SmartGovController {
 		});
 	}
 	
-	private void registerPollutionListeners() {
-		for(Arc arc : smartGov.getContext().arcs.values()) {
-			((PollutableOsmArc) arc).addPollutionIncreasedListener(new EventHandler<PollutionIncreasedEvent>() {
-				@Override
-				public void handle(PollutionIncreasedEvent event) {
-					pollutedArcQueue.add(arc);
-				}
-				
-			});
-		}
-	}
-	
     private void publishStep(int simulationStep) throws Exception {
         this.template.convertAndSend("/simulation/steps", simulationStep);
     }
@@ -209,7 +193,7 @@ public class SmartGovController {
     	this.template.convertAndSend("/simulation/stop", "{\"stop\":{\"after\":" + runtime.getTickCount() + "}}");
     }
     
-    private void publishAgents(Collection<Agent> agents) throws MessagingException, JsonProcessingException {
+    private void publishAgents(Collection<Agent<?>> agents) throws MessagingException, JsonProcessingException {
     	this.template.convertAndSend("/simulation/agents", objectMapper.writeValueAsString(agents));
     }
     

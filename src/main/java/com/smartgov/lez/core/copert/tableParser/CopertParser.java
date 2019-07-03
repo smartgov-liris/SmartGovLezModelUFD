@@ -1,5 +1,6 @@
 package com.smartgov.lez.core.copert.tableParser;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -32,7 +33,7 @@ public class CopertParser {
 	 * 
 	 * @param copertParametersFile copert table file path
 	 */
-	public CopertParser(String copertParametersFile) {
+	public CopertParser(File copertParametersFile) {
 		copertTree  = parseFile(copertParametersFile);
 	}
 	
@@ -87,12 +88,12 @@ public class CopertParser {
 				);
 	}
 	
-	private CopertTree parseFile(String fileName) {
+	private CopertTree parseFile(File file) {
 		// Original table
 		SubTable csv = new SubTable();
 		
 		try {
-			Reader in = new FileReader(fileName);
+			Reader in = new FileReader(file);
 			Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
 			Iterator<CSVRecord> recordsIterator = records.iterator();
 			

@@ -13,8 +13,7 @@ import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
 import smartgov.urban.geo.agent.mover.BasicGeoMover;
-import smartgov.urban.osm.agent.OsmAgentBody;
-import smartgov.urban.osm.agent.actuator.CarMover;
+import smartgov.urban.osm.agent.mover.CarMover;
 
 /**
  * This class implements the same behavior has the {@link smartgov.urban.osm.agent.actuator.CarMover CarMover},
@@ -40,7 +39,7 @@ public class PollutantCarMover extends CarMover {
 	private ArrayList<PollutableOsmArc> arcsCrossed;
 
 	public PollutantCarMover() {
-		super();
+		super(4.0, -6.0, 15.0, 7.0);
 		arcsCrossed = new ArrayList<>();
 	}
 	

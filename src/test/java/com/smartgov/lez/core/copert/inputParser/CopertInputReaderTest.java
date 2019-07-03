@@ -10,8 +10,8 @@ import com.smartgov.lez.core.copert.tableParser.CopertHeader;
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
 
+import java.io.File;
 import java.net.URL;
-import java.util.List;
 
 public class CopertInputReaderTest {
 	
@@ -21,7 +21,7 @@ public class CopertInputReaderTest {
 	private CopertProfile testInput(String testFile) {
 		CopertInputReader reader = new CopertInputReader();
 		URL url = this.getClass().getResource(testFile);
-		return reader.parseInputFile(url.getFile());
+		return reader.parseInputFile(new File(url.getFile()));
 	}
 
 	@Test

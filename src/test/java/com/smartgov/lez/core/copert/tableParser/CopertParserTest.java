@@ -1,5 +1,6 @@
 package com.smartgov.lez.core.copert.tableParser;
 
+import java.io.File;
 import java.net.URL;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class CopertParserTest {
 	
 	private CopertParser loadParser() {
 		URL url = this.getClass().getResource("vehicle_classes_test.csv");
-		return new CopertParser(url.getFile());
+		return new CopertParser(new File(url.getFile()));
 	}
 
 	@Test

@@ -3,12 +3,12 @@ package com.smartgov.lez.core.copert.fields;
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class CopertFieldsTest {
 	
 	private SubTable loadTable() {
 		URL url = this.getClass().getResource("copert_table.csv"); // Complete Copert table with Light Commercial Vehicles and Heavy Duty Trucks
-		CopertParser copertParser = new CopertParser(url.getFile());
+		CopertParser copertParser = new CopertParser(new File(url.getFile()));
 		return copertParser.getCopertTree().getSubTable();
 	}
 	
@@ -62,7 +62,6 @@ public class CopertFieldsTest {
 		SubTable table = loadTable();
 		List<String> selectorsHeaders = Arrays.asList("Category", "Fuel", "Segment", "Euro Standard");
 		for (String stringHeader : selectorsHeaders) {
-			Set<String> headers = table.keySet();
 			Set<String> fields = new HashSet<String>(table.get(stringHeader));
 			for(String field : fields) {
 				CopertField matchingField = CopertField.getValue(

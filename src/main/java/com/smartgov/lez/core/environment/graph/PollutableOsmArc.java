@@ -20,20 +20,19 @@ import smartgov.urban.osm.environment.graph.Road;
  *
  */
 public class PollutableOsmArc extends OsmArc {
-	
+
 	@JsonSerialize(using=PollutionSerializer.class)
 	private Pollution pollution;
 	
 	private Collection<EventHandler<PollutionIncreasedEvent>> pollutionIncreasedListeners;
-
+	
 	public PollutableOsmArc(
 			String id,
-			Road road,
 			OsmNode startNode,
 			OsmNode targetNode,
-			int lanes,
-			String type) {
-		super(id, road, startNode, targetNode, lanes, type);
+			Road road,
+			RoadDirection roadDirection) {
+		super(id, startNode, targetNode, road, roadDirection);
 		pollution = new Pollution();
 		pollutionIncreasedListeners = new ArrayList<>();
 	}

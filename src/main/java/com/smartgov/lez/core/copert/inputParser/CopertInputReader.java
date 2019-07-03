@@ -7,11 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CopertInputReader {
 
-	public CopertProfile parseInputFile(String inputFile) {
+	public CopertProfile parseInputFile(File inputFile) {
 		CopertProfile copertInput = null;
 		try {
 			copertInput = new ObjectMapper().readValue(
-					new File(inputFile),
+					inputFile,
 					CopertProfile.class);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
