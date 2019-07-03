@@ -40,7 +40,7 @@ public class Copert {
 	}
 	
 	/**
-	 * Returns the copertParameters according for the given
+	 * Returns the copertParameters according to the given
 	 * 
 	 * {@link com.smartgov.lez.core.copert.fields.Pollutant Pollutant}.
 	 * @param pollutant Pollutant

@@ -3,8 +3,6 @@ package com.smartgov.lez.core.copert.inputParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.smartgov.lez.core.copert.tableParser.CopertHeader;
 
 public class CopertProfile {
