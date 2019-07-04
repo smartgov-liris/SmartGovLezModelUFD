@@ -21,7 +21,7 @@ import smartgov.urban.osm.environment.graph.Road;
  */
 public class PollutableOsmArc extends OsmArc {
 
-	@JsonSerialize(using=PollutionSerializer.class)
+	// @JsonSerialize(using=PollutionSerializer.class)
 	private Pollution pollution;
 	
 	private Collection<EventHandler<PollutionIncreasedEvent>> pollutionIncreasedListeners;
