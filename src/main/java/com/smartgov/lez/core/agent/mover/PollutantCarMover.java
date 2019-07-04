@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.actuator;
+package com.smartgov.lez.core.agent.mover;
 
 import java.util.ArrayList;
 

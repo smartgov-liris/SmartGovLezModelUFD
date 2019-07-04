@@ -1,6 +1,6 @@
 package com.smartgov.lez.core.agent;
 
-import com.smartgov.lez.core.agent.actuator.PollutantCarMover;
+import com.smartgov.lez.core.agent.mover.PollutantCarMover;
 import com.smartgov.lez.core.agent.vehicle.DeliveryVehicle;
 
 import smartgov.urban.osm.agent.OsmAgentBody;
