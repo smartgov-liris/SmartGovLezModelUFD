@@ -1,6 +1,8 @@
 package com.smartgov.lez.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;
 import com.smartgov.lez.core.environment.pollution.Pollution;
+import com.smartgov.lez.output.BufferedSender;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
@@ -57,7 +61,7 @@ public class SmartGovController {
 		registerStopListener(SmartGov.getRuntime());
 		
 		publishNodes(smartGov.getContext().nodes.values());
-		
+//		
 		publishArcs(smartGov.getContext().arcs.values());
 
 		publishAgents(smartGov.getContext().agents.values());
@@ -198,16 +202,29 @@ public class SmartGovController {
     }
     
     private void publishNodes(Collection<Node> nodes) throws MessagingException, JsonProcessingException {
-    	this.template.convertAndSend("/simulation/nodes", objectMapper.writeValueAsString(nodes));
+    	BufferedSender.publish(this.template, "/simulation/nodes", nodes.iterator());
+//    	int i = 0;
+//    	Iterator<Node> nodesIterator = nodes.iterator();
+//    	Collection<Node> nodesToSend = new ArrayList<>();
+//    	while (nodesIterator.hasNext()) {
+//    		if (i == 500) {
+//    			this.template.convertAndSend("/simulation/nodes", objectMapper.writeValueAsString(nodesToSend));
+//    			nodesToSend.clear();
+//    			i = 0;
+//    		}
+//    		nodesToSend.add(nodesIterator.next());
+//    		i++;
+//    	}
+    	
     }
     
     private void publishArcs(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {
     	this.template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
-    	this.template.convertAndSend("/simulation/arcs", objectMapper.writeValueAsString(arcs));
+    	BufferedSender.publish(this.template, "/simulation/arcs", arcs.iterator());
     }
     
     private void publishPollution(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {
     	template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
-		template.convertAndSend("/simulation/pollution", objectMapper.writeValueAsString(smartGov.getContext().arcs.values()));
+    	BufferedSender.publish(this.template, "/simulation/pollution", smartGov.getContext().arcs.values().iterator());
     }
 }
