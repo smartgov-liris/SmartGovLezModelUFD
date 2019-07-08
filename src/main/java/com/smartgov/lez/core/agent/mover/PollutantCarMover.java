@@ -16,12 +16,10 @@ import smartgov.urban.geo.agent.mover.BasicGeoMover;
 import smartgov.urban.osm.agent.mover.CarMover;
 
 /**
- * This class implements the same behavior has the {@link smartgov.urban.osm.agent.actuator.CarMover CarMover},
+ * This class implements the same behavior has the {@link smartgov.urban.osm.agent.mover.CarMover CarMover},
  * but it had utilities to compute pollution emissions. To do so, it records the traveled distance and propagate the
- * pollution on crossed arcs each time a distance treshold has been reached.
+ * pollution on crossed arcs each time a distance threshold has been reached.
  * 
- * Must also be parameterized with constants used by the COPERT model. (TODO: Or maybe this should be included in a 
- * new AgentBody extension?)
  * 
  * @author pbreugnot
  *

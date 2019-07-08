@@ -1,6 +1,5 @@
 package com.smartgov.lez.core.copert.fields;
 
-import com.smartgov.lez.core.agent.vehicle.BadCopertFieldException;
 import com.smartgov.lez.core.copert.tableParser.CopertHeader;
 
 /**
@@ -15,14 +14,24 @@ public interface CopertField {
 	 * Name of the field used to read the Copert tree.
 	 * Actually corresponds to sub-categories entries for each level.
 	 * <ul>
-	 * 	<li> Light Commercial vehicle, heavy duty trucks
-	 * 	<li> Petrol, Diesel
-	 * 	<li> ...
-	 * <ul> 
-	 * @return
+	 * 	<li> Light Commercial vehicle, heavy duty trucks</li>
+	 * 	<li> Petrol, Diesel</li>
+	 * 	<li> ...</li>
+	 * </ul> 
+	 * @return field matcher
 	 */
 	public String matcher();
 	
+	/**
+	 * Use to compute the particular field that correspond to the specified string
+	 * for the specified header.
+	 * 
+	 * (e.g. : CATEGORY, "Light Commercial Vehicles")
+	 * 
+	 * @param header header type
+	 * @param string field value
+	 * @return Corresponding Copert field
+	 */
 	public static CopertField getValue(CopertHeader header, String string) {
 		switch(header) {
 		case CATEGORY:
@@ -40,6 +49,16 @@ public interface CopertField {
 		}
 	}
 	
+	/**
+	 * Use to compute the particular field that correspond to the specified enumeration
+	 * string representation for the specified header. 
+	 * 
+	 * (e.g. : CATEGORY, "LIGHT_WEIGHT")
+	 * 
+	 * @param header header type
+	 * @param value enum string representation
+	 * @return Corresponding Copert field
+	 */
 	public static CopertField valueOf(CopertHeader header, String value) {
 		switch(header){
 		case CATEGORY:
@@ -59,6 +78,10 @@ public interface CopertField {
 		}
 	}
 	
+	/**
+	 * Special random Copert field
+	 * @return random field
+	 */
 	public static CopertField randomSelector() {
 		return RandomField.RANDOM;
 	}

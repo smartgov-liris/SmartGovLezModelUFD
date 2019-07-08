@@ -13,7 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 
 import smartgov.SmartGov;
-import smartgov.core.main.SimulationRuntime;
+import smartgov.core.simulation.SimulationRuntime;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SmartGov.class)

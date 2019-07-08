@@ -23,7 +23,7 @@ public class Copert {
 	 * If at some point in the corresponding query no sub-classes is found, the copertParameters will be
 	 * set to null.
 	 * 
-	 * @param copertTree an initialized copertTree
+	 * @param completeTree an complete copertTree
 	 */
 	public Copert(CopertTree completeTree) {
 		copertParameters = new HashMap<>();

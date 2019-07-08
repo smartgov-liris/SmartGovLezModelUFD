@@ -1,9 +1,6 @@
 package com.smartgov.lez.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartgov.lez.core.environment.LezContext;
-import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
-import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 import com.smartgov.lez.output.BufferedSender;
 
@@ -30,9 +24,9 @@ import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
-import smartgov.core.main.SimulationRuntime;
-import smartgov.core.main.events.SimulationStep;
-import smartgov.core.main.events.SimulationStopped;
+import smartgov.core.simulation.SimulationRuntime;
+import smartgov.core.simulation.events.SimulationStep;
+import smartgov.core.simulation.events.SimulationStopped;
 
 @Controller
 @RequestMapping("/api")
@@ -203,19 +197,6 @@ public class SmartGovController {
     
     private void publishNodes(Collection<Node> nodes) throws MessagingException, JsonProcessingException {
     	BufferedSender.publish(this.template, "/simulation/nodes", nodes.iterator());
-//    	int i = 0;
-//    	Iterator<Node> nodesIterator = nodes.iterator();
-//    	Collection<Node> nodesToSend = new ArrayList<>();
-//    	while (nodesIterator.hasNext()) {
-//    		if (i == 500) {
-//    			this.template.convertAndSend("/simulation/nodes", objectMapper.writeValueAsString(nodesToSend));
-//    			nodesToSend.clear();
-//    			i = 0;
-//    		}
-//    		nodesToSend.add(nodesIterator.next());
-//    		i++;
-//    	}
-    	
     }
     
     private void publishArcs(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {

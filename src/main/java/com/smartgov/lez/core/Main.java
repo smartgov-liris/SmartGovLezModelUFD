@@ -12,7 +12,7 @@ import com.smartgov.lez.core.environment.pollution.Pollution;
 
 import smartgov.SmartGov;
 import smartgov.core.events.EventHandler;
-import smartgov.core.main.events.SimulationStopped;
+import smartgov.core.simulation.events.SimulationStopped;
 
 public class Main {
 	

@@ -63,9 +63,10 @@ public class DeliveryVehicle {
 	/**
 	 * Compute emissions in g according to the COPERT model.
 	 * 
+	 * @param pollutant pollutant to consider
 	 * @param meanSpeed Mean speed of the vehicle.
 	 * @param distance Traveled distance.
-	 * @return
+	 * @return computed emissions (g)
 	 */
 	public double getEmissions(Pollutant pollutant, double meanSpeed, double distance) {
 		CopertParameters copertParameters = copert.getCopertParameters(pollutant);

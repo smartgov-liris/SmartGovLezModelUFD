@@ -1,10 +1,9 @@
 package com.smartgov.lez.core.environment;
 
-import com.smartgov.lez.core.simulation.scenario.PollutionScenario;
+import com.smartgov.lez.core.simulation.scenario.RandomTrafficPollutionScenario;
 
-import smartgov.core.simulation.Scenario;
+import smartgov.core.scenario.Scenario;
 import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.OsmNode;
 
 public class LezContext extends OsmContext {
 
@@ -19,8 +18,8 @@ public class LezContext extends OsmContext {
 			return superScenario;
 		}
 		switch(scenarioName){
-			case PollutionScenario.name:
-				return new PollutionScenario();
+			case RandomTrafficPollutionScenario.name:
+				return new RandomTrafficPollutionScenario();
 			default:
 				return null;
 		}

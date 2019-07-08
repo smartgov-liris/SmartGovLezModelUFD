@@ -74,7 +74,7 @@ public class CopertTree {
 	 * If exactly one child matches, returns this child.
 	 * If multiple children match, select a random child among them.
 	 * Return null if no child matches.
-	 * @param regExp regular expression selector
+	 * @param matcher regular expression selector
 	 * @return A matching child
 	 */
 	public CopertTree select(String matcher) {

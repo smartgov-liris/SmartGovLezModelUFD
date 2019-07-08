@@ -45,18 +45,15 @@ public class CopertParser {
 	}
 	
 	/**
-	 * Find copert parameters for the given parameters.
+	 * Find copert parameters for the given pollutant in the specified Copert tree.
 	 * If several entries correspond to the given parameters
-	 * (e.g. : CH4 emissions mode, different loads or speed for some vehicles...)
+	 * (e.g. : CH4 emission mode, different loads or speed for some vehicles...)
 	 * the parameters are aggregated using a mean value.
 	 * 
 	 * 
 	 * 
-	 * @param vehicleClass Category
-	 * @param fuel Fuel
-	 * @param vehicleSegment Segment
-	 * @param norm Euro
-	 * @param pollutant Pollutant
+	 * @param copertTree Copert tree
+	 * @param pollutant pollutant to look for
 	 * @return Copert parameters
 	 */
 	public static CopertParameters copertParameters(

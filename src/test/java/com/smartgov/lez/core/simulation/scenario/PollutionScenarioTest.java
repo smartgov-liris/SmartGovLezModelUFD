@@ -31,7 +31,7 @@ public class PollutionScenarioTest {
 	@Test
 	public void testAgentBodiesType() {
 		SmartGov smartGov = loadSmartGov();
-		for(Agent agent : smartGov.getContext().agents.values()) {
+		for(Agent<?> agent : smartGov.getContext().agents.values()) {
 			assertThat(
 					agent.getBody() instanceof DeliveryDriver,
 					equalTo(true)

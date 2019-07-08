@@ -15,14 +15,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultHandler;
 
 import com.smartgov.lez.controller.SmartGovController;
 
 import smartgov.SmartGov;
 import smartgov.core.events.EventHandler;
-import smartgov.core.main.events.SimulationStep;
+import smartgov.core.simulation.events.SimulationStep;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -33,7 +33,7 @@ import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.events.EventHandler;
-import smartgov.core.simulation.Scenario;
+import smartgov.core.scenario.Scenario;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.OsmContext;
@@ -41,7 +41,7 @@ import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
-import smartgov.urban.osm.simulation.scenario.GenericOsmScenario;
+import smartgov.urban.osm.scenario.GenericOsmScenario;
 
 public class PollutantCarMoverTest {
 	
