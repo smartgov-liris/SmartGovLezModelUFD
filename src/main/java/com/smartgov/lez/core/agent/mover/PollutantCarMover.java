@@ -8,10 +8,7 @@ import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;
 
 import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.events.ArcLeftEvent;
-import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
-import smartgov.urban.geo.agent.event.GeoMoveEvent;
 import smartgov.urban.geo.agent.mover.BasicGeoMover;
 import smartgov.urban.osm.agent.mover.CarMover;
 
@@ -42,23 +39,16 @@ public class PollutantCarMover extends CarMover {
 	}
 	
 	private void setUpPollutionListeners() {
-		((BasicGeoMover) agentBody.getMover()).addGeoMoveEventListener(new EventHandler<GeoMoveEvent>() {
-
-			@Override
-			public void handle(GeoMoveEvent event) {
+		((BasicGeoMover) agentBody.getMover()).addGeoMoveEventListener((event) -> {
 				if (currentSpeed > 0) {
 					traveledDistance += event.getDistanceCrossed();
 					time += event.getDistanceCrossed() / currentSpeed; // Speed remains constant between each move event.
 				}
 				currentSpeed = agentBody.getSpeed();
 			}
-			
-		});
+			);
 		
-		((MovingAgentBody) agentBody).addOnArcLeftListener(new EventHandler<ArcLeftEvent>() {
-
-			@Override
-			public void handle(ArcLeftEvent event) {
+		((MovingAgentBody) agentBody).addOnArcLeftListener((event) -> {
 				arcsCrossed.add((PollutableOsmArc) event.getArc());
 				if (traveledDistance >= pollutionDistanceTreshold) {
 					polluteArcs();
@@ -67,8 +57,7 @@ public class PollutantCarMover extends CarMover {
 					arcsCrossed.clear();
 				}
 			}
-			
-		});
+			);
 	}
 	
 	@Override

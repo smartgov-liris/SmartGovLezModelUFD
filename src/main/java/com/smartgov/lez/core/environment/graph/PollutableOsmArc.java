@@ -3,10 +3,8 @@ package com.smartgov.lez.core.environment.graph;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.pollution.Pollution;
-import com.smartgov.lez.core.output.PollutionSerializer;
 
 import smartgov.core.events.EventHandler;
 import smartgov.urban.osm.environment.graph.OsmArc;
