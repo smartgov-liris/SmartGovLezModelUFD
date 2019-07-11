@@ -55,7 +55,7 @@ public class SmartGovController {
 		registerStopListener(SmartGov.getRuntime());
 		
 		publishNodes(smartGov.getContext().nodes.values());
-//		
+	
 		publishArcs(smartGov.getContext().arcs.values());
 
 		publishAgents(smartGov.getContext().agents.values());
@@ -66,7 +66,9 @@ public class SmartGovController {
 	}
 	
 	@PutMapping("/start")
-	public ResponseEntity<String> start(@RequestParam("simulationDuration") Integer simulationDuration, @RequestParam("tickDuration") Integer tickDuration) {
+	public ResponseEntity<String> start(
+			@RequestParam("simulationDuration") Integer simulationDuration,
+			@RequestParam("tickDuration") Integer tickDuration) {
 		if(smartGov != null) {
 			SmartGov.getRuntime().setTickDuration(tickDuration);
 			SmartGov.getRuntime().start(simulationDuration);

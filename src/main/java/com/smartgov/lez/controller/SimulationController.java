@@ -17,9 +17,9 @@ import smartgov.SmartGov;
 @CrossOrigin
 public class SimulationController {
 
-		public static int agentsRefreshPeriod;
-		public static int pollutionRefreshPeriod;
-		public static int tickDelay;
+		public static int agentsRefreshPeriod = 5;
+		public static int pollutionRefreshPeriod = 10;
+		public static int tickDelay = 0;
 		
 		public static boolean visualisationEnabled = true;
 		

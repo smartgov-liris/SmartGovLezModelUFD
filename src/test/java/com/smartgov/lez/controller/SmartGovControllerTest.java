@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.catalina.Container;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.controller.SmartGovController;
 
 import smartgov.SmartGov;
@@ -58,7 +60,7 @@ public class SmartGovControllerTest {
 	public void start_with_no_build_respond_bad_request() throws Exception {
 		SmartGovController.smartGov = null;
 		mvc.perform(
-				put("/api/start")
+				put("/api/start?simulationDuration=50&tickDuration=1")
 				)
 		.andExpect(
 				status().isBadRequest()
@@ -72,17 +74,38 @@ public class SmartGovControllerTest {
 				);
 		
 		mvc.perform(
-				put("/api/start?simulationDuration=10&tickDuration=1")
+				put("/api/start?simulationDuration=50&tickDuration=1")
 				);
+
+//		Container c = new Container();
+//		SmartGov.getRuntime().addSimulationStartedListener((event) -> {
+//			c.thread = Thread.currentThread();
+//			c.thread.setPriority(Thread.MAX_PRIORITY);
+//		});
 		
-		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.MICROSECONDS.sleep(10);
-		}
+		EventTriggeredChecker checker = new EventTriggeredChecker();
+		
+		SmartGov.getRuntime().addSimulationStoppedListener((event) -> {
+			assertThat(
+					SmartGov.getRuntime().getTickCount(),
+					equalTo(50)
+					);
+			checker.triggered = true;
+		});
+		
+		SmartGov.getRuntime().waitUntilSimulatioEnd();
+		
+		TimeUnit.MILLISECONDS.sleep(100); // Give time to the events to be handled
 		
 		assertThat(
-				SmartGov.getRuntime().getTickCount(),
-				equalTo(10)
+				checker.triggered,
+				equalTo(true)
 				);
+		
+	}
+	
+	public class Container {
+		public Thread thread;
 	}
 	
 	@Test
