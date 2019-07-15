@@ -89,7 +89,7 @@ public class CopertTree {
 		}
 		if (matchingKeys.size() == 0) {
 			String message =
-					"No matching Copert class for matcher " + matcher + " at level " + levelColumn
+					"No matching Copert value for matcher \"" + matcher + "\" at level \"" + levelColumn + "\""
 					+ "\nAvailable sub-classes :\n";
 			for(String subClass : children.keySet()) {
 				message += (subClass + "\n");

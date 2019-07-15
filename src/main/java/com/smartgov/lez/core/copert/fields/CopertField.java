@@ -44,6 +44,14 @@ public interface CopertField {
 			return EuroNorm.getValue(string);
 		case TECHNOLOGY:
 			return Technology.getValue(string);
+		case POLLUTANT:
+			return Pollutant.getValue(string);
+		case MODE:
+			return Mode.getValue(string);
+		case ROAD_SLOPE:
+			return RoadSlope.getValue(string);
+		case LOAD:
+			return Load.getValue(string);
 		default:
 			return null;
 		}

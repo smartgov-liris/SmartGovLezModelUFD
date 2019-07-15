@@ -3,6 +3,7 @@ package com.smartgov.lez.core.copert.tableParser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -20,21 +21,21 @@ public class SubTable extends HashMap<String, ArrayList<String>> {
 
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * Mean value of the column. Raise an exception if a field data is not a Double.
-	 * @param field column name
-	 * @return column mean value
-	 */
-	public Double mean(String field) {
-		ArrayList<String> column = get(field);
-		Double mean = 0d;
-		for (String value : column) {
-			if (!value.isEmpty()) {
-				mean += Double.valueOf(value);
-			}
-		}
-		return mean / column.size();
-	}
+//	/**
+//	 * Mean value of the column. Raise an exception if a field data is not a Double.
+//	 * @param field column name
+//	 * @return column mean value
+//	 */
+//	public Double mean(String field) {
+//		ArrayList<String> column = get(field);
+//		Double mean = 0d;
+//		for (String value : column) {
+//			if (!value.isEmpty()) {
+//				mean += Double.valueOf(value);
+//			}
+//		}
+//		return mean / column.size();
+//	}
 	
 	/**
 	 * Maximum value of the column. Raise an exception if a field data is not a Double.
@@ -68,27 +69,54 @@ public class SubTable extends HashMap<String, ArrayList<String>> {
 		return min;
 	}
 	
-	/**
-	 * Compute the mean value of each column and return results as an HashMap.
-	 * If a column contains a value that is not a Double, all the column is ignored,
-	 * but valid columns are still returned.
-	 * <ul>
-	 *   <li> keys : column names </li>
- 	 *   <li> values : column mean value </li>
- 	 * </ul>
- 	 * WARNING : Should be used with extra caution, because aggregating Copert parameters
-	 * between different pollutant doesn't make any sense.
-	 * TODO : Fix this programmatically.
-	 * 
-	 * @return Sub table mean values
-	 */
-	public HashMap<String, Double> mean() {
-		HashMap<String, Double> mean = new HashMap<>();
-		for (String field : doubleFieldsKeySet()) {
-			mean.put(field, mean(field));
+	public Map<String, String> getLine(int i) {
+		Map<String, String> line = new HashMap<>();
+		for(String column : keySet()) {
+			if(column.length() > 0) {
+				// Avoid copert columns with no header that remain there
+				// for obscure reasons.
+				line.put(column, get(column).get(i));
+			}
 		}
-		return mean;
+		return line;
 	}
+	
+	public Map<String, String> getLine() {
+		Map<String, String> line = new HashMap<>();
+		for(String column : keySet()) {
+			if(column.length() > 0) {
+				// Avoid copert columns with no header that remain there
+				// for obscure reasons.
+				if (get(column).size() != 1) {
+					throw new IllegalStateException("The current table is not a single line.");
+				}
+				line.put(column, get(column).get(0));
+			}
+		}
+		return line;
+	}
+	
+//	/**
+//	 * Compute the mean value of each column and return results as an HashMap.
+//	 * If a column contains a value that is not a Double, all the column is ignored,
+//	 * but valid columns are still returned.
+//	 * <ul>
+//	 *   <li> keys : column names </li>
+// 	 *   <li> values : column mean value </li>
+// 	 * </ul>
+// 	 * WARNING : Should be used with extra caution, because aggregating Copert parameters
+//	 * between different pollutant doesn't make any sense.
+//	 * TODO : Fix this programmatically.
+//	 * 
+//	 * @return Sub table mean values
+//	 */
+//	public HashMap<String, Double> mean() {
+//		HashMap<String, Double> mean = new HashMap<>();
+//		for (String field : doubleFieldsKeySet()) {
+//			mean.put(field, mean(field));
+//		}
+//		return mean;
+//	}
 	
 	/**
 	 * Compute the maximum value of each column and return results as an HashMap.

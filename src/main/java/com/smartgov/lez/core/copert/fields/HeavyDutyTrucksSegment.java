@@ -4,8 +4,8 @@ import java.util.regex.Pattern;
 
 public enum HeavyDutyTrucksSegment implements VehicleSegment {
 	SUP_3_5_T (">3.5 t"),
-	RIGID_INF_7_5_T ("Rigid <=7.5 t"),
-	RIGID_7_5_12_T ("Rigid 7.5 - 12 t"),
+	RIGID_INF_7_5_T ("Rigid <=7\\.5 t"),
+	RIGID_7_5_12_T ("Rigid 7\\.5 - 12 t"),
 	RIGID_12_14_T ("Rigid 12 - 14 t"),
 	RIGID_14_20_T ("Rigid 14 - 20 t"),
 	RIGID_20_26_T ("Rigid 20 - 26 t"),

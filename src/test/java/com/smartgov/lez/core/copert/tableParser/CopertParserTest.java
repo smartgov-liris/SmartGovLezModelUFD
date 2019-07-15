@@ -115,82 +115,65 @@ public class CopertParserTest {
 		
 		CopertParameters NOxParameters = copert.getCopertParameters(Pollutant.NOx);
 		assertThat(
-				NOxParameters.getAlpha(),
-				equalTo(0d));
-		assertThat(
-				NOxParameters.getBeta(),
-				equalTo(271082027144984d));
-		assertThat(
-				NOxParameters.getGamma(),
-				equalTo(0d));
-		assertThat(
-				NOxParameters.getDelta(),
-				equalTo(323144138307312d));
-		assertThat(
-				NOxParameters.getEpsilon(),
-				equalTo(2d));
-		assertThat(
-				NOxParameters.getZita(),
-				equalTo(39126662368513d));
-		assertThat(
-				NOxParameters.getHta(),
-				equalTo(-1d));
+				NOxParameters,
+				equalTo(new CopertParameters(0.000271082027144984, -0.0323144138307312, 2.39126662368513, -0.00000000138617331105954, -0.000000000000109259511509885, 0.0000000000155301712030544, 3.5904904256422))
+				);
 		
 	}
 	
-	@Test
-	public void aggregateParametersForAGivenPollutant() {
-		CopertParser copertParser = loadParser();
-		
-		CopertTree completeCopertTreeUntilTechnology =
-				copertParser.getCopertTree()
-				.select(VehicleCategory.LIGHT_WEIGHT.matcher())
-				.select(Fuel.DIESEL.matcher())
-				.select(LightWeightVehicleSegment.N1_II.matcher())
-				.select(EuroNorm.EURO6.matcher())
-				.select();
-
-		// Check that for there are 4 modes for CH4
-		assertThat(
-				completeCopertTreeUntilTechnology
-				.select(Pollutant.CH4.matcher())
-				.lineCount(),
-				equalTo(4)
-				);
-		
-		CopertSelector selector = new CopertSelector();
-		selector.put(CopertHeader.CATEGORY, VehicleCategory.LIGHT_WEIGHT);
-		selector.put(CopertHeader.FUEL, Fuel.DIESEL);
-		selector.put(CopertHeader.SEGMENT, LightWeightVehicleSegment.N1_II);
-		selector.put(CopertHeader.EURO_STANDARD, EuroNorm.EURO6);
-		
-		Copert copert = new Copert(completeCopertTreeUntilTechnology);
-		
-		CopertParameters CH4Parameters = copert.getCopertParameters(Pollutant.CH4);
-		assertThat(
-				CH4Parameters.getAlpha(),
-				equalTo(0d)
-				);
-		assertThat(
-				CH4Parameters.getBeta(),
-				equalTo(0d)
-				);
-		assertThat(
-				CH4Parameters.getGamma(),
-				equalTo(0d));
-		assertThat(
-				CH4Parameters.getDelta(),
-				equalTo((75d + 75d) / 4));
-		assertThat(
-				CH4Parameters.getEpsilon(),
-				equalTo(0d));
-		assertThat(
-				CH4Parameters.getZita(),
-				equalTo(0d));
-		assertThat(
-				CH4Parameters.getHta(),
-				equalTo((1000d + 1000d) / 4));
-	}
+//	@Test
+//	public void aggregateParametersForAGivenPollutant() {
+//		CopertParser copertParser = loadParser();
+//		
+//		CopertTree completeCopertTreeUntilTechnology =
+//				copertParser.getCopertTree()
+//				.select(VehicleCategory.LIGHT_WEIGHT.matcher())
+//				.select(Fuel.DIESEL.matcher())
+//				.select(LightWeightVehicleSegment.N1_II.matcher())
+//				.select(EuroNorm.EURO6.matcher())
+//				.select();
+//
+//		// Check that for there are 4 modes for CH4
+//		assertThat(
+//				completeCopertTreeUntilTechnology
+//				.select(Pollutant.CH4.matcher())
+//				.lineCount(),
+//				equalTo(4)
+//				);
+//		
+//		CopertSelector selector = new CopertSelector();
+//		selector.put(CopertHeader.CATEGORY, VehicleCategory.LIGHT_WEIGHT);
+//		selector.put(CopertHeader.FUEL, Fuel.DIESEL);
+//		selector.put(CopertHeader.SEGMENT, LightWeightVehicleSegment.N1_II);
+//		selector.put(CopertHeader.EURO_STANDARD, EuroNorm.EURO6);
+//		
+//		Copert copert = new Copert(completeCopertTreeUntilTechnology);
+//		
+//		CopertParameters CH4Parameters = copert.getCopertParameters(Pollutant.CH4);
+//		assertThat(
+//				CH4Parameters.getAlpha(),
+//				equalTo(0d)
+//				);
+//		assertThat(
+//				CH4Parameters.getBeta(),
+//				equalTo(0d)
+//				);
+//		assertThat(
+//				CH4Parameters.getGamma(),
+//				equalTo(0d));
+//		assertThat(
+//				CH4Parameters.getDelta(),
+//				equalTo((75d + 75d) / 4));
+//		assertThat(
+//				CH4Parameters.getEpsilon(),
+//				equalTo(0d));
+//		assertThat(
+//				CH4Parameters.getZita(),
+//				equalTo(0d));
+//		assertThat(
+//				CH4Parameters.getHta(),
+//				equalTo((1000d + 1000d) / 4));
+//	}
 	
 	@Test
 	public void randomSubSelectionTest() {
@@ -228,12 +211,12 @@ public class CopertParserTest {
 			if (selectedNorm.equals("Conventional")) {
 				assertThat(
 						finalLine.getSubTable().get("Alpha").get(0),
-						equalTo("5"));
+						equalTo("0.0000511136815114079"));
 			}
 			else if (selectedNorm.equals("Euro 2")){
 				assertThat(
 						finalLine.getSubTable().get("Alpha").get(0),
-						equalTo("-6"));
+						equalTo("-0.00000649492277475411"));
 			}
 			else {
 				fail("Unknown Euro Norm");

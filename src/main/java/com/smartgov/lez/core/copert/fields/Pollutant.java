@@ -1,5 +1,7 @@
 package com.smartgov.lez.core.copert.fields;
 
+import java.util.regex.Pattern;
+
 public enum Pollutant implements CopertField {
 	CH4 ("CH4"),
 	CO ("CO"),
@@ -18,6 +20,15 @@ public enum Pollutant implements CopertField {
 	
 	public String matcher() {
 		return matcher;
+	}
+	
+	public static Pollutant getValue(String string) {
+		for(Pollutant pollutant : values()) {
+			if (Pattern.matches(pollutant.matcher, string)) {
+				return pollutant;
+			}
+		}
+		return null;
 	}
 }
 

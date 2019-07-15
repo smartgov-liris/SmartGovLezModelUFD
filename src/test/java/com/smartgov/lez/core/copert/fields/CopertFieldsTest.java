@@ -30,7 +30,7 @@ public class CopertFieldsTest {
 	
 	
 	private SubTable loadTable() {
-		URL url = this.getClass().getResource("copert_table.csv"); // Complete Copert table with Light Commercial Vehicles and Heavy Duty Trucks
+		URL url = this.getClass().getResource("complete_test_table.csv"); // Complete Copert table with Light Commercial Vehicles and Heavy Duty Trucks
 		CopertParser copertParser = new CopertParser(new File(url.getFile()));
 		return copertParser.getCopertTree().getSubTable();
 	}
@@ -60,13 +60,18 @@ public class CopertFieldsTest {
 	public void testFields() {
 		
 		SubTable table = loadTable();
-		List<String> selectorsHeaders = Arrays.asList("Category", "Fuel", "Segment", "Euro Standard");
+		List<String> selectorsHeaders = Arrays.asList(
+				"Category", "Fuel", "Segment", "Euro Standard", "Technology", "Pollutant", "Mode", "Road Slope", "Load"
+				);
 		for (String stringHeader : selectorsHeaders) {
 			Set<String> fields = new HashSet<String>(table.get(stringHeader));
 			for(String field : fields) {
 				CopertField matchingField = CopertField.getValue(
 						CopertHeader.getValue(stringHeader),
 						field);
+				if(matchingField == null) {
+					int i = 0;
+				}
 				assertThat(
 						matchingField,
 						notNullValue()

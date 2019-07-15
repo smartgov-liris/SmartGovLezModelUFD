@@ -52,37 +52,35 @@ public class CopertParser {
 	 * 
 	 * 
 	 * 
-	 * @param copertTree Copert tree
+	 * @param copertTree A Copert tree, currently at the pollutant level
 	 * @param pollutant pollutant to look for
 	 * @return Copert parameters
 	 */
-	public static CopertParameters copertParameters(
+	public static CopertTree copertParameters(
 			CopertTree copertTree,
 			Pollutant pollutant) {
 		
-		CopertTree pollutionTree = null;
 		try {
-			pollutionTree = copertTree
-					.select(pollutant.matcher()); // "Pollutant"
+			return copertTree.select(pollutant.matcher()); // "Pollutant"
 		}
 		catch (CopertClassDoesNotExistException e) {
 			return null;	
 		}
 		
-		// TODO: Mean value is irrelevant with copert parameters
-		HashMap<String, Double> parameters = pollutionTree
-			.getSubTable().mean(); // We should have reach the parameters.
-								   // We apply the mean operation, it case there is still multiple entries.
-		
-		return new CopertParameters(
-				parameters.get("Alpha"),
-				parameters.get("Beta"),
-				parameters.get("Gamma"),
-				parameters.get("Delta"),
-				parameters.get("Epsilon"),
-				parameters.get("Zita"),
-				parameters.get("Hta")
-				);
+//		// TODO: Mean value is irrelevant with copert parameters
+//		HashMap<String, Double> parameters = pollutionTree
+//			.getSubTable().mean(); // We should have reach the parameters.
+//								   // We apply the mean operation, it case there is still multiple entries.
+//		
+//		return new CopertParameters(
+//				parameters.get("Alpha"),
+//				parameters.get("Beta"),
+//				parameters.get("Gamma"),
+//				parameters.get("Delta"),
+//				parameters.get("Epsilon"),
+//				parameters.get("Zita"),
+//				parameters.get("Hta")
+//				);
 	}
 	
 	private CopertTree parseFile(File file) {

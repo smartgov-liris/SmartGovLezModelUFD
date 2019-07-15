@@ -28,7 +28,7 @@ public enum CopertHeader {
 	THITA ("Thita"),
 	REDUCTION_FACTOR ("Reduction Factor [%]"),
 	BIO_REDUCTION_FACTOR ("Bio Reduction Factor [%]"),
-	NULL (""); // Actually, there are column with no headers at the end of Copert tables.
+	NULL (""); // There are column with no headers at the end of Copert tables.
 	
 	private final String columnName;
 	

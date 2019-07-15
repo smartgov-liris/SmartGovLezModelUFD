@@ -67,4 +67,59 @@ public class CopertParameters {
 		return hta;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(alpha);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(beta);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(delta);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(epsilon);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(gamma);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(hta);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(zita);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CopertParameters other = (CopertParameters) obj;
+		if (Double.doubleToLongBits(alpha) != Double.doubleToLongBits(other.alpha))
+			return false;
+		if (Double.doubleToLongBits(beta) != Double.doubleToLongBits(other.beta))
+			return false;
+		if (Double.doubleToLongBits(delta) != Double.doubleToLongBits(other.delta))
+			return false;
+		if (Double.doubleToLongBits(epsilon) != Double.doubleToLongBits(other.epsilon))
+			return false;
+		if (Double.doubleToLongBits(gamma) != Double.doubleToLongBits(other.gamma))
+			return false;
+		if (Double.doubleToLongBits(hta) != Double.doubleToLongBits(other.hta))
+			return false;
+		if (Double.doubleToLongBits(zita) != Double.doubleToLongBits(other.zita))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CopertParameters [alpha=" + alpha + ", beta=" + beta + ", gamma=" + gamma + ", delta=" + delta
+				+ ", epsilon=" + epsilon + ", zita=" + zita + ", hta=" + hta + "]";
+	}
+
+	
 }

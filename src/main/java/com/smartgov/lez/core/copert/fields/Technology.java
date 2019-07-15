@@ -11,7 +11,8 @@ public enum Technology implements CopertField {
 	LNT_DPF ("LNT\\+DPF"),
 	PFI ("PFI"),
 	SCR ("SCR"),
-	NONE ("")
+	NONE (""),
+	RANDOM ("Random")
 	;
 
 	private String matcher;
