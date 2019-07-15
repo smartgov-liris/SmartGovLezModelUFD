@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 
@@ -19,7 +20,9 @@ public class Main {
 	public static final Logger logger = LogManager.getLogger(Main.class);
 	
     public static void main(String[] args) {
-        SmartGov smartGov = new SmartGov(new LezContext("src/main/resources/input/config.properties"));
+        SmartGov smartGov = new SmartGov(
+        		new LezContext(SmartgovLezApplication.class.getResource("config.properties").getFile())
+        		);
         SmartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 
 			@Override

@@ -29,5 +29,11 @@ HELP.md
 ### VS Code ###
 .vscode/
 
+#Eclipse
 bin/
+
+#VIM
 *~
+
+#Large input file
+lyon.osm

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smartgov.lez.SmartgovLezApplication;
+import com.smartgov.lez.core.Main;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 import com.smartgov.lez.output.BufferedSender;
@@ -47,7 +49,11 @@ public class SmartGovController {
     
 	@PutMapping("/build")
 	public ResponseEntity<String> build() throws MessagingException, JsonProcessingException {
-		smartGov = new SmartGov(new LezContext("src/main/resources/input/config.properties"));
+		smartGov = new SmartGov(
+				new LezContext(
+						SmartgovLezApplication.class.getResource("config.properties").getFile()
+						)
+				);
 
 		SmartGov.getRuntime().setTickDelay(SimulationController.tickDelay);
 
