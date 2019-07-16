@@ -95,7 +95,7 @@ public class SmartGovControllerTest {
 		
 		SmartGov.getRuntime().waitUntilSimulatioEnd();
 		
-		TimeUnit.MILLISECONDS.sleep(100); // Give time to the events to be handled
+		TimeUnit.MILLISECONDS.sleep(1000); // Give time to the events to be handled
 		
 		assertThat(
 				checker.triggered,

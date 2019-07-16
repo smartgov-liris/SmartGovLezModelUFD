@@ -48,7 +48,7 @@ public class SmartGovController {
     }
     
 	@PutMapping("/build")
-	public ResponseEntity<String> build() throws MessagingException, JsonProcessingException {
+	public ResponseEntity<String> build() throws MessagingException, JsonProcessingException, InterruptedException {
 		smartGov = new SmartGov(
 				new LezContext(
 						SmartgovLezApplication.class.getResource("config.properties").getFile()
@@ -126,7 +126,7 @@ public class SmartGovController {
 	}
 	
 	@PutMapping("/stop")
-	public ResponseEntity<String> stop() throws MessagingException, JsonProcessingException {
+	public ResponseEntity<String> stop() throws MessagingException, JsonProcessingException, InterruptedException {
 		if(smartGov != null) {
 			try {
 				SmartGov.getRuntime().stop();
@@ -182,7 +182,7 @@ public class SmartGovController {
 				try {
 					publishAgents(smartGov.getContext().agents.values());
 					publishPollution(smartGov.getContext().arcs.values());
-				} catch (MessagingException | JsonProcessingException e) {
+				} catch (MessagingException | JsonProcessingException | InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -203,16 +203,16 @@ public class SmartGovController {
     	this.template.convertAndSend("/simulation/agents", objectMapper.writeValueAsString(agents));
     }
     
-    private void publishNodes(Collection<Node> nodes) throws MessagingException, JsonProcessingException {
+    private void publishNodes(Collection<Node> nodes) throws MessagingException, JsonProcessingException, InterruptedException {
     	BufferedSender.publish(this.template, "/simulation/nodes", nodes.iterator());
     }
     
-    private void publishArcs(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {
+    private void publishArcs(Collection<Arc> arcs) throws MessagingException, JsonProcessingException, InterruptedException {
     	this.template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
     	BufferedSender.publish(this.template, "/simulation/arcs", arcs.iterator());
     }
     
-    private void publishPollution(Collection<Arc> arcs) throws MessagingException, JsonProcessingException {
+    private void publishPollution(Collection<Arc> arcs) throws MessagingException, JsonProcessingException, InterruptedException {
     	template.convertAndSend("/simulation/pollution_peeks", objectMapper.writeValueAsString(Pollution.pollutionRatePeeks));
     	BufferedSender.publish(this.template, "/simulation/pollution", smartGov.getContext().arcs.values().iterator());
     }
