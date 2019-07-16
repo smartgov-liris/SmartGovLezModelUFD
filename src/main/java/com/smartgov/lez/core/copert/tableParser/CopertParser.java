@@ -63,7 +63,7 @@ public class CopertParser {
 		try {
 			return copertTree.select(pollutant.matcher()); // "Pollutant"
 		}
-		catch (CopertClassDoesNotExistException e) {
+		catch (CopertFieldNotFoundException e) {
 			return null;	
 		}
 		

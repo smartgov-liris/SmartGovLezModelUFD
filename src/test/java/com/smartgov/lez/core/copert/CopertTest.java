@@ -81,7 +81,51 @@ public class CopertTest {
 		
 		assertThat(
 				noxParameters,
-				equalTo(new CopertParameters(0.015353282135382, 4.60598463919402, 230.29923194744, -0.00000000327712611716908, -0.0000000000003946197723497, 0.000000000186443632739188, 153.532821297973))
+				equalTo(
+					new CopertParameters(
+						0.015353282135382,
+						4.60598463919402,
+						230.29923194744,
+						-0.00000000327712611716908,
+						-0.0000000000003946197723497,
+						0.000000000186443632739188,
+						153.532821297973,
+						10,
+						130
+						)
+					)
+				);
+	}
+	
+	/*
+	 * NOx can be loaded directly from pollutant, because there is no
+	 * mode / load / road slope / ... dependence
+	 */
+	@Test
+	public void loadNoxWithAllParameters() {
+		Copert copert = loadLightVehicle();
+		
+		CopertParameters noxParameters = copert.getCopertParameters(
+				Pollutant.NOx,
+				Mode.URBAN_PEAK,
+				RoadSlope._0,
+				Load._50);
+		
+		assertThat(
+				noxParameters,
+				equalTo(
+					new CopertParameters(
+						0.015353282135382,
+						4.60598463919402,
+						230.29923194744,
+						-0.00000000327712611716908,
+						-0.0000000000003946197723497,
+						0.000000000186443632739188,
+						153.532821297973,
+						10,
+						130
+						)
+					)
 				);
 	}
 	
@@ -106,7 +150,7 @@ public class CopertTest {
 		
 		assertThat(
 				noxParameters,
-				equalTo(new CopertParameters(0., 0., 131., 0., 0., 0., 1000.))
+				equalTo(new CopertParameters(0., 0., 131., 0., 0., 0., 1000., 10, 130))
 				);
 	}
 	
@@ -121,12 +165,46 @@ public class CopertTest {
 	public void loadNoxForHeavyTruck() {
 		Copert copert = loadHeavyVehicle();
 		
-		CopertParameters noxParameters = copert.getCopertParameters(Pollutant.NOx, RoadSlope.MINUS_4, Load._50);
+		CopertParameters noxParameters = copert.getCopertParameters(Pollutant.NOx, Mode.URBAN_PEAK, RoadSlope.MINUS_4, Load._50);
 		
 		assertThat(
 				noxParameters,
 				equalTo(
-					new CopertParameters(-0.000540181435431, 0.033989520933288, 3.02584926554486, -2.40713836137629, 0.000598849577695, 0.01837331918092, 0.090855417491015)
+					new CopertParameters(
+						-0.000540181435431,
+						0.033989520933288,
+						3.02584926554486,
+						-2.40713836137629,
+						0.000598849577695,
+						0.01837331918092,
+						0.090855417491015,
+						12,
+						86
+						)
+					)
+				);
+	}
+	
+	@Test
+	public void loadCoWithAllParameters() {
+		Copert copert = loadHeavyVehicle();
+		
+		CopertParameters noxParameters = copert.getCopertParameters(Pollutant.CO, Mode.URBAN_PEAK, RoadSlope.MINUS_4, Load._50);
+		
+		assertThat(
+				noxParameters,
+				equalTo(
+					new CopertParameters(
+						0.0000152854841355476,
+						-0.005035028733541,
+						0.493533494481877,
+						3.26069834804614,
+						0.0000314367823010959,
+						0.007026665411491,
+						0.075881074248783,
+						12,
+						86
+						)
 					)
 				);
 	}

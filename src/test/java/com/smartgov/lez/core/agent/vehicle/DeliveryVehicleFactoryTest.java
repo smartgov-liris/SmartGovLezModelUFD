@@ -21,7 +21,7 @@ import com.smartgov.lez.core.copert.fields.LightWeightVehicleSegment;
 import com.smartgov.lez.core.copert.fields.VehicleCategory;
 import com.smartgov.lez.core.copert.inputParser.CopertInputReader;
 import com.smartgov.lez.core.copert.inputParser.CopertProfile;
-import com.smartgov.lez.core.copert.tableParser.CopertClassDoesNotExistException;
+import com.smartgov.lez.core.copert.tableParser.CopertFieldNotFoundException;
 import com.smartgov.lez.core.copert.tableParser.CopertHeader;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.copert.tableParser.CopertSelector;
@@ -236,7 +236,7 @@ public class DeliveryVehicleFactoryTest {
 				equalTo(8));
 	}
 	
-	@Test (expected = CopertClassDoesNotExistException.class)
+	@Test (expected = CopertFieldNotFoundException.class)
 	public void testProfileWithNoCopertEntryThrowsException() {
 		/*
 		 * Try to generate a population with an Heavy Trucks category, and Diesel fuel.

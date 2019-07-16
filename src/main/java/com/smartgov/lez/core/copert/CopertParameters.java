@@ -15,9 +15,19 @@ public class CopertParameters {
 	private double epsilon;
 	private double zita;
 	private double hta;
+	private double minSpeed;
+	private double maxSpeed;
 	
-	public CopertParameters(double alpha, double beta, double gamma, double delta, double epsilon, double zita, double hta) {
-		super();
+	public CopertParameters(
+			double alpha,
+			double beta,
+			double gamma,
+			double delta,
+			double epsilon,
+			double zita,
+			double hta,
+			double minSpeed,
+			double maxSpeed) {
 		this.alpha = alpha;
 		this.beta = beta;
 		this.gamma = gamma;
@@ -25,6 +35,8 @@ public class CopertParameters {
 		this.epsilon = epsilon;
 		this.zita = zita;
 		this.hta = hta;
+		this.minSpeed = minSpeed;
+		this.maxSpeed = maxSpeed;
 	}
 	
 	/**
@@ -34,9 +46,19 @@ public class CopertParameters {
 	 * @return emissions in g/km
 	 */
 	public double emissions(double meanSpeed) {
-		return (alpha * Math.pow(meanSpeed, 2) + beta * meanSpeed + gamma + delta / meanSpeed)
-					/ (epsilon * Math.pow(meanSpeed, 2) + zita * meanSpeed + hta);
+		if (meanSpeed < minSpeed) {
+			return copertFormula(minSpeed);
+		}
+		if (meanSpeed > maxSpeed) {
+			return copertFormula(maxSpeed);
+		}
+		return copertFormula(meanSpeed);
 				
+	}
+	
+	private double copertFormula(double speed) {
+		return (alpha * Math.pow(speed, 2) + beta * speed + gamma + delta / speed)
+				/ (epsilon * Math.pow(speed, 2) + zita * speed + hta);
 	}
 
 	public double getAlpha() {
@@ -84,6 +106,10 @@ public class CopertParameters {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(hta);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(maxSpeed);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(minSpeed);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(zita);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
@@ -110,6 +136,10 @@ public class CopertParameters {
 			return false;
 		if (Double.doubleToLongBits(hta) != Double.doubleToLongBits(other.hta))
 			return false;
+		if (Double.doubleToLongBits(maxSpeed) != Double.doubleToLongBits(other.maxSpeed))
+			return false;
+		if (Double.doubleToLongBits(minSpeed) != Double.doubleToLongBits(other.minSpeed))
+			return false;
 		if (Double.doubleToLongBits(zita) != Double.doubleToLongBits(other.zita))
 			return false;
 		return true;
@@ -118,8 +148,8 @@ public class CopertParameters {
 	@Override
 	public String toString() {
 		return "CopertParameters [alpha=" + alpha + ", beta=" + beta + ", gamma=" + gamma + ", delta=" + delta
-				+ ", epsilon=" + epsilon + ", zita=" + zita + ", hta=" + hta + "]";
+				+ ", epsilon=" + epsilon + ", zita=" + zita + ", hta=" + hta + ", minSpeed=" + minSpeed + ", maxSpeed="
+				+ maxSpeed + "]";
 	}
-
 	
 }

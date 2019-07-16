@@ -116,7 +116,18 @@ public class CopertParserTest {
 		CopertParameters NOxParameters = copert.getCopertParameters(Pollutant.NOx);
 		assertThat(
 				NOxParameters,
-				equalTo(new CopertParameters(0.000271082027144984, -0.0323144138307312, 2.39126662368513, -0.00000000138617331105954, -0.000000000000109259511509885, 0.0000000000155301712030544, 3.5904904256422))
+				equalTo(
+					new CopertParameters(
+							0.000271082027144984,
+							-0.0323144138307312,
+							2.39126662368513,
+							-0.00000000138617331105954,
+							-0.000000000000109259511509885,
+							0.0000000000155301712030544,
+							3.5904904256422,
+							10,
+							120)
+					)
 				);
 		
 	}

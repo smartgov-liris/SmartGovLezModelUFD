@@ -5,7 +5,10 @@ import com.smartgov.lez.core.copert.Copert;
 import com.smartgov.lez.core.copert.CopertParameters;
 import com.smartgov.lez.core.copert.fields.EuroNorm;
 import com.smartgov.lez.core.copert.fields.Fuel;
+import com.smartgov.lez.core.copert.fields.Load;
+import com.smartgov.lez.core.copert.fields.Mode;
 import com.smartgov.lez.core.copert.fields.Pollutant;
+import com.smartgov.lez.core.copert.fields.RoadSlope;
 import com.smartgov.lez.core.copert.fields.Technology;
 import com.smartgov.lez.core.copert.fields.VehicleCategory;
 import com.smartgov.lez.core.copert.fields.VehicleSegment;
@@ -69,7 +72,11 @@ public class DeliveryVehicle {
 	 * @return computed emissions (g)
 	 */
 	public double getEmissions(Pollutant pollutant, double meanSpeed, double distance) {
-		CopertParameters copertParameters = copert.getCopertParameters(pollutant);
+		CopertParameters copertParameters = copert.getCopertParameters(
+				pollutant,
+				Mode.URBAN_PEAK,
+				RoadSlope._0,
+				Load._50);
 		if (copertParameters != null) {
 			return copertParameters.emissions(meanSpeed) * distance;
 		}

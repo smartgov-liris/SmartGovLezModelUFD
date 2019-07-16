@@ -4,17 +4,17 @@ import java.util.NoSuchElementException;
 
 /**
  * Exception thrown when a {@link com.smartgov.lez.core.copert.tableParser.CopertTree#select() select()}
- *  operation on a {@link com.smartgov.lez.core.copert.tableParser.CopertTree CopertTree}
- *   doesn't find anything.
+ * operation on a {@link com.smartgov.lez.core.copert.tableParser.CopertTree CopertTree}
+ * doesn't find anything.
  * 
  * @author pbreugnot
  *
  */
-public class CopertClassDoesNotExistException extends NoSuchElementException{
+public class CopertFieldNotFoundException extends NoSuchElementException{
 
 	private static final long serialVersionUID = 1L;
 	
-	public CopertClassDoesNotExistException(String message) {
+	public CopertFieldNotFoundException(String message) {
 		super(message);
 	}
 

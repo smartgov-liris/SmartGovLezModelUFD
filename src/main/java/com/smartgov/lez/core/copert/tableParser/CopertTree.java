@@ -95,7 +95,7 @@ public class CopertTree {
 				message += (subClass + "\n");
 			}
 			message += "Current path : " + path;
-			throw new CopertClassDoesNotExistException(message);
+			throw new CopertFieldNotFoundException(message);
 		}
 		return selectRandomChildFromKeySet(matchingKeys, new Random());
 	}
