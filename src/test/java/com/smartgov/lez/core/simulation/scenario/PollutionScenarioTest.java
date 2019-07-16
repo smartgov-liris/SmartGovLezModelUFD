@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
-import com.smartgov.lez.core.agent.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.DeliveryDriver;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 

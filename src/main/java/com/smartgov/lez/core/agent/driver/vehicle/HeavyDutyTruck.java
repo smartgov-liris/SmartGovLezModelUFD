@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.vehicle;
+package com.smartgov.lez.core.agent.driver.vehicle;
 
 import com.smartgov.lez.core.copert.Copert;
 import com.smartgov.lez.core.copert.fields.EuroNorm;

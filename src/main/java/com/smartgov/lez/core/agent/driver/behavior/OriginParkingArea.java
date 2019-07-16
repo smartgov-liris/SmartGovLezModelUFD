@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.behavior;
+package com.smartgov.lez.core.agent.driver.behavior;
 
 import java.util.Collection;
 

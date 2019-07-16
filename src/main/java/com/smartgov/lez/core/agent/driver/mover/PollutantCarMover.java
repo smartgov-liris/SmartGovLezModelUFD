@@ -1,8 +1,8 @@
-package com.smartgov.lez.core.agent.mover;
+package com.smartgov.lez.core.agent.driver.mover;
 
 import java.util.ArrayList;
 
-import com.smartgov.lez.core.agent.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.DeliveryDriver;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;

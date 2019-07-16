@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.vehicle;
+package com.smartgov.lez.core.agent.driver.vehicle;
 
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
@@ -15,6 +15,8 @@ import java.util.Map.Entry;
 
 import org.junit.Test;
 
+import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
+import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicleFactory;
 import com.smartgov.lez.core.copert.fields.CopertField;
 import com.smartgov.lez.core.copert.fields.Fuel;
 import com.smartgov.lez.core.copert.fields.LightWeightVehicleSegment;

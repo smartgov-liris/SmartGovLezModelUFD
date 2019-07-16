@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.vehicle;
+package com.smartgov.lez.core.agent.driver.vehicle;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

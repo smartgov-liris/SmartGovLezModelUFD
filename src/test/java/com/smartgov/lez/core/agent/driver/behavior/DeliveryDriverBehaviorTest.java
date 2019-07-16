@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.behavior;
+package com.smartgov.lez.core.agent.driver.behavior;
 
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
@@ -19,8 +19,10 @@ import java.util.List;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
-import com.smartgov.lez.core.agent.DeliveryDriver;
-import com.smartgov.lez.core.agent.vehicle.DeliveryVehicle;
+import com.smartgov.lez.core.agent.driver.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
+import com.smartgov.lez.core.agent.driver.behavior.OriginParkingArea;
+import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.simulation.scenario.PollutionScenario;
 

@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.smartgov.lez.core.agent.DeliveryDriver;
-import com.smartgov.lez.core.agent.vehicle.DeliveryVehicle;
-import com.smartgov.lez.core.agent.vehicle.DeliveryVehicleFactory;
+import com.smartgov.lez.core.agent.driver.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
+import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicleFactory;
 import com.smartgov.lez.core.copert.inputParser.CopertInputReader;
 import com.smartgov.lez.core.copert.inputParser.CopertProfile;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;

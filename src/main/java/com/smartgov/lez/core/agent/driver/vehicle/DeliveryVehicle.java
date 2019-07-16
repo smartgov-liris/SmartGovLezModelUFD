@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.vehicle;
+package com.smartgov.lez.core.agent.driver.vehicle;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.smartgov.lez.core.copert.Copert;

@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.agent.mover;
+package com.smartgov.lez.core.agent.driver.mover;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -18,8 +18,9 @@ import org.powermock.api.mockito.PowerMockito;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.smartgov.lez.core.agent.DeliveryDriver;
-import com.smartgov.lez.core.agent.vehicle.DeliveryVehicle;
+import com.smartgov.lez.core.agent.driver.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.mover.PollutantCarMover;
+import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
