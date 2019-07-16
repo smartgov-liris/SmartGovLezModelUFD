@@ -1,0 +1,30 @@
+package com.smartgov.lez.core.agent.establishment;
+
+public enum ST8 {
+	AGRICULTURE ("1"),
+	CRAFTS_AND_SERVICES ("2"),
+	INDUSTRY ("3"),
+	WHOLESALE_BUSINESS ("4"),
+	LARGE_RETAILERS ("5"),
+	SMALL_SHOP ("6"),
+	TERTIARY_OFFICE ("7"),
+	TRANSPORT_WAREHOUSE ("8");
+	
+	private final String code;
+	
+	private ST8(String code) {
+		this.code = code;
+	}
+	
+	public String getCode() {
+		return code;
+	}
+	
+	public static ST8 byCode(String code) {
+		for(ST8 st8 : ST8.values()) {
+			if(st8.getCode().equals(code))
+				return st8;
+		}
+		return null;
+	}
+}
