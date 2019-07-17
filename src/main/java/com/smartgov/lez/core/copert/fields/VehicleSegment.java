@@ -34,4 +34,5 @@ public interface VehicleSegment extends CopertField {
 	
 	@Override
 	public int hashCode();
+	
 }

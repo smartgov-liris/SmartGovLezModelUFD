@@ -82,7 +82,7 @@ public class DeliveryVehicleFactoryTest {
 					matcher = vehicle.getFuel();
 					break;
 				case SEGMENT:
-					matcher = vehicle.getVehicleSegment();
+					matcher = vehicle.getSegment();
 					break;
 				case TECHNOLOGY:
 					matcher = vehicle.getTechnology();
@@ -208,7 +208,7 @@ public class DeliveryVehicleFactoryTest {
 					notNullValue()
 					);
 			assertThat(
-					vehicle.getVehicleSegment(),
+					vehicle.getSegment(),
 					notNullValue()
 					);
 			assertThat(
@@ -308,7 +308,7 @@ public class DeliveryVehicleFactoryTest {
 			List<DeliveryVehicle> vehicles = factory.create(3);
 			for (DeliveryVehicle vehicle : vehicles) {
 				assertThat(
-						vehicle.getVehicleSegment(),
+						vehicle.getSegment(),
 						anyOf(
 							equalTo(LightWeightVehicleSegment.N1_I),
 							equalTo(LightWeightVehicleSegment.N1_II)

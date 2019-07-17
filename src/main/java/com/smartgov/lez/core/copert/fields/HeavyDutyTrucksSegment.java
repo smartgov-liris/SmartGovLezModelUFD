@@ -3,17 +3,20 @@ package com.smartgov.lez.core.copert.fields;
 import java.util.regex.Pattern;
 
 public enum HeavyDutyTrucksSegment implements VehicleSegment {
+	/*
+	 * Values sorted by size
+	 */
 	SUP_3_5_T (">3.5 t"),
 	RIGID_INF_7_5_T ("Rigid <=7\\.5 t"),
 	RIGID_7_5_12_T ("Rigid 7\\.5 - 12 t"),
 	RIGID_12_14_T ("Rigid 12 - 14 t"),
 	RIGID_14_20_T ("Rigid 14 - 20 t"),
+	ARTICULATED_14_20_T ("Articulated 14 - 20 t"),
 	RIGID_20_26_T ("Rigid 20 - 26 t"),
 	RIGID_26_28_T ("Rigid 26 - 28 t"),
+	ARTICULATED_20_28_T ("Articulated 20 - 28 t"),
 	RIGID_28_32_T ("Rigid 28 - 32 t"),
 	RIGID_SUP_32_T ("Rigid >32 t"),
-	ARTICULATED_14_20_T ("Articulated 14 - 20 t"),
-	ARTICULATED_20_28_T ("Articulated 20 - 28 t"),
 	ARTICULATED_28_34_T ("Articulated 28 - 34 t"),
 	ARTICULATED_34_40_T ("Articulated 34 - 40 t"),
 	ARTICULATED_40_50_T ("Articulated 40 - 50 t"),

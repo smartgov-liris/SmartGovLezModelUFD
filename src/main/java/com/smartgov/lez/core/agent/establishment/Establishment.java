@@ -7,8 +7,6 @@ import java.util.Map;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 
 import smartgov.core.agent.moving.MovingAgent;
@@ -24,7 +22,8 @@ public class Establishment implements ParkingArea {
 	private OsmNode closestOsmNode;
 
 	private Map<VehicleCapacity, Collection<DeliveryVehicle>> fleet;
-	private Map<VehicleCapacity, Round> rounds;
+	private int fleetSize = 0;
+	private Map<DeliveryVehicle, Round> rounds;
 	
 	
 	public Establishment(String id, String name, ST8 activity, Coordinate location) {
@@ -57,18 +56,27 @@ public class Establishment implements ParkingArea {
 	}
 	
 	public void addVehicleToFleet(DeliveryVehicle vehicle) {
-		VehicleCapacity capacity = new VehicleCapacity(vehicle.getCategory(),  vehicle.getVehicleSegment());
+		VehicleCapacity capacity = new VehicleCapacity(vehicle.getCategory(),  vehicle.getSegment());
 		if (!fleet.containsKey(capacity)) {
 			fleet.put(capacity, new ArrayList<>());
 		}
 		fleet.get(capacity).add(vehicle);
+		fleetSize++;
+	}
+	
+	public void addRound(DeliveryVehicle initialVehicle, Round round) {
+		rounds.put(initialVehicle, round);
 	}
 
 	public Map<VehicleCapacity, Collection<DeliveryVehicle>> getFleet() {
 		return fleet;
 	}
+	
+	public int getFleetSize() {
+		return fleetSize;
+	}
 
-	public Map<VehicleCapacity, Round> getRounds() {
+	public Map<DeliveryVehicle, Round> getRounds() {
 		return rounds;
 	}
 	

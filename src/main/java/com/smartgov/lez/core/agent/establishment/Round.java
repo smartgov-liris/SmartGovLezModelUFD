@@ -9,13 +9,13 @@ public class Round {
 	
 	private Establishment origin;
 	private List<Establishment> establishments;
-	private float initialWeight;
+	private double initialWeight;
 	
 
 	public Round(
 			Establishment origin,
 			List<Establishment> establishments,
-			int initialWeight
+			double initialWeight
 			) {
 		super();
 		this.origin = origin;
@@ -29,6 +29,10 @@ public class Round {
 
 	public List<Establishment> getEstablishments() {
 		return establishments;
+	}
+	
+	public double getInitialWeight() {
+		return initialWeight;
 	}
 
 	public List<OsmNode> getNodes() {

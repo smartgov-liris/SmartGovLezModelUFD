@@ -1,6 +1,7 @@
 package com.smartgov.lez.core.agent.driver.vehicle;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.smartgov.lez.core.agent.establishment.VehicleCapacity;
 import com.smartgov.lez.core.copert.Copert;
 import com.smartgov.lez.core.copert.CopertParameters;
 import com.smartgov.lez.core.copert.fields.EuroNorm;
@@ -19,19 +20,19 @@ import com.smartgov.lez.core.copert.fields.VehicleSegment;
  *
  */
 @JsonIgnoreProperties({"copert", "emissions"})
-public class DeliveryVehicle {
+public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 
 	private VehicleCategory category;
 	private Fuel fuel;
-	private VehicleSegment vehicleSegment;
+	private VehicleSegment segment;
 	private EuroNorm euroNorm;
 	private Technology technology;
 	private Copert copert;
 	
-	public DeliveryVehicle(VehicleCategory category, Fuel fuel, VehicleSegment vehicleSegment,  EuroNorm euroNorm, Technology technology, Copert copert) {
+	public DeliveryVehicle(VehicleCategory category, Fuel fuel, VehicleSegment segment,  EuroNorm euroNorm, Technology technology, Copert copert) {
 		this.category = category;
 		this.fuel = fuel;
-		this.vehicleSegment = vehicleSegment;
+		this.segment = segment;
 		this.technology = technology;
 		this.euroNorm = euroNorm;
 		this.copert = copert;
@@ -45,8 +46,8 @@ public class DeliveryVehicle {
 		return fuel;
 	}
 	
-	public VehicleSegment getVehicleSegment() {
-		return vehicleSegment;
+	public VehicleSegment getSegment() {
+		return segment;
 	}
 
 	public EuroNorm getEuroNorm() {
@@ -85,7 +86,7 @@ public class DeliveryVehicle {
 
 	@Override
 	public String toString() {
-		return "DeliveryVehicle [category=" + category + ", fuel=" + fuel + ", vehicleSegment=" + vehicleSegment
+		return "DeliveryVehicle [category=" + category + ", fuel=" + fuel + ", vehicleSegment=" + segment
 				+ ", euroNorm=" + euroNorm + ", technology=" + technology + "]";
 	}
 
@@ -97,40 +98,37 @@ public class DeliveryVehicle {
 		result = prime * result + ((euroNorm == null) ? 0 : euroNorm.hashCode());
 		result = prime * result + ((fuel == null) ? 0 : fuel.hashCode());
 		result = prime * result + ((technology == null) ? 0 : technology.hashCode());
-		result = prime * result + ((vehicleSegment == null) ? 0 : vehicleSegment.hashCode());
+		result = prime * result + ((segment == null) ? 0 : segment.hashCode());
 		return result;
 	}
 
 	/**
-	 * Two vehicles are considered equal if they have the same Copert characteristics.
+	 * Checks if two vehicles have the same Copert characteristics.
 	 * (Category, Segment, Euro Norm and Technology)
 	 * 
-	 * @param obj object to compare
+	 * @param vehicle deliveryVehicle to compare
 	 * @return true if and only if the two vehicles have the same copert characteristics
 	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+	public boolean equalCharacteristics(DeliveryVehicle vehicle) {
+		if (category != vehicle.category)
 			return false;
-		if (getClass() != obj.getClass())
+		if (euroNorm != vehicle.euroNorm)
 			return false;
-		DeliveryVehicle other = (DeliveryVehicle) obj;
-		if (category != other.category)
+		if (fuel != vehicle.fuel)
 			return false;
-		if (euroNorm != other.euroNorm)
+		if (technology != vehicle.technology)
 			return false;
-		if (fuel != other.fuel)
-			return false;
-		if (technology != other.technology)
-			return false;
-		if (vehicleSegment == null) {
-			if (other.vehicleSegment != null)
+		if (segment == null) {
+			if (vehicle.segment != null)
 				return false;
-		} else if (!vehicleSegment.equals(other.vehicleSegment))
+		} else if (!segment.equals(vehicle.segment))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(DeliveryVehicle o) {
+		return new VehicleCapacity(category, segment).compareTo(new VehicleCapacity(o.category, o.segment));
 	}
 	
 	

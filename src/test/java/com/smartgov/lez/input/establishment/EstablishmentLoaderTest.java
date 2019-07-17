@@ -5,8 +5,11 @@ import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,7 +22,7 @@ import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.ST8;
 import com.smartgov.lez.core.agent.establishment.VehicleCapacity;
-import com.smartgov.lez.core.copert.fields.CopertField;
+import com.smartgov.lez.core.copert.tableParser.CopertParserTest;
 import com.smartgov.lez.input.establishment.EstablishmentLoader;
 
 public class EstablishmentLoaderTest {
@@ -29,7 +32,7 @@ public class EstablishmentLoaderTest {
 			return EstablishmentLoader.loadEstablishments(
 					new File(EstablishmentLoaderTest.class.getResource("establishments.json").getFile()),
 					new File(EstablishmentLoaderTest.class.getResource("fleetProfiles.json").getFile()),
-					new File(CopertField.class.getResource("complete_test_table.csv").getFile()),
+					new File(CopertParserTest.class.getResource("vehicle_classes_test.csv").getFile()),
 					new Random(170720191337l)
 					);
 		} catch (IOException e) {
@@ -100,26 +103,100 @@ public class EstablishmentLoaderTest {
 	@Test
 	public void fleetFactoryTest() {
 		Map<String, Establishment> originEstablishments = loadEstablishments();
-		
+
+		assertThat(
+				originEstablishments.values(),
+				hasSize(3)
+				);
+
 		Map<String, Map<VehicleCapacity, Collection<DeliveryVehicle>>> originFleets = new HashMap<>();
 		for(Establishment establishment : originEstablishments.values()) {
 			originFleets.put(establishment.getId(), establishment.getFleet());
+			int expectedFleetSize = 0;
+			switch(establishment.getId()) {
+			case "0":
+				expectedFleetSize = 3;
+				break;
+			case "2":
+				expectedFleetSize = 1;
+				break;
+			}
+			assertThat(
+					establishment.getFleetSize(),
+					equalTo(expectedFleetSize)
+					);
+			
 		}
-		
-		// TODO: check fleet size
 		
 		for(int i = 0; i < 15; i++) {
+			/*
+			 * Prove that the generated fleet is always the same.
+			 */
 			Map<String, Establishment> establishments = loadEstablishments();
 			
-			Map<String, Map<VehicleCapacity, Collection<DeliveryVehicle>>> fleets = new HashMap<>();
 			for(Establishment establishment : establishments.values()) {
-				fleets.put(establishment.getId(), establishment.getFleet());
+				assertThat(
+						establishment.getFleet().keySet(),
+						equalTo(originFleets.get(establishment.getId()).keySet())
+						);
+				
+				Establishment originEstablishment = originEstablishments.get(establishment.getId());
+				
+				for(VehicleCapacity capacity : establishment.getFleet().keySet()) {
+					assertThat(
+							establishment.getFleet().get(capacity).size(),
+							equalTo(originEstablishment.getFleet().get(capacity).size())
+							);
+					Iterator<DeliveryVehicle> origin = establishment.getFleet().get(capacity).iterator();
+					Iterator<DeliveryVehicle> current = establishment.getFleet().get(capacity).iterator();
+					while(origin.hasNext()) {
+						assertThat(
+								origin.next().equalCharacteristics(current.next()),
+								equalTo(true)
+								);
+					}
+				}
 			}
-			
+		}
+	}
+	
+	@Test
+	public void loadRoundsTest() {
+		Map<String, Establishment> establishments = loadEstablishments();
+		
+		assertThat(
+				establishments.values(),
+				hasSize(3)
+				);
+		
+		for(Establishment establishment : establishments.values()) {
+			/*
+			 * Fleet size must be equal to the rounds size.
+			 */
 			assertThat(
-					fleets,
-					equalTo(originFleets)
+					establishment.getFleetSize(),
+					equalTo(establishment.getRounds().size())
 					);
 		}
+		
+		Establishment establishmentWithThreeRounds = establishments.get("0");
+		List<DeliveryVehicle> vehicles = new ArrayList<>(establishmentWithThreeRounds.getRounds().keySet());
+		vehicles.sort((vehicle1, vehicle2) -> vehicle1.compareTo(vehicle2));
+		
+		/*
+		 * Assert that vehicles are assigned to rounds according to their capacities.
+		 * The lighter vehicle must handle the lighter round and reciprocally.
+		 */
+		List<DeliveryVehicle> lighterVehicles = new ArrayList<>();
+		for(DeliveryVehicle vehicle : vehicles) {
+			for(DeliveryVehicle lighterVehicle : lighterVehicles) {
+				assertThat(
+						establishmentWithThreeRounds.getRounds().get(lighterVehicle).getInitialWeight(),
+						lessThanOrEqualTo(establishmentWithThreeRounds.getRounds().get(vehicle).getInitialWeight())
+						);
+			}
+			lighterVehicles.add(vehicle);
+		}
+		
 	}
 }

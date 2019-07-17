@@ -1,9 +1,11 @@
 package com.smartgov.lez.core.agent.establishment;
 
+import com.smartgov.lez.core.copert.fields.HeavyDutyTrucksSegment;
+import com.smartgov.lez.core.copert.fields.LightWeightVehicleSegment;
 import com.smartgov.lez.core.copert.fields.VehicleCategory;
 import com.smartgov.lez.core.copert.fields.VehicleSegment;
 
-public class VehicleCapacity {
+public class VehicleCapacity implements Comparable<VehicleCapacity> {
 
 	private VehicleCategory vehicleCategory;
 	private VehicleSegment vehicleSegment;
@@ -50,6 +52,26 @@ public class VehicleCapacity {
 	@Override
 	public String toString() {
 		return "VehicleCapacity(" + vehicleCategory + ", " + vehicleSegment + ")";
+	}
+	
+	/**
+	 * Vehicle capacities are compared according to their
+	 * vehicle categories and the corresponding segments.
+	 * 
+	 * @param arg0 vehicle capacity to compare
+	 * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
+	 */
+	@Override
+	public int compareTo(VehicleCapacity arg0) {
+		if(vehicleCategory != arg0.getVehicleCategory())
+			// Natural category ordering : order of definition in the VehicleCategory enum
+			return vehicleCategory.compareTo(arg0.getVehicleCategory());
+		if(vehicleSegment instanceof LightWeightVehicleSegment)
+			// Natural light weight segment ordering : order of definition in the LightWeightVehicleSegment enum
+			return ((LightWeightVehicleSegment) vehicleSegment).compareTo((LightWeightVehicleSegment) arg0.getVehicleSegment());
+		else
+			// Natural heavy trucks segment ordering : order of definition in the HeavyDutyTrucksSegment enum
+			return ((HeavyDutyTrucksSegment) vehicleSegment).compareTo((HeavyDutyTrucksSegment) arg0.getVehicleSegment());
 	}
 	
 	
