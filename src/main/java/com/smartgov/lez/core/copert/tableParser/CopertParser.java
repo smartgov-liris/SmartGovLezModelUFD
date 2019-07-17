@@ -8,15 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import com.smartgov.lez.core.copert.CopertParameters;
 import com.smartgov.lez.core.copert.fields.CopertField;
-import com.smartgov.lez.core.copert.fields.Pollutant;
 
 /**
  * Utility class used to parse a Copert table.
@@ -26,7 +25,23 @@ import com.smartgov.lez.core.copert.fields.Pollutant;
  */
 public class CopertParser {
 	
+	private Random random;
 	private CopertTree copertTree;
+	
+	/**
+	 * Loads and parse a CopertTree from the input table.
+	 * The specified random instance will be used in all the
+	 * generated Copert trees from this instance, to perform
+	 * all the random {@link CopertTree#select()} operations.
+	 * Can be useful to parse data with a given seed.
+	 * 
+	 * @param copertParametersFile copert table file path
+	 * @param random user defined random instance
+	 */
+	public CopertParser(File copertParametersFile, Random random) {
+		this.random = random;
+		copertTree  = parseFile(copertParametersFile);
+	}
 	
 	/**
 	 * Loads and parse a CopertTree from the input table.
@@ -34,7 +49,7 @@ public class CopertParser {
 	 * @param copertParametersFile copert table file path
 	 */
 	public CopertParser(File copertParametersFile) {
-		copertTree  = parseFile(copertParametersFile);
+		this(copertParametersFile, new Random());
 	}
 	
 	/**
@@ -42,45 +57,6 @@ public class CopertParser {
 	 */
 	public CopertTree getCopertTree() {
 		return copertTree;
-	}
-	
-	/**
-	 * Find copert parameters for the given pollutant in the specified Copert tree.
-	 * If several entries correspond to the given parameters
-	 * (e.g. : CH4 emission mode, different loads or speed for some vehicles...)
-	 * the parameters are aggregated using a mean value.
-	 * 
-	 * 
-	 * 
-	 * @param copertTree A Copert tree, currently at the pollutant level
-	 * @param pollutant pollutant to look for
-	 * @return Copert parameters
-	 */
-	public static CopertTree copertParameters(
-			CopertTree copertTree,
-			Pollutant pollutant) {
-		
-		try {
-			return copertTree.select(pollutant.matcher()); // "Pollutant"
-		}
-		catch (CopertFieldNotFoundException e) {
-			return null;	
-		}
-		
-//		// TODO: Mean value is irrelevant with copert parameters
-//		HashMap<String, Double> parameters = pollutionTree
-//			.getSubTable().mean(); // We should have reach the parameters.
-//								   // We apply the mean operation, it case there is still multiple entries.
-//		
-//		return new CopertParameters(
-//				parameters.get("Alpha"),
-//				parameters.get("Beta"),
-//				parameters.get("Gamma"),
-//				parameters.get("Delta"),
-//				parameters.get("Epsilon"),
-//				parameters.get("Zita"),
-//				parameters.get("Hta")
-//				);
 	}
 	
 	private CopertTree parseFile(File file) {
@@ -142,7 +118,7 @@ public class CopertParser {
 	
 	private CopertTree parseSubTable(ArrayList<String> currentColumns, String superCategory, SubTable table, CopertSelector currentPath) {
 		String currentColumnName = currentColumns.get(0);
-		CopertTree subTree = new CopertTree(currentColumnName, superCategory, table, currentPath);
+		CopertTree subTree = new CopertTree(currentColumnName, superCategory, table, currentPath, random);
 		if (subTree.isSingleLine()) {
 			return subTree;
 		}

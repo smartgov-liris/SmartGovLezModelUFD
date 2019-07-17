@@ -47,6 +47,10 @@ public class VehicleCapacity {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "VehicleCapacity(" + vehicleCategory + ", " + vehicleSegment + ")";
+	}
 	
 	
 }

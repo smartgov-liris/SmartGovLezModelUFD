@@ -1,0 +1,114 @@
+{
+	"AGRICULTURE": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"CRAFTS_AND_SERVICES": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"INDUSTRY": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"WHOLESALE_BUSINESS": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"LARGE_RETAILERS": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"SMALL_SHOP": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"TERTIARY_OFFICE": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"TRANSPORT_WAREHOUSE": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	}
+}

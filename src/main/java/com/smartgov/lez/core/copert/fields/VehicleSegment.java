@@ -28,4 +28,10 @@ public interface VehicleSegment extends CopertField {
 			return HeavyDutyTrucksSegment.valueOf(string);
 		}
 	}
+	
+	@Override
+	public boolean equals(Object object);
+	
+	@Override
+	public int hashCode();
 }

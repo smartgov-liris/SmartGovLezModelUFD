@@ -82,4 +82,56 @@ public class DeliveryVehicle {
 		}
 		return 0;
 	}
+
+	@Override
+	public String toString() {
+		return "DeliveryVehicle [category=" + category + ", fuel=" + fuel + ", vehicleSegment=" + vehicleSegment
+				+ ", euroNorm=" + euroNorm + ", technology=" + technology + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((euroNorm == null) ? 0 : euroNorm.hashCode());
+		result = prime * result + ((fuel == null) ? 0 : fuel.hashCode());
+		result = prime * result + ((technology == null) ? 0 : technology.hashCode());
+		result = prime * result + ((vehicleSegment == null) ? 0 : vehicleSegment.hashCode());
+		return result;
+	}
+
+	/**
+	 * Two vehicles are considered equal if they have the same Copert characteristics.
+	 * (Category, Segment, Euro Norm and Technology)
+	 * 
+	 * @param obj object to compare
+	 * @return true if and only if the two vehicles have the same copert characteristics
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeliveryVehicle other = (DeliveryVehicle) obj;
+		if (category != other.category)
+			return false;
+		if (euroNorm != other.euroNorm)
+			return false;
+		if (fuel != other.fuel)
+			return false;
+		if (technology != other.technology)
+			return false;
+		if (vehicleSegment == null) {
+			if (other.vehicleSegment != null)
+				return false;
+		} else if (!vehicleSegment.equals(other.vehicleSegment))
+			return false;
+		return true;
+	}
+	
+	
 }

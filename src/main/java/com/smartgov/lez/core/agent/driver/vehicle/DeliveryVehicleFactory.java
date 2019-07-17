@@ -73,7 +73,7 @@ public class DeliveryVehicleFactory {
 			/*
 			 * Feed the childSelectors AND the originalSelectors with new CopertSelectors,
 			 * initialized as copies of the last childSelector.
-			 * Because the same newSelector is added ot the two lists, any change performed
+			 * Because the same newSelector is added to the two lists, any change performed
 			 * on the selector from childSelectors will also be reflected in originalSelectors.
 			 */
 			CopertSelector newSelector = new CopertSelector();

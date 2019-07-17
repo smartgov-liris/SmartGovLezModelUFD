@@ -2,6 +2,8 @@ package com.smartgov.lez.core.copert.tableParser;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Random;
+
 import org.junit.Test;
 
 import com.smartgov.lez.core.copert.Copert;
@@ -257,6 +259,36 @@ public class CopertParserTest {
 				equalTo(selector)
 				);
 		
+	}
+	
+	@Test
+	public void testSeed() {
+		long seed = 170720191318l;
+		CopertParser originParser = new CopertParser(
+				new File(this.getClass().getResource("vehicle_classes_test.csv").getFile()),
+				new Random(seed)
+				);
+		
+		CopertTree tree = originParser.getCopertTree();
+		while(!tree.isSingleLine()) {
+			tree = tree.select();
+		}
+		
+		for (int i = 0; i < 1000; i++) {
+			CopertParser parser = new CopertParser(
+					new File(this.getClass().getResource("vehicle_classes_test.csv").getFile()),
+					new Random(seed)
+					);
+			
+			CopertTree randomTree = parser.getCopertTree();
+			while(!randomTree.isSingleLine()) {
+				randomTree = randomTree.select();
+			}
+			assertThat(
+				randomTree.getSubTable().getLine(),
+				equalTo(tree.getSubTable().getLine())
+				);
+		}
 	}
 
 }

@@ -19,13 +19,15 @@ public class CopertTree {
 	private String levelColumn; // Correspond to the first sub-table column name
 	private String category;
 	private CopertSelector path;
+	private Random random;
 
-	public CopertTree(String levelColumn, String category, SubTable subTable, CopertSelector path) {
+	public CopertTree(String levelColumn, String category, SubTable subTable, CopertSelector path, Random random) {
 		children = new HashMap<>();
 		this.levelColumn = levelColumn;
 		this.category = category;
 		this.subTable = subTable;
 		this.path = path;
+		this.random = random;
 	}
 	
 	/**
@@ -54,10 +56,10 @@ public class CopertTree {
 	 * @return a random child available from this node.
 	 */
 	public CopertTree select() {
-		return select(new Random());
+		return select(random);
 	}
 	
-	public CopertTree select(Random random) {
+	private CopertTree select(Random random) {
 		return selectRandomChildFromKeySet(children.keySet(), random);
 	}
 	
@@ -97,7 +99,7 @@ public class CopertTree {
 			message += "Current path : " + path;
 			throw new CopertFieldNotFoundException(message);
 		}
-		return selectRandomChildFromKeySet(matchingKeys, new Random());
+		return selectRandomChildFromKeySet(matchingKeys, random);
 	}
 	
 	/**

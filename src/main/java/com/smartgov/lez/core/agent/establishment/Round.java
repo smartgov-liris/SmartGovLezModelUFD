@@ -9,7 +9,7 @@ public class Round {
 	
 	private Establishment origin;
 	private List<Establishment> establishments;
-	private int initialWeight;
+	private float initialWeight;
 	
 
 	public Round(
