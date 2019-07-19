@@ -7,8 +7,6 @@ import smartgov.core.environment.graph.Arc;
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
 
-import java.util.concurrent.TimeUnit;
-
 import org.junit.Test;
 
 import com.smartgov.lez.core.agent.driver.DeliveryDriver;
@@ -50,20 +48,5 @@ public class PollutionScenarioTest {
 					equalTo(true)
 					);
 		}
-	}
-	
-	@Test
-	public void testMemory() throws InterruptedException {
-		loadSmartGov();
-		
-		SmartGov.getRuntime().addSimulationStepListener((event) -> System.out.println(event.getTick()));
-
-		
-		SmartGov.getRuntime().start(100);
-		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.SECONDS.sleep(1);
-			System.out.println(SmartGov.getRuntime().getSimulationThread().getState());
-		}
-
 	}
 }

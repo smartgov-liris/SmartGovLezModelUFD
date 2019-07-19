@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -25,7 +26,7 @@ public class CopertTest {
 	
 	private static CopertParser loadParser() {
 		URL url = CopertTest.class.getResource("copert_test.csv");
-		return new CopertParser(new File(url.getFile()));
+		return new CopertParser(new File(url.getFile()), new Random(1907190830l));
 	}
 	
 	private static Copert loadLightVehicle() {

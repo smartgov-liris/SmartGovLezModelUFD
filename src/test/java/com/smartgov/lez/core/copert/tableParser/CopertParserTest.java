@@ -26,7 +26,7 @@ public class CopertParserTest {
 	
 	private CopertParser loadParser() {
 		URL url = this.getClass().getResource("vehicle_classes_test.csv");
-		return new CopertParser(new File(url.getFile()));
+		return new CopertParser(new File(url.getFile()), new Random(1907190831l));
 	}
 
 	@Test

@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ public class CopertFieldsTest {
 	
 	private SubTable loadTable() {
 		URL url = this.getClass().getResource("complete_test_table.csv"); // Complete Copert table with Light Commercial Vehicles and Heavy Duty Trucks
-		CopertParser copertParser = new CopertParser(new File(url.getFile()));
+		CopertParser copertParser = new CopertParser(new File(url.getFile()), new Random(1907190831l));
 		return copertParser.getCopertTree().getSubTable();
 	}
 	

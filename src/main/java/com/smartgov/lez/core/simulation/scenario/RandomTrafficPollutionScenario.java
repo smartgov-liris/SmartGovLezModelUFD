@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 import com.smartgov.lez.core.agent.driver.DeliveryDriver;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
@@ -28,7 +29,7 @@ public class RandomTrafficPollutionScenario extends PollutionScenario {
 	public Collection<? extends Agent<?>> buildAgents(SmartGovContext context) {
 		RandomTrafficScenario.generateSourceAndSinkNodes((OsmContext) context); 
 		// Load the copert table
-		CopertParser copertParser = new CopertParser(context.getFileLoader().load("copert_table"));
+		CopertParser copertParser = new CopertParser(context.getFileLoader().load("copert_table"), new Random(1907190831l));
 		
 		// Load input profiles
 		CopertInputReader reader = new CopertInputReader();

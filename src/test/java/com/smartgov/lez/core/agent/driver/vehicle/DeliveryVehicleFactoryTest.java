@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -45,7 +46,7 @@ public class DeliveryVehicleFactoryTest {
 	
 	private CopertParser loadCopertParser(String copertTestTable) {
 		URL url = this.getClass().getResource(copertTestTable);
-		return new CopertParser(new File(url.getFile()));
+		return new CopertParser(new File(url.getFile()), new Random(1907190830l));
 	}
 	
 	/*
