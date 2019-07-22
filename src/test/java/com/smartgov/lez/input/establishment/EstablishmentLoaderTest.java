@@ -25,12 +25,15 @@ import com.smartgov.lez.core.agent.establishment.VehicleCapacity;
 import com.smartgov.lez.core.copert.tableParser.CopertParserTest;
 import com.smartgov.lez.input.establishment.EstablishmentLoader;
 
+import smartgov.urban.geo.utils.LatLon;
+import smartgov.urban.geo.utils.lambert.LambertII;
+
 public class EstablishmentLoaderTest {
 	
-	private static Map<String, Establishment> loadEstablishments() {
+	private static Map<String, Establishment> loadEstablishments(String fileName) {
 		try {
 			return EstablishmentLoader.loadEstablishments(
-					new File(EstablishmentLoaderTest.class.getResource("establishments.json").getFile()),
+					new File(EstablishmentLoaderTest.class.getResource(fileName).getFile()),
 					new File(EstablishmentLoaderTest.class.getResource("fleetProfiles.json").getFile()),
 					new File(CopertParserTest.class.getResource("vehicle_classes_test.csv").getFile()),
 					new Random(170720191337l)
@@ -44,33 +47,37 @@ public class EstablishmentLoaderTest {
 
 	@Test
 	public void loadTest() throws JsonParseException, JsonMappingException, IOException {
-		loadEstablishments();
+		loadEstablishments("establishments.json");
+		loadEstablishments("establishments_geo.json");
 	}
 	
+	/*
+	 * Test with Lambert II x/y coordinates
+	 */
 	@Test
 	public void testRootEstablishmentFields() {
-		Map<String, Establishment> establishments = loadEstablishments();
+		Map<String, Establishment> establishments = loadEstablishments("establishments.json");
 		
 		Map<String, Establishment> expected = new HashMap<>();
 		expected.put("0", new Establishment(
 				"0",
 				"establishment 1",
 				ST8.INDUSTRY,
-				new Coordinate(800439.326324793, 2077962.87711255)
+				new LambertII().unproject(new Coordinate(800439.326324793, 2077962.87711255))
 				));
 		
 		expected.put("1", new Establishment(
 				"1",
 				"establishment 2",
 				ST8.WHOLESALE_BUSINESS,
-				new Coordinate(794507.446834672, 2081036.92197918)
+				new LambertII().unproject(new Coordinate(794507.446834672, 2081036.92197918))
 				));
 		
 		expected.put("2", new Establishment(
 				"2",
 				"establishment 3",
 				ST8.CRAFTS_AND_SERVICES,
-				new Coordinate(793722.658833829, 2080652.38198779)
+				new LambertII().unproject(new Coordinate(793722.658833829, 2080652.38198779))
 				));
 		
 		assertThat(
@@ -100,9 +107,28 @@ public class EstablishmentLoaderTest {
 		}
 	}
 	
+	/*
+	 * Test with geographical coordinates
+	 */
+	@Test
+	public void loadGeoCoordinates() {
+		Map<String, Establishment> establishments = loadEstablishments("establishments_geo.json");
+		Map<String, LatLon> expected = new HashMap<>();
+		expected.put("0", new LatLon(46.986083, 3.810298));
+		expected.put("1", new LatLon(46.986057, 3.811918));
+		expected.put("2", new LatLon(46.987589, 3.806566));
+		
+		for(String id : establishments.keySet()) {
+			assertThat(
+					establishments.get(id).getLocation(),
+					equalTo(expected.get(id))
+					);
+		}
+	}
+	
 	@Test
 	public void fleetFactoryTest() {
-		Map<String, Establishment> originEstablishments = loadEstablishments();
+		Map<String, Establishment> originEstablishments = loadEstablishments("establishments.json");
 
 		assertThat(
 				originEstablishments.values(),
@@ -132,7 +158,7 @@ public class EstablishmentLoaderTest {
 			/*
 			 * Prove that the generated fleet is always the same.
 			 */
-			Map<String, Establishment> establishments = loadEstablishments();
+			Map<String, Establishment> establishments = loadEstablishments("establishments.json");
 			
 			for(Establishment establishment : establishments.values()) {
 				assertThat(
@@ -162,7 +188,7 @@ public class EstablishmentLoaderTest {
 	
 	@Test
 	public void loadRoundsTest() {
-		Map<String, Establishment> establishments = loadEstablishments();
+		Map<String, Establishment> establishments = loadEstablishments("establishments.json");
 		
 		assertThat(
 				establishments.values(),

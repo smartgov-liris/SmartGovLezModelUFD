@@ -3,7 +3,6 @@ package com.smartgov.lez.input.establishment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,18 +35,18 @@ public class EstablishmentLoader {
 	}
 
 	public static Map<String, Establishment> loadEstablishments(
-			File establishments, File fleetProfiles, File copertFile, Random random) throws JsonParseException, JsonMappingException, IOException {
+			File establishmentsFile, File fleetProfiles, File copertFile, Random random) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addDeserializer(EstablishmentLoader.class, new EstablishmentDeserializer(fleetProfiles, copertFile, random));
 		mapper.registerModule(module);
 		
-		return mapper.readValue(establishments, EstablishmentLoader.class).loadedEstablishments();
+		return mapper.readValue(establishmentsFile, EstablishmentLoader.class).loadedEstablishments();
 	}
 	
 	public static Map<String, Establishment> loadEstablishments(
-			File establishments, File fleetProfiles, File copertFile) throws JsonParseException, JsonMappingException, IOException {
-		return loadEstablishments(establishments, fleetProfiles, copertFile, new Random());
+			File establishmentsFile, File fleetProfiles, File copertFile) throws JsonParseException, JsonMappingException, IOException {
+		return loadEstablishments(establishmentsFile, fleetProfiles, copertFile, new Random());
 	}
 	
 	private Map<String, Establishment> loadedEstablishments() {
@@ -120,9 +119,6 @@ public class EstablishmentLoader {
 		TreeMap<VehicleCapacity, LinkedList<DeliveryVehicle>> availableVehicles = new TreeMap<>();
 		for(VehicleCapacity capacity : establishment.getFleet().keySet()) {
 			availableVehicles.put(capacity, new LinkedList<>(establishment.getFleet().get(capacity)));
-//			for(DeliveryVehicle vehicle : establishment.getFleet().get(capacity)) {
-//				availableVehicles.get(capacity).add(vehicle);
-//			}
 		}
 		
 		for(Round round : rounds) {

@@ -5,12 +5,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.locationtech.jts.geom.Coordinate;
-
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 
 import smartgov.core.agent.moving.MovingAgent;
 import smartgov.core.agent.moving.ParkingArea;
+import smartgov.urban.geo.utils.LatLon;
 import smartgov.urban.osm.environment.graph.OsmNode;
 
 public class Establishment implements ParkingArea {
@@ -18,7 +17,7 @@ public class Establishment implements ParkingArea {
 	private String id;
 	private String name;
 	private ST8 activity;
-	private Coordinate location;
+	private LatLon location;
 	private OsmNode closestOsmNode;
 
 	private Map<VehicleCapacity, Collection<DeliveryVehicle>> fleet;
@@ -26,7 +25,7 @@ public class Establishment implements ParkingArea {
 	private Map<DeliveryVehicle, Round> rounds;
 	
 	
-	public Establishment(String id, String name, ST8 activity, Coordinate location) {
+	public Establishment(String id, String name, ST8 activity, LatLon location) {
 		this.id = id;
 		this.name = name;
 		this.activity = activity;
@@ -47,8 +46,12 @@ public class Establishment implements ParkingArea {
 		return activity;
 	}
 
-	public Coordinate getLocation() {
+	public LatLon getLocation() {
 		return location;
+	}
+
+	public void setClosestOsmNode(OsmNode closestOsmNode) {
+		this.closestOsmNode = closestOsmNode;
 	}
 
 	public OsmNode getClosestOsmNode() {

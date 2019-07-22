@@ -18,6 +18,9 @@ import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.ST8;
 import com.smartgov.lez.input.establishment.EstablishmentLoader.TemporaryRound;
 
+import smartgov.urban.geo.utils.LatLon;
+import smartgov.urban.geo.utils.lambert.LambertII;
+
 public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoader>{
 
 	private File fleetProfiles;
@@ -55,11 +58,25 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 			else {
 				activity = ST8.valueOf(establishmentNode.get("ST8").asText());
 			}
-			Coordinate location = new CoordinateXY(
-					establishmentNode.get("x").asDouble(),
-					establishmentNode.get("y").asDouble()
-					);
-			Establishment establishment = new Establishment(id, name, activity, location);
+			
+			LatLon geoLocation = null;
+			if(establishmentNode.has("x")) {
+				Coordinate location = new CoordinateXY(
+						establishmentNode.get("x").asDouble(),
+						establishmentNode.get("y").asDouble()
+						);
+				
+				geoLocation = new LambertII().unproject(location);
+			}
+			
+			else if (establishmentNode.has("lat")) {
+				geoLocation = new LatLon(
+						establishmentNode.get("lat").asDouble(),
+						establishmentNode.get("lon").asDouble()
+						);
+			}
+			
+			Establishment establishment = new Establishment(id, name, activity, geoLocation);
 			loader.load(establishment);
 			
 			

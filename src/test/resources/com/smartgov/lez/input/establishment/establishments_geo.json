@@ -1,0 +1,32 @@
+[
+	{
+		"id": 0,
+		"name": "establishment 1",
+		"ST8": 5,
+		"lat": 46.986083,
+		"lon": 3.810298,
+		"rounds": [
+			{"ids" : [1], "weight": 3000},
+			{"ids" : [2, 3], "weight": 2000},
+			{"ids" : [2], "weight": 1000}
+		]
+	},
+	{
+		"id": 1,
+		"name": "establishment 2",
+		"ST8": 6,
+		"lat": 46.986057,
+		"lon": 3.811918,
+		"rounds": []
+	},
+	{
+		"id": 2,
+		"name": "establishment 3",
+		"ST8": 8,
+		"lat": 46.987589,
+		"lon": 3.806566,
+		"rounds": [
+			{"ids": [0, 1]}
+		]
+	}
+]
