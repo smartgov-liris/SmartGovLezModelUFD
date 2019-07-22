@@ -22,6 +22,7 @@ import com.smartgov.lez.core.copert.fields.VehicleSegment;
 @JsonIgnoreProperties({"copert", "emissions"})
 public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 
+	private String id;
 	private VehicleCategory category;
 	private Fuel fuel;
 	private VehicleSegment segment;
@@ -29,13 +30,18 @@ public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 	private Technology technology;
 	private Copert copert;
 	
-	public DeliveryVehicle(VehicleCategory category, Fuel fuel, VehicleSegment segment,  EuroNorm euroNorm, Technology technology, Copert copert) {
+	public DeliveryVehicle(String id, VehicleCategory category, Fuel fuel, VehicleSegment segment,  EuroNorm euroNorm, Technology technology, Copert copert) {
+		this.id = id;
 		this.category = category;
 		this.fuel = fuel;
 		this.segment = segment;
 		this.technology = technology;
 		this.euroNorm = euroNorm;
 		this.copert = copert;
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public VehicleCategory getCategory() {

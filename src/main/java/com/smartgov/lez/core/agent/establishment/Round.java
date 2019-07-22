@@ -3,11 +3,17 @@ package com.smartgov.lez.core.agent.establishment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.smartgov.lez.core.output.establishment.EstablishmentListIdSerializer;
+
 import smartgov.urban.osm.environment.graph.OsmNode;
 
 public class Round {
 	
+	@JsonIgnore
 	private Establishment origin;
+	@JsonSerialize(using = EstablishmentListIdSerializer.class)
 	private List<Establishment> establishments;
 	private double initialWeight;
 	
@@ -35,6 +41,7 @@ public class Round {
 		return initialWeight;
 	}
 
+	@JsonIgnore
 	public List<OsmNode> getNodes() {
 		List<OsmNode> nodes = new ArrayList<>();
 		

@@ -2,7 +2,7 @@ package com.smartgov.lez.core.environment.pollution;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.copert.fields.Pollutant;
-import com.smartgov.lez.core.output.PollutionRateSerializer;
+import com.smartgov.lez.core.output.pollution.PollutionRateSerializer;
 
 import smartgov.SmartGov;
 

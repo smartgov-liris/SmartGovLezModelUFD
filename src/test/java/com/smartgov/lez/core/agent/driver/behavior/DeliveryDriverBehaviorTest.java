@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,10 +20,11 @@ import java.util.List;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
-import com.smartgov.lez.core.agent.driver.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
-import com.smartgov.lez.core.agent.driver.behavior.OriginParkingArea;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
+import com.smartgov.lez.core.agent.establishment.Establishment;
+import com.smartgov.lez.core.agent.establishment.Round;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.simulation.scenario.PollutionScenario;
 
@@ -35,6 +37,7 @@ import smartgov.core.simulation.time.Date;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.mover.CarMover;
 import smartgov.urban.osm.environment.OsmContext;
+import smartgov.urban.osm.environment.graph.OsmNode;
 
 public class DeliveryDriverBehaviorTest {
 	
@@ -140,7 +143,7 @@ public class DeliveryDriverBehaviorTest {
 
 	private static class DeliveryScenario extends PollutionScenario {
 		
-		public static DeliveryDriver driverSpy;
+		public static DeliveryDriverBody driverSpy;
 		
 		public static Date departure = new Date(Clock.origin, 1, 10, 30);
 
@@ -149,28 +152,28 @@ public class DeliveryDriverBehaviorTest {
 			DeliveryVehicle fakeVehicle = mock(DeliveryVehicle.class);
 			doReturn(0.).when(fakeVehicle).getEmissions(any(Pollutant.class), anyDouble(), anyDouble());
 			
-			driverSpy = spy(new DeliveryDriver(
-					fakeVehicle,
-					(OsmContext) context
-					));
+			driverSpy = spy(new DeliveryDriverBody(fakeVehicle));
 
 			// Because the car mover agent body is set in the OsmAgentBody constructor
 			// with "this" agent body, the real delivery driver is set as agentBody in the car mover.
 			// So this will override the CarMover agent body with the spy.
 			Whitebox.setInternalState((CarMover) driverSpy.getMover(), "agentBody", driverSpy);
 			
-			OriginParkingArea parking = mock(OriginParkingArea.class);
+			Establishment origin = mock(Establishment.class);
+			when(origin.getClosestOsmNode()).thenReturn((OsmNode) context.nodes.get("1"));
+			
+			List<Establishment> establishments = new ArrayList<>();
+			for(int i = 2; i <= 4; i++) {
+				Establishment establishment = mock(Establishment.class);
+				when(establishment.getClosestOsmNode()).thenReturn((OsmNode) context.nodes.get(String.valueOf(i)));
+				establishments.add(establishment);
+			}
+			Round round = new Round(origin, establishments, 10);
+			
 			
 			DeliveryDriverBehavior behavior = new DeliveryDriverBehavior(
 					driverSpy,
-					parking,
-					Arrays.asList(
-							context.nodes.get("1"),
-							context.nodes.get("2"),
-							context.nodes.get("3"),
-							context.nodes.get("4"),
-							context.nodes.get("1")
-							),
+					round,
 					departure,
 					(OsmContext) context
 					);

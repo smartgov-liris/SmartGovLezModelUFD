@@ -18,7 +18,7 @@ import org.powermock.api.mockito.PowerMockito;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.smartgov.lez.core.agent.driver.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.driver.mover.PollutantCarMover;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.copert.fields.Pollutant;
@@ -72,7 +72,7 @@ public class PollutantCarMoverTest {
 		}
 		
 		assertThat(
-				smartGov.getContext().agents.get("1").getBody() instanceof DeliveryDriver,
+				smartGov.getContext().agents.get("1").getBody() instanceof DeliveryDriverBody,
 				equalTo(true)
 				);
 		
@@ -221,7 +221,7 @@ public class PollutantCarMoverTest {
 			DeliveryVehicle fakeVehicle = PowerMockito.mock(DeliveryVehicle.class);
 			doReturn(1.0).when(fakeVehicle).getEmissions(Mockito.any(Pollutant.class), Mockito.anyDouble(), Mockito.anyDouble());
 			
-			OsmAgentBody deliveryDriver = new DeliveryDriver(fakeVehicle, (OsmContext) context);
+			OsmAgentBody deliveryDriver = new DeliveryDriverBody(fakeVehicle);
 			OsmAgent agent = new OsmAgent("1", deliveryDriver, new PollutantCarMoverTestBehavior(deliveryDriver, context));
 			
 			deliveryDriver.initialize();

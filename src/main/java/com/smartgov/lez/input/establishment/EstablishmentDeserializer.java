@@ -92,7 +92,7 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 				
 				List<String> establishmentIds = new ArrayList<>();
 				JsonNode establishmentIdsNode = roundNode.get("ids");
-				for(int k = 0; k < establishmentIds.size(); k++) {
+				for(int k = 0; k < establishmentIdsNode.size(); k++) {
 					establishmentIds.add(establishmentIdsNode.get(k).asText());
 				}
 				temporaryRounds.add(new TemporaryRound(establishmentIds, weight));

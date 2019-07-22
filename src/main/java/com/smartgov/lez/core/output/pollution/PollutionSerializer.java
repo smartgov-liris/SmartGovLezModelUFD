@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.output;
+package com.smartgov.lez.core.output.pollution;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,7 +29,10 @@ public class PollutionSerializer extends StdSerializer<Pollution> {
 		Map<Pollutant, Double> pollutionRates = new HashMap<>();
 		
 		for(Entry<Pollutant, PollutionRate> pollutionRate : value.entrySet()) {
-			pollutionRates.put(pollutionRate.getKey(), pollutionRate.getValue().getValue());
+			if(Double.isNaN(pollutionRate.getValue().getValue()))
+				pollutionRates.put(pollutionRate.getKey(), 0.);
+			else
+				pollutionRates.put(pollutionRate.getKey(), pollutionRate.getValue().getValue());
 		}
 		
 		gen.writeObject(pollutionRates);

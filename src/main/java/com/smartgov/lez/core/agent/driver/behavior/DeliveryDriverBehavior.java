@@ -2,21 +2,21 @@ package com.smartgov.lez.core.agent.driver.behavior;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
+import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
+import com.smartgov.lez.core.agent.establishment.Round;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
 import smartgov.core.simulation.time.Date;
 import smartgov.core.simulation.time.DelayedActionHandler;
 
 public class DeliveryDriverBehavior extends MovingBehavior {
 	
-	private List<Node> round;
+	private Round round;
 	private int currentPosition;
 	private MoverAction nextAction;
 	
@@ -24,12 +24,16 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 	private Collection<EventHandler<RoundEnd>> roundEndListeners;
 
 	public DeliveryDriverBehavior(
-			MovingAgentBody agentBody,
-			OriginParkingArea origin,
-			List<Node> round,
+			DeliveryDriverBody agentBody,
+			Round round,
 			Date departure,
 			SmartGovContext context) {
-		super(agentBody, round.get(0), round.get(1), context);
+		super(
+			agentBody,
+			round.getOrigin().getClosestOsmNode(),
+			round.getEstablishments().get(0).getClosestOsmNode(),
+			context
+			);
 		roundDepartureListeners = new ArrayList<>();
 		roundEndListeners = new ArrayList<>();
 		
@@ -37,7 +41,7 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 		this.currentPosition = 0;
 		
 		// Start waiting at the origin
-		this.nextAction = MoverAction.ENTER(origin);
+		this.nextAction = MoverAction.ENTER(round.getOrigin());
 		
 		// Leave at departure date
 		SmartGov
@@ -47,7 +51,7 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 				new DelayedActionHandler(
 						departure,
 						() -> {
-							nextAction = MoverAction.LEAVE(origin);
+							nextAction = MoverAction.LEAVE(round.getOrigin());
 							triggerRoundDepartureListeners(new RoundDeparture());
 						}
 						)
@@ -65,18 +69,25 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 		
 		// When a destination is reached
 		agentBody.addOnDestinationReachedListener((event) -> {
-				currentPosition++;
-				if (currentPosition < round.size() - 1)
+				if (currentPosition < round.getEstablishments().size() - 1)
 					// Go to the next node of the round
-					refresh(round.get(currentPosition), round.get(currentPosition + 1));
+					refresh(
+						round.getEstablishments().get(currentPosition).getClosestOsmNode(),
+						round.getEstablishments().get(currentPosition + 1).getClosestOsmNode());
 				else
-					// Go back the origin parking area
-					nextAction = MoverAction.ENTER(origin);
-				triggerRoundEndListeners(new RoundEnd());
+					if (currentPosition == round.getEstablishments().size() - 1)
+						refresh(
+								round.getEstablishments().get(currentPosition).getClosestOsmNode(),
+								round.getOrigin().getClosestOsmNode());
+					else
+						// Go back the origin parking area
+						nextAction = MoverAction.ENTER(round.getOrigin());
+						triggerRoundEndListeners(new RoundEnd());
+				currentPosition++;
 			});
 	}
 	
-	public List<Node> getRound() {
+	public Round getRound() {
 		return round;
 	}
 

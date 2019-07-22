@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-import com.smartgov.lez.core.agent.driver.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicleFactory;
 import com.smartgov.lez.core.copert.inputParser.CopertInputReader;
@@ -46,7 +46,7 @@ public class RandomTrafficPollutionScenario extends PollutionScenario {
 		
 		Collection<OsmAgent> drivers = new ArrayList<>();
 		for(int i = 0; i < vehicleNumber; i++) {
-			OsmAgentBody deliveryDriver = new DeliveryDriver(vehiclesStock.poll(), (OsmContext) context);
+			OsmAgentBody deliveryDriver = new DeliveryDriverBody(vehiclesStock.poll());
 			drivers.add(OsmAgent.randomTrafficOsmAgent(String.valueOf(i), (OsmContext) context, deliveryDriver));
 		}
 		return drivers;

@@ -117,8 +117,8 @@ public class EstablishmentLoader {
 		});
 		
 		TreeMap<VehicleCapacity, LinkedList<DeliveryVehicle>> availableVehicles = new TreeMap<>();
-		for(VehicleCapacity capacity : establishment.getFleet().keySet()) {
-			availableVehicles.put(capacity, new LinkedList<>(establishment.getFleet().get(capacity)));
+		for(VehicleCapacity capacity : establishment.getFleetByCapacity().keySet()) {
+			availableVehicles.put(capacity, new LinkedList<>(establishment.getFleetByCapacity().get(capacity)));
 		}
 		
 		for(Round round : rounds) {

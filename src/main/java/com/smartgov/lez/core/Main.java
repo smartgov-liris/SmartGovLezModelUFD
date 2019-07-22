@@ -28,19 +28,19 @@ public class Main {
 			@Override
 			public void handle(SimulationStopped event) {
 				File outputFolder = smartGov.getContext().getFileLoader().load("outputFolder");
-				File agentOutput = new File(outputFolder + File.separator + "agents_" + SmartGov.getRuntime().getTickCount() +".json");
-				File arcsOutput = new File(outputFolder + File.separator + "arcs_" + SmartGov.getRuntime().getTickCount() +".json");
-				File pollutionPeeks = new File(outputFolder + File.separator + "pollution_peeks_" + SmartGov.getRuntime().getTickCount() +".json");
+				File agentOutput = new File(outputFolder, "agents_" + SmartGov.getRuntime().getTickCount() +".json");
+				File arcsOutput = new File(outputFolder, "arcs_" + SmartGov.getRuntime().getTickCount() +".json");
+				File pollutionPeeks = new File(outputFolder, "pollution_peeks_" + SmartGov.getRuntime().getTickCount() +".json");
 				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 
 				try {
-					logger.info("Saving agents state to " + agentOutput.getPath());
-					objectMapper.writeValue(agentOutput, smartGov.getContext().agents);
+					// logger.info("Saving agents state to " + agentOutput.getPath());
+					// objectMapper.writeValue(agentOutput, smartGov.getContext().agents.values());
 					
 					logger.info("Saving arcs state to " + agentOutput.getPath());
-					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs);
+					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs.values());
 					
 					logger.info("Saving pollution peeks to " + agentOutput.getPath());
 					objectMapper.writeValue(pollutionPeeks, Pollution.pollutionRatePeeks);
@@ -62,8 +62,9 @@ public class Main {
 		}
 		
 		if(outputFolder != null) {
-			File nodeOutput = new File(outputFolder + File.separator + "init_nodes.json");
-			File arcOutput = new File(outputFolder + File.separator + "init_arcs.json");
+			File initOutput = new File(outputFolder, "init");
+			File nodeOutput = new File(initOutput, "nodes.json");
+			File arcOutput = new File(initOutput, "arcs.json");
 
 			try {
 				// Using maps is simpler when processed in JS, but IDs are duplicated.

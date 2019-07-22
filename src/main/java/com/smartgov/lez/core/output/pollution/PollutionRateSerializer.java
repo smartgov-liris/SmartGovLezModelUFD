@@ -1,4 +1,4 @@
-package com.smartgov.lez.core.output;
+package com.smartgov.lez.core.output.pollution;
 
 import java.io.IOException;
 
@@ -21,7 +21,10 @@ public class PollutionRateSerializer extends StdSerializer<PollutionRate> {
 
 	@Override
 	public void serialize(PollutionRate value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-		gen.writeNumber(value.getValue());
+		if(Double.isNaN(value.getValue()))
+			gen.writeNumber(0);
+		else
+			gen.writeNumber(value.getValue());
 	}
 
 }

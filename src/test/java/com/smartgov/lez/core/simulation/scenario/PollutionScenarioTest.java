@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 
-import com.smartgov.lez.core.agent.driver.DeliveryDriver;
+import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
@@ -33,7 +33,7 @@ public class PollutionScenarioTest {
 		SmartGov smartGov = loadSmartGov();
 		for(Agent<?> agent : smartGov.getContext().agents.values()) {
 			assertThat(
-					agent.getBody() instanceof DeliveryDriver,
+					agent.getBody() instanceof DeliveryDriverBody,
 					equalTo(true)
 					);
 		}

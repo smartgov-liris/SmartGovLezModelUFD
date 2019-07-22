@@ -20,6 +20,7 @@ import com.smartgov.lez.core.copert.tableParser.CopertTree;
 
 public class DeliveryVehicleFactory {
 
+	private int index = 0;
 	private CopertProfile copertProfile;
 	private CopertParser copertParser;
 	
@@ -144,6 +145,7 @@ public class DeliveryVehicleFactory {
 		Copert copert = new Copert(completeTree);
 
 		return new DeliveryVehicle(
+				String.valueOf(index++),
 				(VehicleCategory) finalSelector.get(CopertHeader.CATEGORY),
 				(Fuel) finalSelector.get(CopertHeader.FUEL),
 				(VehicleSegment) finalSelector.get(CopertHeader.SEGMENT),

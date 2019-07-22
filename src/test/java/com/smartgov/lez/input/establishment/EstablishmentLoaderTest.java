@@ -47,7 +47,7 @@ public class EstablishmentLoaderTest {
 
 	@Test
 	public void loadTest() throws JsonParseException, JsonMappingException, IOException {
-		loadEstablishments("establishments.json");
+		loadEstablishments("establishments_lambert.json");
 		loadEstablishments("establishments_geo.json");
 	}
 	
@@ -56,7 +56,7 @@ public class EstablishmentLoaderTest {
 	 */
 	@Test
 	public void testRootEstablishmentFields() {
-		Map<String, Establishment> establishments = loadEstablishments("establishments.json");
+		Map<String, Establishment> establishments = loadEstablishments("establishments_lambert.json");
 		
 		Map<String, Establishment> expected = new HashMap<>();
 		expected.put("0", new Establishment(
@@ -128,7 +128,7 @@ public class EstablishmentLoaderTest {
 	
 	@Test
 	public void fleetFactoryTest() {
-		Map<String, Establishment> originEstablishments = loadEstablishments("establishments.json");
+		Map<String, Establishment> originEstablishments = loadEstablishments("establishments_lambert.json");
 
 		assertThat(
 				originEstablishments.values(),
@@ -137,7 +137,7 @@ public class EstablishmentLoaderTest {
 
 		Map<String, Map<VehicleCapacity, Collection<DeliveryVehicle>>> originFleets = new HashMap<>();
 		for(Establishment establishment : originEstablishments.values()) {
-			originFleets.put(establishment.getId(), establishment.getFleet());
+			originFleets.put(establishment.getId(), establishment.getFleetByCapacity());
 			int expectedFleetSize = 0;
 			switch(establishment.getId()) {
 			case "0":
@@ -148,7 +148,7 @@ public class EstablishmentLoaderTest {
 				break;
 			}
 			assertThat(
-					establishment.getFleetSize(),
+					establishment.getFleet().size(),
 					equalTo(expectedFleetSize)
 					);
 			
@@ -158,23 +158,23 @@ public class EstablishmentLoaderTest {
 			/*
 			 * Prove that the generated fleet is always the same.
 			 */
-			Map<String, Establishment> establishments = loadEstablishments("establishments.json");
+			Map<String, Establishment> establishments = loadEstablishments("establishments_lambert.json");
 			
 			for(Establishment establishment : establishments.values()) {
 				assertThat(
-						establishment.getFleet().keySet(),
+						establishment.getFleetByCapacity().keySet(),
 						equalTo(originFleets.get(establishment.getId()).keySet())
 						);
 				
 				Establishment originEstablishment = originEstablishments.get(establishment.getId());
 				
-				for(VehicleCapacity capacity : establishment.getFleet().keySet()) {
+				for(VehicleCapacity capacity : establishment.getFleetByCapacity().keySet()) {
 					assertThat(
-							establishment.getFleet().get(capacity).size(),
-							equalTo(originEstablishment.getFleet().get(capacity).size())
+							establishment.getFleetByCapacity().get(capacity).size(),
+							equalTo(originEstablishment.getFleetByCapacity().get(capacity).size())
 							);
-					Iterator<DeliveryVehicle> origin = establishment.getFleet().get(capacity).iterator();
-					Iterator<DeliveryVehicle> current = establishment.getFleet().get(capacity).iterator();
+					Iterator<DeliveryVehicle> origin = establishment.getFleetByCapacity().get(capacity).iterator();
+					Iterator<DeliveryVehicle> current = establishment.getFleetByCapacity().get(capacity).iterator();
 					while(origin.hasNext()) {
 						assertThat(
 								origin.next().equalCharacteristics(current.next()),
@@ -188,7 +188,7 @@ public class EstablishmentLoaderTest {
 	
 	@Test
 	public void loadRoundsTest() {
-		Map<String, Establishment> establishments = loadEstablishments("establishments.json");
+		Map<String, Establishment> establishments = loadEstablishments("establishments_lambert.json");
 		
 		assertThat(
 				establishments.values(),
@@ -200,13 +200,13 @@ public class EstablishmentLoaderTest {
 			 * Fleet size must be equal to the rounds size.
 			 */
 			assertThat(
-					establishment.getFleetSize(),
+					establishment.getFleet().size(),
 					equalTo(establishment.getRounds().size())
 					);
 		}
 		
 		Establishment establishmentWithThreeRounds = establishments.get("0");
-		List<DeliveryVehicle> vehicles = new ArrayList<>(establishmentWithThreeRounds.getRounds().keySet());
+		List<DeliveryVehicle> vehicles = new ArrayList<>(establishmentWithThreeRounds.getFleet().values());
 		vehicles.sort((vehicle1, vehicle2) -> vehicle1.compareTo(vehicle2));
 		
 		/*
@@ -217,8 +217,8 @@ public class EstablishmentLoaderTest {
 		for(DeliveryVehicle vehicle : vehicles) {
 			for(DeliveryVehicle lighterVehicle : lighterVehicles) {
 				assertThat(
-						establishmentWithThreeRounds.getRounds().get(lighterVehicle).getInitialWeight(),
-						lessThanOrEqualTo(establishmentWithThreeRounds.getRounds().get(vehicle).getInitialWeight())
+						establishmentWithThreeRounds.getRounds().get(lighterVehicle.getId()).getInitialWeight(),
+						lessThanOrEqualTo(establishmentWithThreeRounds.getRounds().get(vehicle.getId()).getInitialWeight())
 						);
 			}
 			lighterVehicles.add(vehicle);

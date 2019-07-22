@@ -9,8 +9,8 @@ import com.smartgov.lez.core.copert.fields.VehicleCategory;
 
 public class LightCommercialVehicle extends DeliveryVehicle {
 
-	public LightCommercialVehicle(Fuel fuel, LightWeightVehicleSegment vehicleSegment, EuroNorm euroNorm, Technology technology, Copert copert) {
-		super(VehicleCategory.LIGHT_WEIGHT, fuel, vehicleSegment, euroNorm, technology, copert);
+	public LightCommercialVehicle(String id, Fuel fuel, LightWeightVehicleSegment vehicleSegment, EuroNorm euroNorm, Technology technology, Copert copert) {
+		super(id, VehicleCategory.LIGHT_WEIGHT, fuel, vehicleSegment, euroNorm, technology, copert);
 	}
 
 

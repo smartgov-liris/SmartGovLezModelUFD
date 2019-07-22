@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.copert.fields.Pollutant;
-import com.smartgov.lez.core.output.PollutionSerializer;
+import com.smartgov.lez.core.output.pollution.PollutionSerializer;
 
 @JsonSerialize(using = PollutionSerializer.class)
 public class Pollution extends HashMap<Pollutant, PollutionRate>{
