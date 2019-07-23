@@ -1,5 +1,8 @@
 package com.smartgov.lez.core.agent.establishment;
 
+/**
+ * Business categories used at the LAET.
+ */
 public enum ST8 {
 	AGRICULTURE ("1"),
 	CRAFTS_AND_SERVICES ("2"),
@@ -16,10 +19,22 @@ public enum ST8 {
 		this.code = code;
 	}
 	
+	/**
+	 * Numeric representation of this ST8 category.
+	 *
+	 * @return category code
+	 */
 	public String getCode() {
 		return code;
 	}
 	
+	/**
+	 * Returns the ST8 category corresponding to
+	 * the specified code.
+	 *
+	 * @param code category code
+	 * @return corresponding ST8 category
+	 */
 	public static ST8 byCode(String code) {
 		for(ST8 st8 : ST8.values()) {
 			if(st8.getCode().equals(code))

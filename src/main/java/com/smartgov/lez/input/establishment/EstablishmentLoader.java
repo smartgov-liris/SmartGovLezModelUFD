@@ -24,16 +24,42 @@ import com.smartgov.lez.core.agent.establishment.VehicleCapacity;
 import com.smartgov.lez.core.copert.inputParser.CopertProfile;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 
+/**
+ * Class used to load establishments from an input json file.
+ *
+ * <p>
+ * The following processes are also performed :
+ * <ul>
+ * <li> Build rounds from those specified for each establishments </li>
+ * <li> Build a fleet for each establishment, according to the number of
+ * vehicles required and the copert inputs </li>
+ * <li> Associate generated vehicles to rounds </li>
+ * </ul>
+ */
 public class EstablishmentLoader {
 	
 	private Map<String, Establishment> loadedEstablishments;
 	private Map<String, List<TemporaryRound>> temporaryRounds;
 	
-	public EstablishmentLoader() {
+	EstablishmentLoader() {
 		this.loadedEstablishments = new HashMap<>();
 		temporaryRounds = new HashMap<>();
 	}
 
+	/**
+	 * Load establishments and build rounds and fleets from the specified inputs.
+	 * The <i>random</i> parameter is passed to the CopertParser to generate fleets,
+	 * and so can be used to build fleet from a known seed.
+	 * 
+	 * @param establishmentsFile an establishment json file
+	 * @param fleetProfiles a json fleet profile
+	 * @param copertFile a copert table
+	 * @param random user specified random instance
+	 * @return built establishments
+	 * @throws JsonParseException json exception
+	 * @throws JsonMappingException json exception
+	 * @throws IOException file reading exception
+	 */
 	public static Map<String, Establishment> loadEstablishments(
 			File establishmentsFile, File fleetProfiles, File copertFile, Random random) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
@@ -44,6 +70,18 @@ public class EstablishmentLoader {
 		return mapper.readValue(establishmentsFile, EstablishmentLoader.class).loadedEstablishments();
 	}
 	
+	// TODO : Detail file formats
+	/**
+	 * Load establishments and build rounds and fleets from the specified inputs.
+	 * 
+	 * @param establishmentsFile an establishment json file
+	 * @param fleetProfiles a json fleet profile
+	 * @param copertFile a copert table
+	 * @return built establishments
+	 * @throws JsonParseException json exception
+	 * @throws JsonMappingException json exception
+	 * @throws IOException file reading exception
+	 */
 	public static Map<String, Establishment> loadEstablishments(
 			File establishmentsFile, File fleetProfiles, File copertFile) throws JsonParseException, JsonMappingException, IOException {
 		return loadEstablishments(establishmentsFile, fleetProfiles, copertFile, new Random());
@@ -53,15 +91,15 @@ public class EstablishmentLoader {
 		return loadedEstablishments;
 	}
 	
-	public void load(Establishment establishment) {
+	void _load(Establishment establishment) {
 		this.loadedEstablishments.put(establishment.getId(), establishment);
 	}
 	
-	public void loadTemporaryRounds(String establishmentId, List<TemporaryRound> round) {
+	void _loadTemporaryRounds(String establishmentId, List<TemporaryRound> round) {
 		temporaryRounds.put(establishmentId, round);
 	}
 	
-	public void buildFleets(File fleetProfiles, File copertFile, Random random) throws JsonParseException, JsonMappingException, IOException {
+	void _buildFleets(File fleetProfiles, File copertFile, Random random) throws JsonParseException, JsonMappingException, IOException {
 		Map<ST8, CopertProfile> fleetProfilesMap = new ObjectMapper().readValue(fleetProfiles, new TypeReference<Map<ST8, CopertProfile>>(){});
 		
 		// All the vehicles will belong to the loaded copert table

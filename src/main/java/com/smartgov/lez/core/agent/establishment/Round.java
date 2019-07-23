@@ -9,6 +9,16 @@ import com.smartgov.lez.core.output.establishment.EstablishmentListIdSerializer;
 
 import smartgov.urban.osm.environment.graph.OsmNode;
 
+/**
+ * Represents a round that a delivery agent might perform between
+ * establishments.
+ *
+ * <p>
+ * Notice that this class does not represent the actual path that
+ * the agent could follow in the city graph : is just represents
+ * the establishment list that it must deliver.
+ * </p>
+ */
 public class Round {
 	
 	@JsonIgnore
@@ -18,6 +28,15 @@ public class Round {
 	private double initialWeight;
 	
 
+	/**
+	 * Round constructor.
+	 *
+	 * @param origin origin establishment : beginning and end of the round
+	 * @param establishments establishments to deliver : does not include
+	 * origin establishment
+	 * @param initialWeight might be used to represent the volume of the
+	 * delivery
+	 */
 	public Round(
 			Establishment origin,
 			List<Establishment> establishments,
@@ -29,18 +48,45 @@ public class Round {
 		this.initialWeight = initialWeight;
 	}
 
+	/**
+	 * Returns the round origin, used as start and final point of the
+	 * round.
+	 *
+	 * @return origin establishment
+	 */
 	public Establishment getOrigin() {
 		return origin;
 	}
 
+	/**
+	 * Returns establishments delivered by this round, in order.
+	 *
+	 * @return round establishments
+	 */
 	public List<Establishment> getEstablishments() {
 		return establishments;
 	}
 	
+	/**
+	 * Returns the round initial merchandises weight
+	 *
+	 * @return initial weight
+	 */
 	public double getInitialWeight() {
 		return initialWeight;
 	}
 
+	/**
+	 * Can be used to compute a node list representation of the round.
+	 *
+	 * <p>
+	 * Nodes return are {@link Establishment#getClosestOsmNode
+	 * establishments' closest osm nodes}. Starts with origin, includes
+	 * establishments to deliver, and finishes with the origin.
+	 * </p>
+	 *
+	 * @return node list representation of the round.
+	 */
 	@JsonIgnore
 	public List<OsmNode> getNodes() {
 		List<OsmNode> nodes = new ArrayList<>();

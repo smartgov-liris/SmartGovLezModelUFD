@@ -14,6 +14,18 @@ import smartgov.core.events.EventHandler;
 import smartgov.core.simulation.time.Date;
 import smartgov.core.simulation.time.DelayedActionHandler;
 
+/**
+ * A delivery driver behavior, that can be described as follow :
+ * <ul>
+ * 	<li> At initialization, the agent enters the origin establishment.</li>
+ * 	<li> The agent waits until the departure Date, and leave the
+ * 	origin.</li>
+ * 	<li> The agent navigate in the graph to reach all the round's
+ * 	establishment, using the shortest path, in order. </li>
+ * 	<li> Finally, the agent go back to the origin and enters the
+ * 	establishment. </li>
+ * </ul>
+ */
 public class DeliveryDriverBehavior extends MovingBehavior {
 	
 	private Round round;
@@ -23,6 +35,14 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 	private Collection<EventHandler<RoundDeparture>> roundDepartureListeners;
 	private Collection<EventHandler<RoundEnd>> roundEndListeners;
 
+	/**
+	 * DeliveryDriverBehavior constructor.
+	 *
+	 * @param agentBody associated body
+	 * @param round round to perform
+	 * @param departure departure date
+	 * @param context currentContext
+	 */
 	public DeliveryDriverBehavior(
 			DeliveryDriverBody agentBody,
 			Round round,
@@ -87,6 +107,11 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 			});
 	}
 	
+	/**
+	 * Returns the round that the agent must perform.
+	 *
+	 * @return agent's round
+	 */
 	public Round getRound() {
 		return round;
 	}
@@ -96,6 +121,12 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 		return nextAction;
 	}
 	
+	/**
+	 * Adds a round departure event handler, triggered when the departure
+	 * date has been reached.
+	 *
+	 * @param listener round departure listener
+	 */
 	public void addRoundDepartureListener(EventHandler<RoundDeparture> listener) {
 		this.roundDepartureListeners.add(listener);
 	}
@@ -105,7 +136,19 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 			listener.handle(event);
 		}
 	}
-	
+
+	/**
+	 * Adds a round end event handler, triggered when the agent come back
+	 * to the origin establishment.
+	 *
+	 * <p>
+	 * Triggered when the agent reaches the destination, but does not
+	 * guarantee that the agent as re-entered the establishment (what will
+	 * be its next action.
+	 * </p>
+	 *
+	 * @param listener round end listener
+	 */
 	public void addRoundEndListener(EventHandler<RoundEnd> listener) {
 		this.roundEndListeners.add(listener);
 	}

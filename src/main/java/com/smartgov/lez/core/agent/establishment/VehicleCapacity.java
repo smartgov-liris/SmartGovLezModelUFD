@@ -5,19 +5,48 @@ import com.smartgov.lez.core.copert.fields.LightWeightVehicleSegment;
 import com.smartgov.lez.core.copert.fields.VehicleCategory;
 import com.smartgov.lez.core.copert.fields.VehicleSegment;
 
+/**
+ * A convenient class to represent a vehicle capacity, define by
+ * their category (Heavy Duty Truck or Light Weight Vehicle) and their
+ * sub-segment.
+ * 
+ * <p>
+ * This class implements the Comparable interface, so that it can be used
+ * to compare vehicle by their capacity.
+ * </p>
+ *
+ */
 public class VehicleCapacity implements Comparable<VehicleCapacity> {
 
 	private VehicleCategory vehicleCategory;
 	private VehicleSegment vehicleSegment;
 
+	/**
+	 * VehicleCapacity constructor.
+	 *
+	 * @param vehicleCategory vehicle category
+	 * @param vehicleSegment vehicle segment
+	 */
 	public VehicleCapacity(VehicleCategory vehicleCategory, VehicleSegment vehicleSegment) {
 		super();
 		this.vehicleCategory = vehicleCategory;
 		this.vehicleSegment = vehicleSegment;
 	}
+
+	/**
+	 * Returns the vehicle category.
+	 *
+	 * @return vehicle category
+	 */
 	public VehicleCategory getVehicleCategory() {
 		return vehicleCategory;
 	}
+
+	/**
+	 * Returns the vehicle segment.
+	 *
+	 * @return vehicle segment
+	 */
 	public VehicleSegment getVehicleSegment() {
 		return vehicleSegment;
 	}
@@ -49,6 +78,7 @@ public class VehicleCapacity implements Comparable<VehicleCapacity> {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "VehicleCapacity(" + vehicleCategory + ", " + vehicleSegment + ")";

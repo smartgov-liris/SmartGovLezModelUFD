@@ -16,8 +16,33 @@ import com.smartgov.osmparser.filters.tags.BaseTagMatcher;
 import com.smartgov.osmparser.filters.tags.NoneTagMatcher;
 import com.smartgov.osmparser.filters.tags.TagMatcher;
 
+/**
+ * A pre-process used to extract json nodes and roads file from an input osm
+ * file.
+ */
 public class OsmRoadParser {
 	
+	/**
+	 * Highways types extracted from the osm file.
+	 * 
+	 * Check the <a href="https://wiki.openstreetmap.org/wiki/Key:highway">osm documentation</a>
+	 * for more information.
+	 * 
+	 * <ul>
+	 * <li> motorway </li>
+	 * <li> trunk </li>
+	 * <li> primary </li>
+	 * <li> secondary </li>
+	 * <li> tertiary </li>
+	 * <li> unclassified </li>
+	 * <li> residential </li>
+	 * <li> motorway_link </li>
+	 * <li> trunk_link </li>
+	 * <li> primary_link </li>
+	 * <li> secondary_link </li>
+	 * <li> tertiary_link </li>
+	 * </ul>
+	 */
 	public static final String[] highways = {
 			"motorway",
 			"trunk",
@@ -33,12 +58,25 @@ public class OsmRoadParser {
 			"tertiary_link"
 	};
 	
+	/**
+	 * Parses the input osm file, and write results as json nodes and ways
+	 * files.
+	 *
+	 * Extracts the {@link #highways} road types and associated nodes.
+	 *
+	 * @param args <i>osm_input_file nodes_output_file ways_output_file</i>
+	 * <p>
+	 * The osm input file must be in the OSM XML format.
+	 * </p>
+	 * @throws JAXBException if a case of a problem parsing the input osm file
+	 * @throws IOException is case of a problem reading or writing an input / output file
+	 */
 	public static void main(String[] args) throws JAXBException, IOException {
 		OsmParser parser = new OsmParser();
 		
-		SmartgovLezApplication.logger.info("Parsing osm data from : " + new File(OsmRoadParser.class.getResource(args[0]).getFile()));
+		SmartgovLezApplication.logger.info("Parsing osm data from : " + new File(args[0]));
 	    // Parse the test osm file
-	    Osm osm = (Osm) parser.parse(new File(OsmRoadParser.class.getResource(args[0]).getFile()));
+	    Osm osm = (Osm) parser.parse(new File(args[0]));
 	    
 	    SmartgovLezApplication.logger.info("Nodes found : " + osm.getNodes().size());
 	    SmartgovLezApplication.logger.info("Ways found : " + osm.getWays().size());
@@ -82,11 +120,11 @@ public class OsmRoadParser {
         // Custom object mapper to indent output
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-        SmartgovLezApplication.logger.info("Writing filtered roads to " + new File(OsmRoadParser.class.getResource("ways.json").getFile()));
-        parser.writeWays(new File(OsmRoadParser.class.getResource("ways.json").getFile()), mapper);
+        SmartgovLezApplication.logger.info("Writing filtered roads to " + new File(args[2]));
+        parser.writeWays(new File(args[2]), mapper);
         
-        SmartgovLezApplication.logger.info("Writing filtered nodes to " + new File(OsmRoadParser.class.getResource("nodes.json").getFile()));
-        parser.writeNodes(new File(OsmRoadParser.class.getResource("nodes.json").getFile()), mapper);
+        SmartgovLezApplication.logger.info("Writing filtered nodes to " + new File(args[1]));
+        parser.writeNodes(new File(args[1]), mapper);
 
 	}
 }

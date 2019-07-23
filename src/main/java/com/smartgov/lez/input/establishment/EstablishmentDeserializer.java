@@ -21,6 +21,10 @@ import com.smartgov.lez.input.establishment.EstablishmentLoader.TemporaryRound;
 import smartgov.urban.geo.utils.LatLon;
 import smartgov.urban.geo.utils.lambert.LambertII;
 
+/**
+ * Custom Jackson deserializer class used to load and build establishments from json inputs.
+ *
+ */
 public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoader>{
 
 	private File fleetProfiles;
@@ -77,7 +81,7 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 			}
 			
 			Establishment establishment = new Establishment(id, name, activity, geoLocation);
-			loader.load(establishment);
+			loader._load(establishment);
 			
 			
 			List<TemporaryRound> temporaryRounds = new ArrayList<>();
@@ -97,10 +101,10 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 				}
 				temporaryRounds.add(new TemporaryRound(establishmentIds, weight));
 			}
-			loader.loadTemporaryRounds(establishment.getId(), temporaryRounds);
+			loader._loadTemporaryRounds(establishment.getId(), temporaryRounds);
 		}
 		
-		loader.buildFleets(fleetProfiles, copertFile, random);
+		loader._buildFleets(fleetProfiles, copertFile, random);
 		return loader;
 	}
 
