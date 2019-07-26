@@ -30,21 +30,21 @@ public class Init {
 			Main.logger.warn("No outputFolder specified in the input configuration.");
 		}
 		
-//		File nodesFile = new File(outputInitFolder, "nodes.json");
-//		Main.logger.info("Writting nodes to " + nodesFile);
-//		mapper.writeValue(nodesFile, context.nodes.values());
-//		
-//		File arcsFile = new File(outputInitFolder, "arcs.json");
-//		Main.logger.info("Writting arcs to " + arcsFile);
-//		mapper.writeValue(arcsFile, context.arcs.values());
-//		
-//		File establishmentsFile = new File(outputInitFolder, "establishments.json");
-//		Main.logger.info("Writting establishments to " + establishmentsFile);
-//		mapper.writeValue(establishmentsFile, context.getEstablishments().values());
-//		
-//		File pollutionPeeksFile = new File(outputInitFolder, "pollution_peeks.json");
-//		Main.logger.info("Writting pollution peeks to " + pollutionPeeksFile);
-//		mapper.writeValue(pollutionPeeksFile, Pollution.pollutionRatePeeks);
+		File nodesFile = new File(outputInitFolder, "simturb_init_nodes.json");
+		Main.logger.info("Writting nodes to " + nodesFile);
+		mapper.writeValue(nodesFile, context.nodes.values());
+		
+		File arcsFile = new File(outputInitFolder, "simturb_init_arcs.json");
+		Main.logger.info("Writting arcs to " + arcsFile);
+		mapper.writeValue(arcsFile, context.arcs.values());
+		
+		File establishmentsFile = new File(outputInitFolder, "simturb_init_establishments.json");
+		Main.logger.info("Writting establishments to " + establishmentsFile);
+		mapper.writeValue(establishmentsFile, context.getEstablishments().values());
+		
+		File pollutionPeeksFile = new File(outputInitFolder, "simturb_init_pollution_peeks.json");
+		Main.logger.info("Writting pollution peeks to " + pollutionPeeksFile);
+		mapper.writeValue(pollutionPeeksFile, Pollution.pollutionRatePeeks);
 	}
 
 }

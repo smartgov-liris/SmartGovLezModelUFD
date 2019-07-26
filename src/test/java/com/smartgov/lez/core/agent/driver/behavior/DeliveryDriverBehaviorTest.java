@@ -186,6 +186,7 @@ public class DeliveryDriverBehaviorTest {
 					round,
 					(OsmContext) context
 					);
+			behavior.setUpListeners();
 
 			OsmAgent agent = new OsmAgent(
 					"1",

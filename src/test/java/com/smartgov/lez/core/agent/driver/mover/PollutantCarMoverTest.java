@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
@@ -82,7 +83,7 @@ public class PollutantCarMoverTest {
 	public void testAgentIsMoving() throws InterruptedException {
 		SmartGov smartGov = loadTestScenario();
 		
-		List<String> crossedArcIds = new ArrayList<>();
+		TreeSet<String> crossedArcIds = new TreeSet<>();
 		DistanceBean crossedDistance = new DistanceBean();
 		
 		((MovingAgentBody) smartGov.getContext().agents.get("1").getBody())
@@ -98,13 +99,13 @@ public class PollutantCarMoverTest {
 		
 		SmartGov.getRuntime().start(1000);
 		
-		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.MICROSECONDS.sleep(10);
-		}
+		SmartGov.getRuntime().waitUntilSimulatioEnd();
 		
+		TimeUnit.MICROSECONDS.sleep(10);
+
 		assertThat(
 				crossedArcIds,
-				hasItems("0", "1", "2", "3")
+				contains("0", "1", "2", "3")
 				);
 		
 		assertThat(

@@ -16,7 +16,6 @@ import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.environment.LezContext;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.core.AgentBody;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.osm.agent.OsmAgent;
 

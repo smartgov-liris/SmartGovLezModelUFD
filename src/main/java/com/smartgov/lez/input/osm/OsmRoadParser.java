@@ -14,6 +14,7 @@ import com.smartgov.osmparser.examples.roads.WayNodesFilter;
 import com.smartgov.osmparser.filters.elements.TagFilter;
 import com.smartgov.osmparser.filters.tags.BaseTagMatcher;
 import com.smartgov.osmparser.filters.tags.NoneTagMatcher;
+import com.smartgov.osmparser.filters.tags.NotTagMatcher;
 import com.smartgov.osmparser.filters.tags.TagMatcher;
 
 /**
@@ -41,6 +42,7 @@ public class OsmRoadParser {
 	 * <li> primary_link </li>
 	 * <li> secondary_link </li>
 	 * <li> tertiary_link </li>
+	 * <li> living_street </li>
 	 * </ul>
 	 */
 	public static final String[] highways = {
@@ -55,7 +57,8 @@ public class OsmRoadParser {
 			"trunk_link",
 			"primary_link",
 			"secondary_link",
-			"tertiary_link"
+			"tertiary_link",
+			"living_street"
 	};
 	
 	/**
@@ -92,6 +95,7 @@ public class OsmRoadParser {
 	    for(String highway : highways) {
 	    	highwaysTagMatcher = highwaysTagMatcher.or(new BaseTagMatcher("highway", highway));
 	    }
+	    
 	    
 	    // Filter only highways
         parser.setWayFilter(
