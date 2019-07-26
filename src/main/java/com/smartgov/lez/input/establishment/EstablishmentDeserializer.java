@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateXY;
@@ -16,10 +15,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.ST8;
+import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.input.establishment.EstablishmentLoader.TemporaryRound;
 
+import smartgov.core.simulation.time.Date;
+import smartgov.core.simulation.time.WeekDay;
 import smartgov.urban.geo.utils.LatLon;
-import smartgov.urban.geo.utils.lambert.LambertII;
 
 /**
  * Custom Jackson deserializer class used to load and build establishments from json inputs.
@@ -28,16 +29,14 @@ import smartgov.urban.geo.utils.lambert.LambertII;
 public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoader>{
 
 	private File fleetProfiles;
-	private File copertFile;
-	private Random random;
+	private CopertParser copertParser;
 	
 	private static final long serialVersionUID = 1L;
 
-	public EstablishmentDeserializer(File fleetProfiles, File copertFile, Random random) {
+	public EstablishmentDeserializer(File fleetProfiles, CopertParser copertParser) {
 		this(null);
 		this.fleetProfiles = fleetProfiles;
-		this.copertFile = copertFile;
-		this.random = random;
+		this.copertParser = copertParser;
 	}
 	
 	public EstablishmentDeserializer(Class<?> c) {
@@ -60,7 +59,12 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 				activity = ST8.byCode(establishmentNode.get("ST8").asText());
 			}
 			else {
-				activity = ST8.valueOf(establishmentNode.get("ST8").asText());
+				try {
+					activity = ST8.valueOf(establishmentNode.get("ST8").asText());
+				}
+				catch(IllegalArgumentException e) {
+					activity = ST8.byCode(establishmentNode.get("ST8").asText());
+				}
 			}
 			
 			LatLon geoLocation = null;
@@ -70,7 +74,7 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 						establishmentNode.get("y").asDouble()
 						);
 				
-				geoLocation = new LambertII().unproject(location);
+				geoLocation = new SimturbLambert().unproject(location);
 			}
 			
 			else if (establishmentNode.has("lat")) {
@@ -99,12 +103,16 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 				for(int k = 0; k < establishmentIdsNode.size(); k++) {
 					establishmentIds.add(establishmentIdsNode.get(k).asText());
 				}
-				temporaryRounds.add(new TemporaryRound(establishmentIds, weight));
+				
+				Double departure = roundNode.get("departure").asDouble();
+				int hour = (int) Math.floor(departure);
+				int minutes = (int) Math.round(60 * (departure - hour));
+				temporaryRounds.add(new TemporaryRound(establishmentIds, new Date(0, WeekDay.MONDAY, hour, minutes), weight));
 			}
 			loader._loadTemporaryRounds(establishment.getId(), temporaryRounds);
 		}
 		
-		loader._buildFleets(fleetProfiles, copertFile, random);
+		loader._buildFleets(fleetProfiles, copertParser);
 		return loader;
 	}
 

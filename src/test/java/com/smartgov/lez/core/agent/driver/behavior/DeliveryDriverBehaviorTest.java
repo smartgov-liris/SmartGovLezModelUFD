@@ -34,6 +34,7 @@ import smartgov.core.environment.SmartGovContext;
 import smartgov.core.scenario.Scenario;
 import smartgov.core.simulation.time.Clock;
 import smartgov.core.simulation.time.Date;
+import smartgov.core.simulation.time.Time;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.mover.CarMover;
 import smartgov.urban.osm.environment.OsmContext;
@@ -91,7 +92,16 @@ public class DeliveryDriverBehaviorTest {
 		
 		EventChecker departureChecker = new EventChecker();
 		((DeliveryDriverBehavior) DeliveryScenario.driverSpy.getAgent().getBehavior())
-			.addRoundDepartureListener((event) -> departureChecker.check());
+			.addRoundDepartureListener((event) -> {
+				departureChecker.check();
+				Time clock = SmartGov.getRuntime().getClock();
+				Time dep = DeliveryScenario.departure;
+				System.out.println(clock.equals(dep));
+				assertThat(
+						clock,
+						equalTo(DeliveryScenario.departure)
+						);
+			});
 	
 		EventChecker endChecker = new EventChecker();
 		((DeliveryDriverBehavior) DeliveryScenario.driverSpy.getAgent().getBehavior())
@@ -168,13 +178,12 @@ public class DeliveryDriverBehaviorTest {
 				when(establishment.getClosestOsmNode()).thenReturn((OsmNode) context.nodes.get(String.valueOf(i)));
 				establishments.add(establishment);
 			}
-			Round round = new Round(origin, establishments, 10);
+			Round round = new Round(origin, establishments, departure, 10);
 			
 			
 			DeliveryDriverBehavior behavior = new DeliveryDriverBehavior(
 					driverSpy,
 					round,
-					departure,
 					(OsmContext) context
 					);
 

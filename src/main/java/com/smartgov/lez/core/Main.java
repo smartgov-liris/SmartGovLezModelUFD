@@ -21,7 +21,7 @@ public class Main {
 	
     public static void main(String[] args) {
         SmartGov smartGov = new SmartGov(
-        		new LezContext(SmartgovLezApplication.class.getResource("config.properties").getFile())
+        		new LezContext(SmartgovLezApplication.class.getResource("static_config.properties").getFile())
         		);
         SmartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 

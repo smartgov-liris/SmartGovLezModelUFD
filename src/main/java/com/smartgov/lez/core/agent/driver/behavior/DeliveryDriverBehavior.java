@@ -11,7 +11,6 @@ import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.events.EventHandler;
-import smartgov.core.simulation.time.Date;
 import smartgov.core.simulation.time.DelayedActionHandler;
 
 /**
@@ -40,13 +39,11 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 	 *
 	 * @param agentBody associated body
 	 * @param round round to perform
-	 * @param departure departure date
 	 * @param context currentContext
 	 */
 	public DeliveryDriverBehavior(
 			DeliveryDriverBody agentBody,
 			Round round,
-			Date departure,
 			SmartGovContext context) {
 		super(
 			agentBody,
@@ -69,7 +66,7 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 			.getClock()
 			.addDelayedAction(
 				new DelayedActionHandler(
-						departure,
+						round.getDeparture(),
 						() -> {
 							nextAction = MoverAction.LEAVE(round.getOrigin());
 							triggerRoundDepartureListeners(new RoundDeparture());

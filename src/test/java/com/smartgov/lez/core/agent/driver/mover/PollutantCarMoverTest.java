@@ -104,7 +104,7 @@ public class PollutantCarMoverTest {
 		
 		assertThat(
 				crossedArcIds,
-				hasItems("1", "2", "3", "4")
+				hasItems("0", "1", "2", "3")
 				);
 		
 		assertThat(
@@ -283,7 +283,7 @@ public class PollutantCarMoverTest {
 	 * 
 	 * But we want to work with spies, so that we can check methods are called.
 	 * 
-	 * So we use this node class, that will be unserialized instead of normal OsmNode,
+	 * So we use this node class, that will be deserialized instead of normal OsmNode,
 	 * and that do not return normal arcs as incoming / outgoing arcs, but corresponding 
 	 * spies.
 	 */

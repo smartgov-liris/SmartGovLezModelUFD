@@ -72,6 +72,7 @@ public class OsmRoadParser {
 	 * @throws IOException is case of a problem reading or writing an input / output file
 	 */
 	public static void main(String[] args) throws JAXBException, IOException {
+		long beginTime = System.currentTimeMillis();
 		OsmParser parser = new OsmParser();
 		
 		SmartgovLezApplication.logger.info("Parsing osm data from : " + new File(args[0]));
@@ -102,20 +103,25 @@ public class OsmRoadParser {
         // Keep highway, name and ref tags
         parser.setWayTagMatcher(new BaseTagMatcher("highway", ".*").or("name", ".*").or("ref", ".*").or("oneway", ".*"));
 
+        SmartgovLezApplication.logger.info("Filtering ways...");
+        long filterBeginTime = System.currentTimeMillis();
         // Filter the ways and their tags
         parser.filterWays();
-        
+        SmartgovLezApplication.logger.info("Ways filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
         // Keep only nodes that belong to ways
         parser.setNodeFilter(new WayNodesFilter(osm.getWays()));
         
         // Does not keep any tag for nodes
         parser.setNodeTagMatcher(new NoneTagMatcher());
         
+        SmartgovLezApplication.logger.info("Filtering nodes...");
+        filterBeginTime = System.currentTimeMillis();
         // Filter nodes
         parser.filterNodes();
+        SmartgovLezApplication.logger.info("Nodes filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
         
-        SmartgovLezApplication.logger.info("Number of roads filtered : " + osm.getWays().size());
-        SmartgovLezApplication.logger.info("Number of nodes filtered : " + osm.getNodes().size());
+        SmartgovLezApplication.logger.info("Number of filtered roads : " + osm.getWays().size());
+        SmartgovLezApplication.logger.info("Number of filtered nodes : " + osm.getNodes().size());
         
         // Custom object mapper to indent output
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -125,6 +131,8 @@ public class OsmRoadParser {
         
         SmartgovLezApplication.logger.info("Writing filtered nodes to " + new File(args[1]));
         parser.writeNodes(new File(args[1]), mapper);
+        
+        SmartgovLezApplication.logger.info("Parsing end. Total process time : " + (System.currentTimeMillis() - beginTime) + "ms");
 
 	}
 }

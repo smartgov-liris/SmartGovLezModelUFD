@@ -6,9 +6,9 @@
 		"lat": 46.986083,
 		"lon": 3.810298,
 		"rounds": [
-			{"ids" : [1], "weight": 3000},
-			{"ids" : [2, 1], "weight": 2000},
-			{"ids" : [2], "weight": 1000}
+			{"ids" : [1], "weight": 3000, "departure": 8.5},
+			{"ids" : [2, 1], "weight": 2000, "departure": 10},
+			{"ids" : [2], "weight": 1000, "departure": 15.80}
 		]
 	},
 	{
@@ -26,7 +26,7 @@
 		"lat": 46.987589,
 		"lon": 3.806566,
 		"rounds": [
-			{"ids": [0, 1]}
+			{"ids": [0, 1], "departure": 9.1}
 		]
 	}
 ]

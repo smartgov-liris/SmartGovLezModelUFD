@@ -2,49 +2,77 @@ package com.smartgov.lez.core.simulation.scenario;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
+import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverAgent;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
 import com.smartgov.lez.core.agent.establishment.Establishment;
+import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.LezContext;
+import com.smartgov.lez.core.environment.graph.PollutableOsmArcFactory;
 import com.smartgov.lez.input.establishment.EstablishmentLoader;
 
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.simulation.time.Date;
-import smartgov.core.simulation.time.WeekDay;
+import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.environment.graph.GeoKdTree;
 import smartgov.urban.geo.utils.lonLat.LonLat;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.environment.graph.OsmNode;
+import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.tags.Highway;
+import smartgov.urban.osm.utils.OsmArcsBuilder;
 
 public class DeliveriesScenario extends PollutionScenario {
 	
 	public static final String name = "Deliveries";
+	public static final Highway[] forbiddenClosestNodeHighways = {
+			Highway.MOTORWAY,
+			Highway.MOTORWAY_LINK,
+			Highway.TRUNK,
+			Highway.TRUNK_LINK
+	};
 
 	@Override
 	public Collection<? extends Agent<?>> buildAgents(SmartGovContext context) {
+		int deadEnds = 0;
+		for(Node node : context.nodes.values()) {
+			if(node.getOutgoingArcs().isEmpty() || node.getIncomingArcs().isEmpty()) {
+				deadEnds++;
+				Road road = ((OsmNode) node).getRoad();
+				SmartgovLezApplication.logger.info("Dead end found on node " + node.getId() + ", road " + road.getId());
+			}
+		}
+		SmartgovLezApplication.logger.info(deadEnds + " dead ends found.");
+		
+		OsmArcsBuilder.fixDeadEnds((LezContext) context, new PollutableOsmArcFactory());
+
+		// All the vehicles will belong to the loaded copert table
+		CopertParser parser = new CopertParser(context.getFileLoader().load("copert_table"), new Random(240720191835l));
 		Map<String, Establishment> establishments = null;
 		try {
 			establishments = 
 					EstablishmentLoader.loadEstablishments(
 							context.getFileLoader().load("establishments"),
 							context.getFileLoader().load("fleet_profiles"),
-							context.getFileLoader().load("copert_table")
+							parser
 							);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		((LezContext) context).setEstablishments(establishments);
 		
 		Map<String, OsmNode> geoNodes = new HashMap<>();
 		for (String id : context.nodes.keySet()) {
-			geoNodes.put(id, (OsmNode) context.nodes.get(id));
+			OsmNode node = (OsmNode) context.nodes.get(id);
+			if(!Arrays.asList(forbiddenClosestNodeHighways).contains(node.getRoad().getHighway()))
+					geoNodes.put(id, node);
 		}
 		GeoKdTree kdTree = new GeoKdTree(geoNodes);
 		
@@ -57,7 +85,6 @@ public class DeliveriesScenario extends PollutionScenario {
 		
 		int agentId = 0;
 		Collection<OsmAgent> agents = new ArrayList<>();
-		int i = 0;
 		for (Establishment establishment : establishments.values()) {
 			for(String vehicleId : establishment.getRounds().keySet()) {
 				DeliveryDriverBody driver = new DeliveryDriverBody(establishment.getFleet().get(vehicleId));
@@ -65,7 +92,6 @@ public class DeliveriesScenario extends PollutionScenario {
 					= new DeliveryDriverBehavior(
 							driver,
 							establishment.getRounds().get(vehicleId),
-							new Date(0, WeekDay.MONDAY, 0, i++),
 							context
 							);
 				

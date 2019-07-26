@@ -12,6 +12,8 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
+import smartgov.core.simulation.time.Date;
+import smartgov.core.simulation.time.WeekDay;
 import smartgov.urban.osm.environment.graph.OsmNode;
 
 public class RoundTest {
@@ -41,7 +43,7 @@ public class RoundTest {
 		}
 		expectedNodeIds.add(equalTo("-1"));
 		
-		Round round = new Round(fakeEstablishmentOrigin, establishments, 0);
+		Round round = new Round(fakeEstablishmentOrigin, establishments, new Date(0, WeekDay.MONDAY, 0, 0), 0);
 		List<OsmNode> nodes = round.getNodes();
 		List<String> nodeIds = new ArrayList<>();
 		for(OsmNode node : nodes) {

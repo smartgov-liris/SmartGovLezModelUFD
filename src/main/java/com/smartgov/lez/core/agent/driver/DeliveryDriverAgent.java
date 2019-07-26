@@ -1,7 +1,9 @@
 package com.smartgov.lez.core.agent.driver;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
 import com.smartgov.lez.core.agent.establishment.Establishment;
+import com.smartgov.lez.core.output.establishment.EstablishmentIdSerializer;
 
 import smartgov.urban.osm.agent.OsmAgent;
 
@@ -11,6 +13,7 @@ import smartgov.urban.osm.agent.OsmAgent;
  */
 public class DeliveryDriverAgent extends OsmAgent {
 	
+	@JsonSerialize(using = EstablishmentIdSerializer.class)
 	private Establishment establishment;
 
 	/**

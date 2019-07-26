@@ -20,23 +20,30 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.agent.establishment.Establishment;
+import com.smartgov.lez.core.agent.establishment.Round;
 import com.smartgov.lez.core.agent.establishment.ST8;
 import com.smartgov.lez.core.agent.establishment.VehicleCapacity;
+import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.copert.tableParser.CopertParserTest;
 import com.smartgov.lez.input.establishment.EstablishmentLoader;
 
+import smartgov.core.simulation.time.Date;
+import smartgov.core.simulation.time.WeekDay;
 import smartgov.urban.geo.utils.LatLon;
-import smartgov.urban.geo.utils.lambert.LambertII;
 
 public class EstablishmentLoaderTest {
 	
 	private static Map<String, Establishment> loadEstablishments(String fileName) {
+		CopertParser parser = new CopertParser(
+				new File(
+						CopertParserTest.class.getResource("vehicle_classes_test.csv").getFile()),
+				new Random(170720191337l)
+				);
 		try {
 			return EstablishmentLoader.loadEstablishments(
 					new File(EstablishmentLoaderTest.class.getResource(fileName).getFile()),
 					new File(EstablishmentLoaderTest.class.getResource("fleetProfiles.json").getFile()),
-					new File(CopertParserTest.class.getResource("vehicle_classes_test.csv").getFile()),
-					new Random(170720191337l)
+					parser
 					);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -63,21 +70,21 @@ public class EstablishmentLoaderTest {
 				"0",
 				"establishment 1",
 				ST8.INDUSTRY,
-				new LambertII().unproject(new Coordinate(800439.326324793, 2077962.87711255))
+				new SimturbLambert().unproject(new Coordinate(800439.326324793, 2077962.87711255))
 				));
 		
 		expected.put("1", new Establishment(
 				"1",
 				"establishment 2",
 				ST8.WHOLESALE_BUSINESS,
-				new LambertII().unproject(new Coordinate(794507.446834672, 2081036.92197918))
+				new SimturbLambert().unproject(new Coordinate(794507.446834672, 2081036.92197918))
 				));
 		
 		expected.put("2", new Establishment(
 				"2",
 				"establishment 3",
 				ST8.CRAFTS_AND_SERVICES,
-				new LambertII().unproject(new Coordinate(793722.658833829, 2080652.38198779))
+				new SimturbLambert().unproject(new Coordinate(793722.658833829, 2080652.38198779))
 				));
 		
 		assertThat(
@@ -222,6 +229,49 @@ public class EstablishmentLoaderTest {
 						);
 			}
 			lighterVehicles.add(vehicle);
+		}
+		
+	}
+	
+	@Test
+	public void testRoundDeparture() {
+		Map<String, Establishment> establishments = loadEstablishments("establishments_lambert.json");
+		
+		Establishment e1 = establishments.get("0");
+		assertThat(
+			e1.getRounds().values(),
+			hasSize(3)
+			);
+		
+		for(Round round : e1.getRounds().values()) {
+			if(round.getEstablishments().get(0).equals(establishments.get("1")))
+				assertThat(
+					round.getDeparture(),
+					equalTo(new Date(0, WeekDay.MONDAY, 8, 30))
+					);
+			else if(round.getEstablishments().get(0).equals(establishments.get("2")) && round.getEstablishments().size() == 1)
+				assertThat(
+					round.getDeparture(),
+					equalTo(new Date(0, WeekDay.MONDAY, 15, 48))
+					);
+			else
+				assertThat(
+					round.getDeparture(),
+					equalTo(new Date(0, WeekDay.MONDAY, 10, 0))
+					);
+		}
+		
+		Establishment e2 = establishments.get("2");
+		assertThat(
+				e2.getRounds().values(),
+				hasSize(1)
+				);
+		
+		for(Round round : e2.getRounds().values()) {
+			assertThat(
+					round.getDeparture(),
+					equalTo(new Date(0, WeekDay.MONDAY, 9, 6))
+					);
 		}
 		
 	}

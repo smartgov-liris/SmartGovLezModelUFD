@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.output.establishment.EstablishmentListIdSerializer;
 
+import smartgov.core.simulation.time.Date;
 import smartgov.urban.osm.environment.graph.OsmNode;
 
 /**
@@ -25,6 +26,8 @@ public class Round {
 	private Establishment origin;
 	@JsonSerialize(using = EstablishmentListIdSerializer.class)
 	private List<Establishment> establishments;
+	@JsonIgnore
+	private Date departure;
 	private double initialWeight;
 	
 
@@ -34,17 +37,20 @@ public class Round {
 	 * @param origin origin establishment : beginning and end of the round
 	 * @param establishments establishments to deliver : does not include
 	 * origin establishment
+	 * @param departure departure date
 	 * @param initialWeight might be used to represent the volume of the
 	 * delivery
 	 */
 	public Round(
 			Establishment origin,
 			List<Establishment> establishments,
+			Date departure,
 			double initialWeight
 			) {
 		super();
 		this.origin = origin;
 		this.establishments = establishments;
+		this.departure = departure;
 		this.initialWeight = initialWeight;
 	}
 
@@ -67,6 +73,10 @@ public class Round {
 		return establishments;
 	}
 	
+	public Date getDeparture() {
+		return departure;
+	}
+
 	/**
 	 * Returns the round initial merchandises weight
 	 *

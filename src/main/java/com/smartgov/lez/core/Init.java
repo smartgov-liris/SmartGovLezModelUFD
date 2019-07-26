@@ -15,7 +15,8 @@ import smartgov.SmartGov;
 public class Init {
 
 	public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException {
-		LezContext context = new LezContext(SmartgovLezApplication.class.getResource("config.properties").getFile());
+		LezContext context = new LezContext(SmartgovLezApplication.class.getResource("static_config.properties").getFile());
+
 		SmartGov smartGov = new SmartGov(context);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -29,10 +30,21 @@ public class Init {
 			Main.logger.warn("No outputFolder specified in the input configuration.");
 		}
 		
-		mapper.writeValue(new File(outputInitFolder, "nodes.json"), context.nodes.values());
-		mapper.writeValue(new File(outputInitFolder, "arcs.json"), context.arcs.values());
-		mapper.writeValue(new File(outputInitFolder, "establishments.json"), context.getEstablishments().values());
-		mapper.writeValue(new File(outputInitFolder, "pollution_peeks.json"), Pollution.pollutionRatePeeks);
+//		File nodesFile = new File(outputInitFolder, "nodes.json");
+//		Main.logger.info("Writting nodes to " + nodesFile);
+//		mapper.writeValue(nodesFile, context.nodes.values());
+//		
+//		File arcsFile = new File(outputInitFolder, "arcs.json");
+//		Main.logger.info("Writting arcs to " + arcsFile);
+//		mapper.writeValue(arcsFile, context.arcs.values());
+//		
+//		File establishmentsFile = new File(outputInitFolder, "establishments.json");
+//		Main.logger.info("Writting establishments to " + establishmentsFile);
+//		mapper.writeValue(establishmentsFile, context.getEstablishments().values());
+//		
+//		File pollutionPeeksFile = new File(outputInitFolder, "pollution_peeks.json");
+//		Main.logger.info("Writting pollution peeks to " + pollutionPeeksFile);
+//		mapper.writeValue(pollutionPeeksFile, Pollution.pollutionRatePeeks);
 	}
 
 }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CopertInputReader {
 
-	public CopertProfile parseInputFile(File inputFile) {
+	public static CopertProfile parseInputFile(File inputFile) {
 		CopertProfile copertInput = null;
 		try {
 			copertInput = new ObjectMapper().readValue(

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -23,6 +22,8 @@ import com.smartgov.lez.core.agent.establishment.ST8;
 import com.smartgov.lez.core.agent.establishment.VehicleCapacity;
 import com.smartgov.lez.core.copert.inputParser.CopertProfile;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
+
+import smartgov.core.simulation.time.Date;
 
 /**
  * Class used to load establishments from an input json file.
@@ -46,45 +47,27 @@ public class EstablishmentLoader {
 		temporaryRounds = new HashMap<>();
 	}
 
-	/**
-	 * Load establishments and build rounds and fleets from the specified inputs.
-	 * The <i>random</i> parameter is passed to the CopertParser to generate fleets,
-	 * and so can be used to build fleet from a known seed.
-	 * 
-	 * @param establishmentsFile an establishment json file
-	 * @param fleetProfiles a json fleet profile
-	 * @param copertFile a copert table
-	 * @param random user specified random instance
-	 * @return built establishments
-	 * @throws JsonParseException json exception
-	 * @throws JsonMappingException json exception
-	 * @throws IOException file reading exception
-	 */
-	public static Map<String, Establishment> loadEstablishments(
-			File establishmentsFile, File fleetProfiles, File copertFile, Random random) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		SimpleModule module = new SimpleModule();
-		module.addDeserializer(EstablishmentLoader.class, new EstablishmentDeserializer(fleetProfiles, copertFile, random));
-		mapper.registerModule(module);
-		
-		return mapper.readValue(establishmentsFile, EstablishmentLoader.class).loadedEstablishments();
-	}
-	
 	// TODO : Detail file formats
 	/**
 	 * Load establishments and build rounds and fleets from the specified inputs.
 	 * 
 	 * @param establishmentsFile an establishment json file
 	 * @param fleetProfiles a json fleet profile
-	 * @param copertFile a copert table
+	 * @param parser loaded copert parser
 	 * @return built establishments
 	 * @throws JsonParseException json exception
 	 * @throws JsonMappingException json exception
 	 * @throws IOException file reading exception
 	 */
 	public static Map<String, Establishment> loadEstablishments(
-			File establishmentsFile, File fleetProfiles, File copertFile) throws JsonParseException, JsonMappingException, IOException {
-		return loadEstablishments(establishmentsFile, fleetProfiles, copertFile, new Random());
+			File establishmentsFile, File fleetProfiles, CopertParser parser) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		
+		module.addDeserializer(EstablishmentLoader.class, new EstablishmentDeserializer(fleetProfiles, parser));
+		mapper.registerModule(module);
+		
+		return mapper.readValue(establishmentsFile, EstablishmentLoader.class).loadedEstablishments();
 	}
 	
 	private Map<String, Establishment> loadedEstablishments() {
@@ -99,11 +82,8 @@ public class EstablishmentLoader {
 		temporaryRounds.put(establishmentId, round);
 	}
 	
-	void _buildFleets(File fleetProfiles, File copertFile, Random random) throws JsonParseException, JsonMappingException, IOException {
+	void _buildFleets(File fleetProfiles, CopertParser parser) throws JsonParseException, JsonMappingException, IOException {
 		Map<ST8, CopertProfile> fleetProfilesMap = new ObjectMapper().readValue(fleetProfiles, new TypeReference<Map<ST8, CopertProfile>>(){});
-		
-		// All the vehicles will belong to the loaded copert table
-		CopertParser parser = new CopertParser(copertFile, random);
 		
 		for(Establishment establishment : loadedEstablishments.values()) {
 			/*
@@ -139,7 +119,7 @@ public class EstablishmentLoader {
 					}
 					roundEstablishments.add(roundEstablishment);
 				}
-				rounds.add(new Round(loadedEstablishment, roundEstablishments, tempRound.getWeight()));
+				rounds.add(new Round(loadedEstablishment, roundEstablishments, tempRound.getDeparture(), tempRound.getWeight()));
 			}
 			assignVehiclesToRounds(rounds, loadedEstablishment);
 		}
@@ -171,17 +151,24 @@ public class EstablishmentLoader {
 	
 	static class TemporaryRound {
 		private List<String> ids;
+		private Date departure;
 		private double weight;
 
-		public TemporaryRound(List<String> ids, double weight) {
+		public TemporaryRound(List<String> ids, Date departure, double weight) {
 			super();
 			this.ids = ids;
+			this.departure = departure;
 			this.weight = weight;
 		}
 
 		public List<String> getIds() {
 			return ids;
 		}
+		
+		public Date getDeparture() {
+			return departure;
+		}
+
 		public double getWeight() {
 			return weight;
 		}
