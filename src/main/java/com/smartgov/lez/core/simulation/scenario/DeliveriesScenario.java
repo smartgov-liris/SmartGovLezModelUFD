@@ -37,7 +37,9 @@ public class DeliveriesScenario extends PollutionScenario {
 			Highway.MOTORWAY,
 			Highway.MOTORWAY_LINK,
 			Highway.TRUNK,
-			Highway.TRUNK_LINK
+			Highway.TRUNK_LINK,
+			Highway.LIVING_STREET,
+			Highway.SERVICE
 	};
 
 	@Override
@@ -100,7 +102,7 @@ public class DeliveriesScenario extends PollutionScenario {
 //				
 //				DeliveryDriverAgent agent = new DeliveryDriverAgent(String.valueOf(agentId++), driver, behavior);
 //				agents.add(agent);
-				BuildAgentThread thread = new BuildAgentThread(agentId++, vehicleId, establishment, context);
+				BuildAgentThread thread = new BuildAgentThread(agentId++, vehicleId, establishment, (LezContext) context);
 				threads.add(thread);
 				thread.start();
 			}
@@ -124,12 +126,12 @@ public class DeliveriesScenario extends PollutionScenario {
 		private int agentId;
 		private String vehicleId;
 		private Establishment establishment;
-		private SmartGovContext context;
+		private LezContext context;
 		
 		private DeliveryDriverAgent builtAgent;
 		private DeliveryDriverBehavior builtBehavior;
 		
-		public BuildAgentThread(int agentId, String vehicleId, Establishment establishment, SmartGovContext context) {
+		public BuildAgentThread(int agentId, String vehicleId, Establishment establishment, LezContext context) {
 			super();
 			this.agentId = agentId;
 			this.vehicleId = vehicleId;
@@ -145,13 +147,25 @@ public class DeliveriesScenario extends PollutionScenario {
 						establishment.getRounds().get(vehicleId),
 						context
 						);
+			context.ongoingRounds.add(builtBehavior.getRound());
 			
 			builtAgent = new DeliveryDriverAgent(String.valueOf(agentId), driver, builtBehavior);
-			builtBehavior.addRoundEndListener((event) ->
+			builtBehavior.addRoundDepartureListener((event) -> {
+				SmartgovLezApplication.logger.info("Agent " + builtAgent.getId()
+				+ " begins round for " + establishment.getName() + " at "
+				+ SmartGov.getRuntime().getClock().getHour() + ":" + SmartGov.getRuntime().getClock().getMinutes());
+			});
+				
+			builtBehavior.addRoundEndListener((event) -> {
 				SmartgovLezApplication.logger.info("Agent " + builtAgent.getId()
 					+ " ended its round for " + establishment.getName() + " at "
-					+ SmartGov.getRuntime().getClock().getHour() + ":" + SmartGov.getRuntime().getClock().getMinutes())
-				);
+					+ SmartGov.getRuntime().getClock().getHour() + ":" + SmartGov.getRuntime().getClock().getMinutes());
+				context.ongoingRounds.remove(builtBehavior.getRound());
+				SmartgovLezApplication.logger.info("Rounds still ongoing : " + context.ongoingRounds.size());
+				if(context.ongoingRounds.isEmpty()) {
+					SmartGov.getRuntime().stop();
+				}
+			});
 		}
 		
 		/*

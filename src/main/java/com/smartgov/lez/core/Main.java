@@ -39,7 +39,7 @@ public class Main {
 					// logger.info("Saving agents state to " + agentOutput.getPath());
 					// objectMapper.writeValue(agentOutput, smartGov.getContext().agents.values());
 					
-					logger.info("Saving arcs state to " + agentOutput.getPath());
+					logger.info("Saving arcs state to " + arcsOutput.getPath());
 					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs.values());
 					
 					logger.info("Saving pollution peeks to " + agentOutput.getPath());
@@ -79,7 +79,22 @@ public class Main {
 			
 		}
 		
-		SmartGov.getRuntime().start(43200);
+		SmartGov.getRuntime().addSimulationStoppedListener((event) -> {
+			int simulationTime = (int) Math.floor(SmartGov.getRuntime().getTickCount() * SmartGov.getRuntime().getTickDuration());
+			int days = (int) Math.floor(simulationTime / (24 * 3600));
+			int hours = (int) Math.floor((simulationTime - days * 24 * 3600) / 3600);
+			int minutes = (int) Math.floor((simulationTime - days * 24 * 3600 - hours * 3600) / 60);
+			int seconds = (int) Math.floor((simulationTime - days * 24 * 3600 - hours * 3600 - minutes * 60));
+			SmartgovLezApplication.logger.info(
+				"Total simulated period : "
+				+ days + " days, "
+				+ hours + " hours, "
+				+ minutes + " minutes, "
+				+ seconds + "s"
+				);
+		});
+		SmartGov.getRuntime().start();
+		// SmartGov.getRuntime().start((int) Math.floor(10 * 24 * 3600));
     }
     
 }

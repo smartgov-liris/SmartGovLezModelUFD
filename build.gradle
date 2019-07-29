@@ -64,3 +64,10 @@ task runInit(type: JavaExec) {
 	main = "com.smartgov.lez.core.Init"
 	jvmArgs "-Xmx6g"
 }
+
+task runMain(type: JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+
+	main = "com.smartgov.lez.core.Main"
+	jvmArgs "-Xmx6g"
+}

@@ -97,6 +97,12 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 					Node nextNode = round.getEstablishments().get(currentPosition + 1).getClosestOsmNode();
 					if(!nextNode.equals(currentNode))
 						// Sometimes, two consecutive establishment has the same closest osm node.
+//						nextAction = MoverAction.WAIT();
+//						new RefreshThread(
+//								this,
+//								round.getEstablishments().get(currentPosition).getClosestOsmNode(),
+//								round.getEstablishments().get(currentPosition + 1).getClosestOsmNode()
+//								).start();
 						refresh(
 							round.getEstablishments().get(currentPosition).getClosestOsmNode(),
 							round.getEstablishments().get(currentPosition + 1).getClosestOsmNode());
@@ -106,14 +112,21 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 						Node currentNode = round.getEstablishments().get(currentPosition).getClosestOsmNode();
 						if(!currentNode.equals(round.getOrigin().getClosestOsmNode()))
 							// The last establishment could have that same closest osm node as the origin...
+//							nextAction = MoverAction.WAIT();
+//							new RefreshThread(
+//									this,
+//									round.getEstablishments().get(currentPosition).getClosestOsmNode(),
+//									round.getOrigin().getClosestOsmNode()
+//									).start();
 							refresh(
 									round.getEstablishments().get(currentPosition).getClosestOsmNode(),
 									round.getOrigin().getClosestOsmNode());
 					}
-					else
+					else {
 						// Go back the origin parking area
 						nextAction = MoverAction.ENTER(round.getOrigin());
 						triggerRoundEndListeners(new RoundEnd());
+					}
 				currentPosition++;
 			});
 	}
@@ -169,5 +182,23 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 			listener.handle(event);
 		}
 	}
+	
+//	private static class RefreshThread extends Thread {
+//		private DeliveryDriverBehavior behavior;
+//		private Node origin;
+//		private Node destination;
+//		
+//		public RefreshThread(DeliveryDriverBehavior behavior, Node origin, Node destination) {
+//			super();
+//			this.behavior = behavior;
+//			this.origin = origin;
+//			this.destination = destination;
+//		}
+//		
+//		public void run() {
+//			behavior.refresh(origin, destination);
+//			behavior.nextAction = MoverAction.MOVE();
+//		}
+//	}
 
 }

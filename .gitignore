@@ -38,5 +38,5 @@ bin/
 #Large input file
 lyon.osm
 simturb.osm
-nodes_simturb.json
-ways_simturb.json
+simturb_nodes.json
+simturb_ways.json

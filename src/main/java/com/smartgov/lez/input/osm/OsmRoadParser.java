@@ -14,7 +14,6 @@ import com.smartgov.osmparser.examples.roads.WayNodesFilter;
 import com.smartgov.osmparser.filters.elements.TagFilter;
 import com.smartgov.osmparser.filters.tags.BaseTagMatcher;
 import com.smartgov.osmparser.filters.tags.NoneTagMatcher;
-import com.smartgov.osmparser.filters.tags.NotTagMatcher;
 import com.smartgov.osmparser.filters.tags.TagMatcher;
 
 /**
@@ -99,13 +98,48 @@ public class OsmRoadParser {
 	    
 	    // Filter only highways
         parser.setWayFilter(
+        		// Considering only highways
         		new TagFilter(
         				highwaysTagMatcher
         		)
+        		.or(
+        			// Also service highways
+        			new TagFilter(new BaseTagMatcher("highway", "service"))
+        			.and(
+        				// Only service highways with a "service" tag
+        				new TagFilter(new BaseTagMatcher("service", ".*"))
+        				.and(new TagFilter(
+	        					// That is equal to "alley", "parking_aisle" or "driveway"
+	        					new BaseTagMatcher("service", "alley")
+	        					.or("service", "parking_aisle")
+	        					.or("service", "driveway")
+	        					)
+	        				))
+        				)
         		);
+//	        		// And
+//	        		.and(
+//	        			// Ways with no service tag
+//	        			TagFilter.not(new TagFilter(new BaseTagMatcher("service", ".*")))
+//	        			// Or (if a service tag is present)
+//	        			.or(new TagFilter(
+//	        					// Ways that as are "alley", "parking_aisle" or "driveway" services
+//	        					new BaseTagMatcher("service", "alley")
+//	        					.or("service", "parking_aisle")
+//	        					.or("service", "driveway")
+//	        					)
+//	        				)
+//	        			)
+//        		));
         
-        // Keep highway, name and ref tags
-        parser.setWayTagMatcher(new BaseTagMatcher("highway", ".*").or("name", ".*").or("ref", ".*").or("oneway", ".*"));
+        // Keep highway, service, name and ref tags
+        parser.setWayTagMatcher(
+        		new BaseTagMatcher("highway", ".*")
+        		.or("service", ".*")
+        		.or("name", ".*")
+        		.or("ref", ".*")
+        		.or("oneway", ".*")
+        		);
 
         SmartgovLezApplication.logger.info("Filtering ways...");
         long filterBeginTime = System.currentTimeMillis();
