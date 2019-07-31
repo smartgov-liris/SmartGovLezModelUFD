@@ -40,3 +40,6 @@ lyon.osm
 simturb.osm
 simturb_nodes.json
 simturb_ways.json
+
+#Output
+*.log

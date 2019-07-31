@@ -147,25 +147,33 @@ public class DeliveriesScenario extends PollutionScenario {
 						establishment.getRounds().get(vehicleId),
 						context
 						);
-			context.ongoingRounds.add(builtBehavior.getRound());
 			
 			builtAgent = new DeliveryDriverAgent(String.valueOf(agentId), driver, builtBehavior);
+			context.ongoingRounds.put(builtAgent.getId(), builtBehavior.getRound());
+
 			builtBehavior.addRoundDepartureListener((event) -> {
-				SmartgovLezApplication.logger.info("Agent " + builtAgent.getId()
-				+ " begins round for " + establishment.getName() + " at "
-				+ SmartGov.getRuntime().getClock().getHour() + ":" + SmartGov.getRuntime().getClock().getMinutes());
+				SmartgovLezApplication.logger.info(
+				"[" + SmartGov.getRuntime().getClock().getHour()
+				+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
+				+ "Agent " + builtAgent.getId()
+				+ " begins round for [" + establishment.getId() + "] "
+				+ establishment.getName());
 			});
 				
 			builtBehavior.addRoundEndListener((event) -> {
-				SmartgovLezApplication.logger.info("Agent " + builtAgent.getId()
-					+ " ended its round for " + establishment.getName() + " at "
-					+ SmartGov.getRuntime().getClock().getHour() + ":" + SmartGov.getRuntime().getClock().getMinutes());
-				context.ongoingRounds.remove(builtBehavior.getRound());
+				SmartgovLezApplication.logger.info(
+				"[" + SmartGov.getRuntime().getClock().getHour()
+				+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
+				+ "Agent " + builtAgent.getId()
+				+ " ended round for [" + establishment.getId() + "] "
+				+ establishment.getName());
+				context.ongoingRounds.remove(builtAgent.getId());
 				SmartgovLezApplication.logger.info("Rounds still ongoing : " + context.ongoingRounds.size());
 				if(context.ongoingRounds.isEmpty()) {
 					SmartGov.getRuntime().stop();
 				}
 			});
+			SmartgovLezApplication.logger.info("Agent " + builtAgent.getId() + " : " + builtBehavior.getRound());
 		}
 		
 		/*

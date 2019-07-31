@@ -3,7 +3,9 @@ package com.smartgov.lez.core.agent.driver.behavior;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
+import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.Round;
 
 import smartgov.SmartGov;
@@ -91,44 +93,93 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 		
 		// When a destination is reached
 		((DeliveryDriverBody) getAgentBody()).addOnDestinationReachedListener((event) -> {
+			
+			if (currentPosition <= round.getEstablishments().size() - 1) {
+				Establishment currentEstablishment = round.getEstablishments().get(currentPosition);
+				SmartgovLezApplication.logger.info(
+						"[" + SmartGov.getRuntime().getClock().getHour()
+						+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
+						+ "Agent " + getAgentBody().getAgent().getId()
+						+ " has reached establishment [" + currentEstablishment.getId()
+						+ "] " + currentEstablishment.getName()
+						);
 				if (currentPosition < round.getEstablishments().size() - 1) {
 					// Go to the next node of the round
-					Node currentNode = round.getEstablishments().get(currentPosition).getClosestOsmNode();
+					Node currentNode = currentEstablishment.getClosestOsmNode();
 					Node nextNode = round.getEstablishments().get(currentPosition + 1).getClosestOsmNode();
-					if(!nextNode.equals(currentNode))
+					
+					while(nextNode.equals(currentNode) && currentPosition < round.getEstablishments().size() - 1) {
 						// Sometimes, two consecutive establishment has the same closest osm node.
-//						nextAction = MoverAction.WAIT();
-//						new RefreshThread(
-//								this,
-//								round.getEstablishments().get(currentPosition).getClosestOsmNode(),
-//								round.getEstablishments().get(currentPosition + 1).getClosestOsmNode()
-//								).start();
-						refresh(
-							round.getEstablishments().get(currentPosition).getClosestOsmNode(),
-							round.getEstablishments().get(currentPosition + 1).getClosestOsmNode());
-				}
-				else
+						currentPosition++;
+						currentEstablishment = round.getEstablishments().get(currentPosition);
+						SmartgovLezApplication.logger.info(
+								"[" + SmartGov.getRuntime().getClock().getHour()
+								+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
+								+ "Agent " + getAgentBody().getAgent().getId()
+								+ " has reached establishment [" + currentEstablishment.getId()
+								+ "] " + currentEstablishment.getName()
+								);
+						currentNode = round.getEstablishments().get(currentPosition).getClosestOsmNode();
+						nextNode = round.getEstablishments().get(currentPosition + 1).getClosestOsmNode();
+					}
+					
 					if (currentPosition == round.getEstablishments().size() - 1) {
-						Node currentNode = round.getEstablishments().get(currentPosition).getClosestOsmNode();
-						if(!currentNode.equals(round.getOrigin().getClosestOsmNode()))
-							// The last establishment could have that same closest osm node as the origin...
-//							nextAction = MoverAction.WAIT();
-//							new RefreshThread(
-//									this,
-//									round.getEstablishments().get(currentPosition).getClosestOsmNode(),
-//									round.getOrigin().getClosestOsmNode()
-//									).start();
+						// Nodes were equals until the last establishment
+						currentNode = round.getEstablishments().get(currentPosition).getClosestOsmNode();
+						if(!currentNode.equals(round.getOrigin().getClosestOsmNode())) {
+							// Last trip to the origin
 							refresh(
-									round.getEstablishments().get(currentPosition).getClosestOsmNode(),
+									currentNode,
 									round.getOrigin().getClosestOsmNode());
+						}
+						else {
+							// The last node is also the same as origin...
+							// Go back the origin parking area and end round
+							nextAction = MoverAction.ENTER(round.getOrigin());
+							triggerRoundEndListeners(new RoundEnd());
+						}
 					}
 					else {
-						// Go back the origin parking area
+						// Go on normally to the next distinct node
+						refresh(
+							currentNode,
+							nextNode);
+					}
+				}
+				else {
+					// currentPosition == round.getEstablishments().size() - 1
+					// The last establishment has been reached normally
+					Node currentNode = round.getEstablishments().get(currentPosition).getClosestOsmNode();
+					if(!currentNode.equals(round.getOrigin().getClosestOsmNode())) {
+						// The origin node is distinct from the last establishment node
+						refresh(
+								currentNode,
+								round.getOrigin().getClosestOsmNode());
+					}
+					else {
+						// The origin node is the same as the last establishment node.
+						
+						// Because this destination callback won't be call again (because
+						// no "refresh" is performed, we end the round there, and the last part
+						// below (when "currentPosition == round.getEstablishments().size()") will
+						// never be called.
+
+						// So go back to the origin parking area and end round
 						nextAction = MoverAction.ENTER(round.getOrigin());
 						triggerRoundEndListeners(new RoundEnd());
 					}
-				currentPosition++;
-			});
+				}
+			}
+			else {
+				// currentPosition == round.getEstablishments().size()
+				// The origin has been reached
+				
+				// Go back the origin parking area and end round
+				nextAction = MoverAction.ENTER(round.getOrigin());
+				triggerRoundEndListeners(new RoundEnd());
+			}
+			currentPosition++;
+		});
 	}
 	
 	/**

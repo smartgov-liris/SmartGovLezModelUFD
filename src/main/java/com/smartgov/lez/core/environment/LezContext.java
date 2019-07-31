@@ -1,9 +1,8 @@
 package com.smartgov.lez.core.environment;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.Round;
@@ -16,12 +15,12 @@ import smartgov.urban.osm.environment.OsmContext;
 public class LezContext extends OsmContext {
 	
 	private Map<String, Establishment> establishments;
-	public Collection<Round> ongoingRounds;
+	public Map<String, Round> ongoingRounds;
 
 	public LezContext(String configFile) {
 		super(configFile);
 		this.establishments = new HashMap<>();
-		this.ongoingRounds = new ArrayList<>();
+		this.ongoingRounds = new TreeMap<>();
 	}
 
 	public Map<String, Establishment> getEstablishments() {

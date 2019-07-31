@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.pollution.Pollution;
@@ -19,7 +20,7 @@ public class Init {
 
 		SmartGov smartGov = new SmartGov(context);
 		
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectWriter mapper = new ObjectMapper().writerWithDefaultPrettyPrinter();
 		
 		File outputInitFolder = null;
 		

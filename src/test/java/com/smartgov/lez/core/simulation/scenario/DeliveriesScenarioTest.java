@@ -99,6 +99,11 @@ public class DeliveriesScenarioTest {
 			}
 		}
 		
+		assertThat(
+				context.ongoingRounds.keySet(),
+				contains("0", "1", "2", "3")
+				);
+		
 		SmartGov.getRuntime().start(24 * 3600);
 		
 		SmartGov.getRuntime().waitUntilSimulatioEnd();
@@ -114,6 +119,11 @@ public class DeliveriesScenarioTest {
 					equalTo(true)
 					);
 		}
+		
+		assertThat(
+				context.ongoingRounds.keySet(),
+				hasSize(0)
+				);
 		
 		
 	}

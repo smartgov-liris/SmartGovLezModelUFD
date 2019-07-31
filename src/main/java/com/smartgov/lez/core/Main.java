@@ -93,8 +93,8 @@ public class Main {
 				+ seconds + "s"
 				);
 		});
-		SmartGov.getRuntime().start();
-		// SmartGov.getRuntime().start((int) Math.floor(10 * 24 * 3600));
+		// SmartGov.getRuntime().start();
+		SmartGov.getRuntime().start((int) Math.floor(10 * 24 * 3600));
     }
     
 }

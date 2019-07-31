@@ -110,4 +110,18 @@ public class Round {
 		return nodes;
 	}
 
+	@Override
+	public String toString() {
+		List<String> establishmentIds = new ArrayList<>();
+		for(Establishment establishment : establishments) {
+			establishmentIds.add(establishment.getId());
+		}
+		return "Round [origin=" + origin.getId()
+		+ ", establishments=" + establishmentIds
+		+ ", departure=" + departure.getHour() + ":" + departure.getMinutes()
+		+ ", weight=" + initialWeight + "]";
+	}
+	
+	
+
 }
