@@ -1,0 +1,49 @@
+[ {
+  "id" : "0",
+  "startNode" : "1",
+  "targetNode" : "2",
+  "length" : 14.368659363540491,
+  "roadDirection" : "FORWARD",
+  "pollution" : {
+    "PM" : 0.0,
+    "CH4" : 2.0,
+    "NH3" : 0.0,
+    "NOx" : 10.0,
+    "CO" : 0.0,
+    "VOC" : 0.0,
+    "N2O" : 0.0,
+    "FC" : 0.0
+  }
+}, {
+  "id" : "1",
+  "startNode" : "3",
+  "targetNode" : "2",
+  "length" : 5.627530896955257,
+  "roadDirection" : "FORWARD",
+  "pollution" : {
+    "PM" : 0.0,
+    "CH4" : 2.0,
+    "NH3" : 0.0,
+    "NOx" : 5.0,
+    "CO" : 0.0,
+    "VOC" : 0.0,
+    "N2O" : 0.0,
+    "FC" : 0.0
+  }
+}, {
+  "id" : "2",
+  "startNode" : "2",
+  "targetNode" : "1",
+  "length" : 14.368659363540491,
+  "roadDirection" : "BACKWARD",
+  "pollution" : {
+    "PM" : 0.0,
+    "CH4" : 2.0,
+    "NH3" : 0.0,
+    "NOx" : 10.0,
+    "CO" : 0.0,
+    "VOC" : 0.0,
+    "N2O" : 0.0,
+    "FC" : 0.0
+  }
+} ]

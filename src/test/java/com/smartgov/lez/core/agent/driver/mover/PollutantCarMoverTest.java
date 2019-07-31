@@ -97,12 +97,13 @@ public class PollutantCarMoverTest {
 				
 			});
 		
-		SmartGov.getRuntime().start(10000);
+		SmartGov.getRuntime().start(1000);
 		
 		SmartGov.getRuntime().waitUntilSimulatioEnd();
 		
 		TimeUnit.MICROSECONDS.sleep(5000);
 
+		System.out.println("Crossed arcs : " + crossedArcIds);
 		assertThat(
 				crossedArcIds,
 				contains("0", "1", "2", "3")

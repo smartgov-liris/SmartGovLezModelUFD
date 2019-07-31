@@ -6,16 +6,31 @@ import com.smartgov.lez.core.output.pollution.PollutionRateSerializer;
 
 import smartgov.SmartGov;
 
+/**
+ * Represents an emitted amount of pollution for a given pollutant.
+ *
+ */
 @JsonSerialize(using = PollutionRateSerializer.class)
 public class PollutionRate {
 
 	private Pollutant pollutant;
 	private double pollution = 0; // Pollution in g
 	
+	/**
+	 * PollutionRate constructor.
+	 * 
+	 * @param pollutant pollutant
+	 */
 	public PollutionRate(Pollutant pollutant) {
 		this.pollutant = pollutant;
 	}
 	
+	/**
+	 * Increase pollution by the specified amount for this pollutant.
+	 * {@link Pollution.pollutionRatePeeks} will be updated accordingly.
+	 * 
+	 * @param pollution emission amount in g
+	 */
 	public void increasePollution(double pollution) {
 		this.pollution += pollution;
 		// TODO : improve performances
@@ -26,10 +41,21 @@ public class PollutionRate {
 		}
 	}
 	
+	/**
+	 * Returns the absolute pollution accumulated by this pollution rate.
+	 * 
+	 * @return emission amount in g
+	 */
 	public double getAbsValue() {
 		return pollution;
 	}
 	
+	/**
+	 * Returns the pollution accumulated by this pollution rate, averaged in
+	 * time according to the SmartGov runtime state.
+	 * 
+	 * @return pollution rate in g/s
+	 */
 	public double getValue() {
 		return pollution / (SmartGov.getRuntime().getTickCount() * SmartGov.getRuntime().getTickDuration());
 	}

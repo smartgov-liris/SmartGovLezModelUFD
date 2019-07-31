@@ -7,6 +7,11 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.smartgov.lez.core.environment.pollution.PollutionRate;
 
+/**
+ * Serialize pollution rates using {@link com.smartgov.lez.core.environment.pollution.PollutionRate#getValue()},
+ * as g/s.
+ *
+ */
 public class PollutionRateSerializer extends StdSerializer<PollutionRate> {
 
 	private static final long serialVersionUID = 1L;
