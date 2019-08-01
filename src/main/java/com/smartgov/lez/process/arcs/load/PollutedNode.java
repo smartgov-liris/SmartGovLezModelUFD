@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"incomingArcs", "outgoingArcs", "road"})
+@JsonIgnoreProperties({"incomingArcs", "outgoingArcs", "road", "tags"})
 public class PollutedNode implements Comparable<PollutedNode> {
 
 	private String id;

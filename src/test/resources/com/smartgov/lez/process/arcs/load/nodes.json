@@ -3,18 +3,21 @@
   "id" : "1",
   "outgoingArcs" : [ "0" ],
   "incomingArcs" : [ "3", "1097109" ],
+  "tags" : { },
   "road" : "4325170",
   "position" : [ 45.7406086, 4.8833518 ]
 }, {
   "id" : "2",
   "outgoingArcs" : [ "1", "3" ],
   "incomingArcs" : [ "0", "2" ],
+  "tags" : { },
   "road" : "100018584",
   "position" : [ 45.7404842, 4.8834019 ]
 }, {
   "id" : "3",
   "outgoingArcs" : [ "2", "4", "965114" ],
   "incomingArcs" : [ "1", "965129" ],
+  "tags" : { },
   "road" : "372454555",
   "position" : [ 45.7404414, 4.8834406 ]
 }

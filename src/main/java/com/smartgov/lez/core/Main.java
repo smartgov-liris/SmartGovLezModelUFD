@@ -3,6 +3,13 @@ package com.smartgov.lez.core;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,18 +26,55 @@ public class Main {
 	
 	public static final Logger logger = LogManager.getLogger(Main.class);
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+		Options opts = new Options();
+		
+		opts.addOption(new Option("h", "help", false, "Displays this help message"));
+		Option config = new Option("c", "config-file", true, "Input configuration file");
+		config.setArgName("file");
+		opts.addOption(config);
+		Option maxTicks = new Option("t", "max-ticks", true, "Max ticks");
+		maxTicks.setArgName("int");
+		opts.addOption(maxTicks);
+		
+		CommandLineParser parser = new DefaultParser();
+		CommandLine cmd = parser.parse(opts, args);
+		
+		if(cmd.hasOption("h")) {
+			String header = "Run the simutation, with the specified configuration.";
+			String footer = ""
+					+ "Raw results are written to the <outputDir>/simulation folder.\n"
+					+ "The simulation runs until max ticks count as been reached (default to 10 days) or "
+					+ "when the last round has ended.";
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp("smartgovlez run", header, opts, footer, true);
+			return;
+		}
+
+		String configFile = "config.properties";
+		if(cmd.hasOption("c")) {
+			configFile = cmd.getOptionValue("c");
+		}
+		
+		int maxTicksValue = 10 * 3600 * 24;
+		if(cmd.hasOption("t")) {
+			maxTicksValue = Integer.valueOf(cmd.getOptionValue("t"));
+		}
+		
         SmartGov smartGov = new SmartGov(
-        		new LezContext(SmartgovLezApplication.class.getResource("static_config.properties").getFile())
+        		new LezContext(configFile)
         		);
         SmartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 
 			@Override
 			public void handle(SimulationStopped event) {
-				File outputFolder = smartGov.getContext().getFileLoader().load("outputFolder");
+				File outputFolder = new File(
+						smartGov.getContext().getFileLoader().load("outputDir"),
+						"simulation"
+						);
 				File agentOutput = new File(outputFolder, "agents_" + SmartGov.getRuntime().getTickCount() +".json");
 				File arcsOutput = new File(outputFolder, "arcs_" + SmartGov.getRuntime().getTickCount() +".json");
-				File pollutionPeeks = new File(outputFolder, "pollution_peeks_" + SmartGov.getRuntime().getTickCount() +".json");
+				File pollutionPeeksOutput = new File(outputFolder, "pollution_peeks_" + SmartGov.getRuntime().getTickCount() +".json");
 				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
@@ -42,8 +86,8 @@ public class Main {
 					logger.info("Saving arcs state to " + arcsOutput.getPath());
 					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs.values());
 					
-					logger.info("Saving pollution peeks to " + agentOutput.getPath());
-					objectMapper.writeValue(pollutionPeeks, Pollution.pollutionRatePeeks);
+					logger.info("Saving pollution peeks to " + pollutionPeeksOutput.getPath());
+					objectMapper.writeValue(pollutionPeeksOutput, Pollution.pollutionRatePeeks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -94,7 +138,7 @@ public class Main {
 				);
 		});
 		// SmartGov.getRuntime().start();
-		SmartGov.getRuntime().start((int) Math.floor(10 * 24 * 3600));
+		SmartGov.getRuntime().start((int) Math.floor(maxTicksValue));
     }
     
 }
