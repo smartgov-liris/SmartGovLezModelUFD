@@ -25,7 +25,7 @@ public class TileMapTest {
 		
 		assertThat(
 			map.getTiles().values(),
-			hasSize(4) // 7 rows
+			hasSize(4) // 4 rows
 			);
 		for(TreeMap<Integer, Tile> line : map.getTiles().values()) {
 			assertThat(
@@ -60,17 +60,22 @@ public class TileMapTest {
 		map.build(loader.getArcs(), loader.getNodes(), 10);
 		
 		for(Pollutant pollutant : Pollutant.values()) {
+			Tile tile1 = map.getTiles().get(1).get(0);
 			assertThat(
-					map.getTiles().get(1).get(0).getPollution().get(pollutant),
-					equalTo(loader.getArcs().get("0").getPollution().get(pollutant))
+					tile1.getPollution().get(pollutant),
+					equalTo(
+						loader.getArcs().get("0").getPollution().get(pollutant)
+						/ tile1.getBounds().getArea()
+						)
 					);
 			
+			Tile tile0 = map.getTiles().get(0).get(0);
 			assertThat(
-					map.getTiles().get(0).get(0).getPollution().get(pollutant),
+					tile0.getPollution().get(pollutant),
 					equalTo(
-							(loader.getArcs().get("1").getPollution().get(pollutant) * loader.getArcs().get("1").getLength()
-									+ loader.getArcs().get("2").getPollution().get(pollutant) * loader.getArcs().get("2").getLength())
-							/ (loader.getArcs().get("1").getLength() + loader.getArcs().get("2").getLength())
+							(loader.getArcs().get("1").getPollution().get(pollutant)
+									+ loader.getArcs().get("2").getPollution().get(pollutant))
+							/ tile0.getBounds().getArea()
 							)
 					);
 		}
@@ -89,17 +94,26 @@ public class TileMapTest {
 		System.out.println(tiles);
 		
 		String expected = 
-				"{\"tiles\":{\"0\":{\"0\":{"
+				"{\"bounds\":[[45.7406086,4.8833518],[45.7404414,4.8834406]],"
+				+ "\"tiles\":{\"0\":{\"0\":{"
 				+ "\"bounds\":[[45.7406086,4.8833518],[45.7404414,4.8834406]],"
-				+ "\"pollution\":"
-				+ "{";
+				+ "\"pollution\":{";
 		ArrayList<Pollutant> pollutants = new ArrayList<>(map.getTiles().get(0).get(0).getPollution().keySet());
 		for(int i = 0; i < pollutants.size() - 1; i++) {
 			expected += "\"" + pollutants.get(i) +"\":"+map.getTiles().get(0).get(0).getPollution().get(pollutants.get(i)) + ",";
 		}
 		expected += "\"" + pollutants.get(pollutants.size() - 1)
 				+"\":"+map.getTiles().get(0).get(0).getPollution().get(pollutants.get(pollutants.size() - 1))
-				+ "}}}}}";
+				+ "}}}},";
+		 
+		expected += "\"pollutionPeeks\":{";
+		for(int i = 0; i < pollutants.size() - 1; i++) {
+			expected += "\"" + pollutants.get(i) +"\":"+map.getPollutionPeeks().get(pollutants.get(i)) + ",";
+		}
+		expected += "\"" + pollutants.get(pollutants.size() - 1)
+				+"\":"+map.getPollutionPeeks().get(pollutants.get(pollutants.size() - 1))
+				+ "}}";
+		
 		assertThat(
 				tiles,
 				equalTo(expected)

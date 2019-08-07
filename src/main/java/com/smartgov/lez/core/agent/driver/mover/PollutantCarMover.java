@@ -14,7 +14,7 @@ import smartgov.urban.osm.agent.mover.CarMover;
 
 /**
  * This class implements the same behavior has the {@link smartgov.urban.osm.agent.mover.CarMover CarMover},
- * but it had utilities to compute pollution emissions. To do so, it records the traveled distance and propagate the
+ * but with utilities to compute pollution emissions. To do so, it records the traveled distance and propagate the
  * pollution on crossed arcs each time a distance threshold has been reached.
  * 
  * 
@@ -23,8 +23,12 @@ import smartgov.urban.osm.agent.mover.CarMover;
  */
 public class PollutantCarMover extends CarMover {
 	
-	// TODO: should be handled as a simulation parameter
-	public static final double pollutionDistanceTreshold = 200;
+	public static double maximumAcceleration = 4.;
+	public static double maximumBraking = -6.;
+	public static double maximumSpeed = 15.; // m/s
+	public static double vehicleSize = 6.;
+	
+	public static final double pollutionDistanceTreshold = 1000;
 	
 	// Record of the distance traveled since the last pollution emission.
 	private double traveledDistance;
@@ -33,8 +37,14 @@ public class PollutantCarMover extends CarMover {
 	
 	private ArrayList<PollutableOsmArc> arcsCrossed;
 
+	
 	public PollutantCarMover() {
-		super(4.0, -6.0, 15.0, 7.0);
+		super(
+			maximumAcceleration,
+			maximumBraking,
+			maximumSpeed,
+			vehicleSize
+			);
 		arcsCrossed = new ArrayList<>();
 	}
 	
@@ -50,7 +60,7 @@ public class PollutantCarMover extends CarMover {
 		
 		((MovingAgentBody) agentBody).addOnArcLeftListener((event) -> {
 				arcsCrossed.add((PollutableOsmArc) event.getArc());
-				if (traveledDistance >= pollutionDistanceTreshold) {
+				if (traveledDistance >= pollutionDistanceTreshold || ((MovingAgentBody) agentBody).getPlan().isComplete()) {
 					polluteArcs();
 					traveledDistance = 0;
 					time = 0;
@@ -79,7 +89,7 @@ public class PollutantCarMover extends CarMover {
 			}
 		}
 		for (PollutableOsmArc arc : arcsCrossed) {
-			arc.triggerPollutionIncreasedListeners(new PollutionIncreasedEvent(arc));
+			arc._triggerPollutionIncreasedListeners(new PollutionIncreasedEvent(arc));
 		}
 	}
 

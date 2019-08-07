@@ -1,11 +1,14 @@
 package com.smartgov.lez.process.arcs.build;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.SmartgovLezApplication;
-import com.smartgov.lez.process.arcs.build.Tile.Bounds;
+import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.process.arcs.load.PollutedArc;
 import com.smartgov.lez.process.arcs.load.PollutedNode;
 
@@ -13,38 +16,55 @@ import smartgov.urban.geo.utils.LatLon;
 
 public class TileMap {
 
+	
+	@JsonSerialize(using = Bounds.Serializer.class)
+	private Bounds bounds;
 	private TreeMap<Integer, TreeMap<Integer, Tile>> tiles;
+	private Map<Pollutant, Double> pollutionPeeks; // g/m-2
+	
 	
 	public TileMap() {
 		this.tiles = new TreeMap<>();
+		this.pollutionPeeks = new HashMap<>();
+		for(Pollutant pollutant : Pollutant.values()) {
+			pollutionPeeks.put(pollutant, 0.);
+		}
 	}
 	
+	public Bounds getBounds() {
+		return bounds;
+	}
+
 	public TreeMap<Integer, TreeMap<Integer, Tile>> getTiles() {
 		return tiles;
 	}
 
+	public Map<Pollutant, Double> getPollutionPeeks() {
+		return pollutionPeeks;
+	}
+
 	public void build(Map<String, PollutedArc> arcs, Map<String, PollutedNode> nodes, double tileSize) {
-		Double[] boundingBox = boundingBox(arcs.values(), nodes);
+		bounds = boundingBox(arcs.values(), nodes);
 		SmartgovLezApplication.logger.info(
 				"Computed bounding box :"
-				+ " top=" + boundingBox[0]
-				+ " left=" + boundingBox[1]
-				+ " bottom=" + boundingBox[2]				
-				+ " right=" + boundingBox[3]
+				+ " top=" + bounds.getTopLeft().lat
+				+ " left=" + bounds.getTopLeft().lon
+				+ " bottom=" + bounds.getBottomRight().lat			
+				+ " right=" + bounds.getBottomRight().lon
 						);
 		double meterHeight = LatLon.distance(
-				new LatLon(boundingBox[0], boundingBox[3]),
-				new LatLon(boundingBox[2], boundingBox[3])
+				new LatLon(bounds.getTopLeft().lat, bounds.getTopLeft().lon),
+				new LatLon(bounds.getBottomRight().lat, bounds.getTopLeft().lon)
 				);
 		SmartgovLezApplication.logger.info("Bounding box height : " + meterHeight + " m");
-		double latitudeHeight = boundingBox[0] - boundingBox[2];
+		double latitudeHeight = bounds.getTopLeft().lat - bounds.getBottomRight().lat;
 		
 		double meterWidth = LatLon.distance(
-				new LatLon(boundingBox[0], boundingBox[1]),
-				new LatLon(boundingBox[0], boundingBox[3])
+				new LatLon(bounds.getTopLeft().lat, bounds.getTopLeft().lon),
+				new LatLon(bounds.getTopLeft().lat, bounds.getBottomRight().lon)
 				);
 		SmartgovLezApplication.logger.info("Bounding box width : " + meterWidth + " m");
-		double longitudeWidth = boundingBox[3] - boundingBox[1];
+		double longitudeWidth = bounds.getBottomRight().lon - bounds.getTopLeft().lon;
 		
 		int widthTileCount = (int) Math.ceil(meterWidth / tileSize);
 		int heightTileCount = (int) Math.ceil(meterHeight / tileSize);
@@ -57,11 +77,11 @@ public class TileMap {
 			for(int j = 0; j < widthTileCount; j++) {
 				Tile newTile = new Tile(new Bounds(
 					new LatLon(
-							boundingBox[2] + (i + 1) * latitudeHeight / heightTileCount,
-							boundingBox[1] + j * longitudeWidth / widthTileCount),
+							bounds.getBottomRight().lat + (i + 1) * latitudeHeight / heightTileCount,
+							bounds.getTopLeft().lon + j * longitudeWidth / widthTileCount),
 					new LatLon(
-							boundingBox[2] + i * latitudeHeight / heightTileCount,
-							boundingBox[1] + (j + 1) * longitudeWidth / widthTileCount)
+							bounds.getBottomRight().lat + i * latitudeHeight / heightTileCount,
+							bounds.getTopLeft().lon + (j + 1) * longitudeWidth / widthTileCount)
 					));
 				 
 				line.put(j, newTile);
@@ -86,12 +106,16 @@ public class TileMap {
 		for(TreeMap<Integer, Tile> line : this.tiles.values()) {
 			for(Tile tile : line.values()) {
 				tile.computePollution();
+				for(Entry<Pollutant, Double> pollution : tile.getPollution().entrySet()) {
+					if(pollution.getValue() > pollutionPeeks.get(pollution.getKey()))
+						pollutionPeeks.put(pollution.getKey(), pollution.getValue());
+				}
 			}
 		}
 		
 	}
 	
-	private static Double[] boundingBox(Collection<PollutedArc> arcs, Map<String, PollutedNode> nodes) {
+	private static Bounds boundingBox(Collection<PollutedArc> arcs, Map<String, PollutedNode> nodes) {
 		double top = - Double.MAX_VALUE;
 		double left = Double.MAX_VALUE;
 		double bottom = Double.MAX_VALUE;
@@ -112,6 +136,9 @@ public class TileMap {
 				left = startPosition[1];
 		}
 		
-		return new Double[] {top, left, bottom, right };
+		return new Bounds(
+				new LatLon(top, left),
+				new LatLon(bottom, right)
+				);
 	}
 }

@@ -80,7 +80,7 @@ public class OsmRoadParser {
 	 * </p>
 	 * @throws JAXBException if a case of a problem parsing the input osm file
 	 * @throws IOException is case of a problem reading or writing an input / output file
-	 * @throws ParseException 
+	 * @throws ParseException in case of bad command line options
 	 */
 	public static void main(String[] args) throws JAXBException, IOException, ParseException {
 		Options helpOpts = new Options();

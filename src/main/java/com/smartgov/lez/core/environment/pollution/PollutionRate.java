@@ -27,7 +27,7 @@ public class PollutionRate {
 	
 	/**
 	 * Increase pollution by the specified amount for this pollutant.
-	 * {@link Pollution.pollutionRatePeeks} will be updated accordingly.
+	 * {@link Pollution#pollutionRatePeeks} will be updated accordingly.
 	 * 
 	 * @param pollution emission amount in g
 	 */

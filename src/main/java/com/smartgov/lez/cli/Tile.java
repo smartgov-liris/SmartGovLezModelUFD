@@ -44,10 +44,13 @@ public class Tile {
 		Option tileSize = new Option("s", "tile-size", true, "Tile size in meter");
 		tileOutput.setArgName("file");
 		
+		Option prettyPrint = new Option("p", "pretty-print", false, "Enables pretty JSON printing");
+		
 		fullOpts.addOption(nodeFile);
 		fullOpts.addOption(arcsFile);
 		fullOpts.addOption(tileOutput);
 		fullOpts.addOption(tileSize);
+		fullOpts.addOption(prettyPrint);
 		
 		if(args.length == 0) {
 			printHelp(fullOpts);
@@ -82,10 +85,19 @@ public class Tile {
 		SmartgovLezApplication.logger.info("Tiles width count : " + map.getTiles().get(0).size());
 		SmartgovLezApplication.logger.info("Tiles height count : " + map.getTiles().size());
 
-		new ObjectMapper().writeValue(
-				new File(mainCmd.getOptionValue("o")),
-				map
-				);
+		ObjectMapper mapper = new ObjectMapper();
+		
+		if(mainCmd.hasOption("p")) {
+			mapper.writerWithDefaultPrettyPrinter().writeValue(
+					new File(mainCmd.getOptionValue("o")),
+					map);
+		}
+		else {
+			mapper.writeValue(
+					new File(mainCmd.getOptionValue("o")),
+					map
+					);
+		}
 	}
 	
 	private static void printHelp(Options opts) {

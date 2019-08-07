@@ -23,6 +23,15 @@ public class PollutableOsmArc extends OsmArc {
 	
 	private Collection<EventHandler<PollutionIncreasedEvent>> pollutionIncreasedListeners;
 	
+	/**
+	 * PollutableOsmArc constructor.
+	 * 
+	 * @param id arc id
+	 * @param startNode start node
+	 * @param targetNode target node
+	 * @param road osm road
+	 * @param roadDirection BACKWARD or FORWARD
+	 */
 	public PollutableOsmArc(
 			String id,
 			OsmNode startNode,
@@ -34,19 +43,44 @@ public class PollutableOsmArc extends OsmArc {
 		pollutionIncreasedListeners = new ArrayList<>();
 	}
 	
+	/**
+	 * Increases the pollution amount recorded on this arc for the given pollutant
+	 *  by the specified amount, in g.
+	 * 
+	 * @param pollutant pollutant
+	 * @param increment emission in g
+	 */
 	public void increasePollution(Pollutant pollutant, double increment) {
 		pollution.get(pollutant).increasePollution(increment);
 	}
 	
+	/**
+	 * Returns the pollution amounts registered on this arc.
+	 * Values are given in g.
+	 * 
+	 * @return arc pollution
+	 */
 	public Pollution getPollution() {
 		return pollution;
 	}
 	
+	/**
+	 * Adds a new pollution increased event handler, called each time the arc is
+	 * polluted by a {@link com.smartgov.lez.core.agent.driver.mover.PollutantCarMover}.
+	 * 
+	 * @param pollutionIncreasedListener pollution increased event handler
+	 */
 	public void addPollutionIncreasedListener(EventHandler<PollutionIncreasedEvent> pollutionIncreasedListener) {
 		this.pollutionIncreasedListeners.add(pollutionIncreasedListener);
 	}
 	
-	public void triggerPollutionIncreasedListeners(PollutionIncreasedEvent event) {
+	/**
+	 * Used by the {@link com.smartgov.lez.core.agent.driver.mover.PollutantCarMover} to
+	 * trigger pollution increased listeners
+	 * 
+	 * @param event pollution increased event
+	 */
+	public void _triggerPollutionIncreasedListeners(PollutionIncreasedEvent event) {
 		for(EventHandler<PollutionIncreasedEvent> listener : pollutionIncreasedListeners) {
 			listener.handle(event);
 		}
