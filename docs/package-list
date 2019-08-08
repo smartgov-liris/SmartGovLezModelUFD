@@ -14,6 +14,7 @@ com.smartgov.lez.core.copert.tableParser
 com.smartgov.lez.core.environment
 com.smartgov.lez.core.environment.graph
 com.smartgov.lez.core.environment.lez
+com.smartgov.lez.core.environment.lez.criteria
 com.smartgov.lez.core.environment.pollution
 com.smartgov.lez.core.output.establishment
 com.smartgov.lez.core.output.pollution

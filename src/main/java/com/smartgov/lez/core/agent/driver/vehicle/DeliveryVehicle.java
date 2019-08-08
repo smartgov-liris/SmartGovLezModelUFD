@@ -13,6 +13,7 @@ import com.smartgov.lez.core.copert.fields.RoadSlope;
 import com.smartgov.lez.core.copert.fields.Technology;
 import com.smartgov.lez.core.copert.fields.VehicleCategory;
 import com.smartgov.lez.core.copert.fields.VehicleSegment;
+import com.smartgov.lez.core.environment.lez.criteria.CritAir;
 
 /**
  * A vehicle, that can be associated to an OsmAgentBody.
@@ -30,6 +31,19 @@ public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 	private Technology technology;
 	private Copert copert;
 	
+	private CritAir critAir;
+	
+	/**
+	 * DeliveryVehicle constructor.
+	 * 
+	 * @param id vehicle id
+	 * @param category Vehicle category (Heavy duty truck or light weight)
+	 * @param fuel vehicle fuel (diesel or petrol)
+	 * @param segment vehicle sub-segment
+	 * @param euroNorm euro norm
+	 * @param technology technology
+	 * @param copert associated copert instance
+	 */
 	public DeliveryVehicle(String id, VehicleCategory category, Fuel fuel, VehicleSegment segment,  EuroNorm euroNorm, Technology technology, Copert copert) {
 		this.id = id;
 		this.category = category;
@@ -38,34 +52,86 @@ public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 		this.technology = technology;
 		this.euroNorm = euroNorm;
 		this.copert = copert;
+		
+		this.critAir = CritAir.compute(this);
 	}
 	
+	/**
+	 * Returns the vehicle id. This id is not guaranteed to be unique
+	 * in all the simulation, and can for example be managed at the
+	 * establishments scale.
+	 * 
+	 * @return vehicle id
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Returns the vehicle category.
+	 * 
+	 * @return vehicle category
+	 */
 	public VehicleCategory getCategory() {
 		return category;
 	}
 	
+	/**
+	 * Returns the vehicle fuel.
+	 * 
+	 * @return vehicle fuel
+	 */
 	public Fuel getFuel() {
 		return fuel;
 	}
 	
+	/**
+	 * Returns the vehicle sub-segment.
+	 * 
+	 * @return vehicle segment
+	 */
 	public VehicleSegment getSegment() {
 		return segment;
 	}
 
+	/**
+	 * Returns the vehicle euro norm.
+	 * 
+	 * @return euro norm
+	 */
 	public EuroNorm getEuroNorm() {
 		return euroNorm;
 	}
 	
+	/**
+	 * Returns the vehicle technology
+	 * 
+	 * @return vehicle technology
+	 */
 	public Technology getTechnology() {
 		return technology;
 	}
 
+	/**
+	 * Returns the vehicle copert instance, used to compute
+	 * pollution emissions.
+	 * 
+	 * @return copert instance
+	 */
 	public Copert getCopert() {
 		return copert;
+	}
+	
+	/**
+	 * Returns the <i>CritAir</i> category associated to this vehicle,
+	 * computed from the vehicles properties.
+	 * 
+	 * @see com.smartgov.lez.core.environment.lez.criteria.CritAir
+	 * 
+	 * @return <i>CritAir</i> category
+	 */
+	public CritAir getCritAir() {
+		return critAir;
 	}
 
 
@@ -132,6 +198,12 @@ public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 		return true;
 	}
 
+	/**
+	 * Vehicles can be compared according to their {@link com.smartgov.lez.core.agent.establishment.VehicleCapacity capacities}.
+	 * 
+	 * @param o vehicle to compare
+	 * @return -1, 0, 1 respectively if this vehicle capacity if lower than, equal to or greater than the specified vehicle capacity.
+	 */
 	@Override
 	public int compareTo(DeliveryVehicle o) {
 		return new VehicleCapacity(category, segment).compareTo(new VehicleCapacity(o.category, o.segment));

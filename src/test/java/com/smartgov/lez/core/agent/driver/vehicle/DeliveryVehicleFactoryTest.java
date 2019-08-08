@@ -39,9 +39,8 @@ public class DeliveryVehicleFactoryTest {
 	private static final String invalid_copert_class = "invalid_copert_class.json";
 	
 	private CopertProfile loadCopertProfile(String profileTestFile) {
-		CopertInputReader reader = new CopertInputReader();
 		URL url = this.getClass().getResource(profileTestFile);
-		return reader.parseInputFile(new File(url.getFile()));
+		return CopertInputReader.parseInputFile(new File(url.getFile()));
 	}
 	
 	private CopertParser loadCopertParser(String copertTestTable) {
@@ -121,7 +120,7 @@ public class DeliveryVehicleFactoryTest {
 		}
 		
 		// Generate 10 selectors from test_file_0
-		factory.generateSelectors(selectors, selectors, copertProfile, 10);
+		factory._generateSelectors(selectors, selectors, copertProfile, 10);
 		
 		// Should be 50% LIGHT_WEIGHT
 		CopertSelector lightWeightSelector = new CopertSelector();
@@ -156,7 +155,7 @@ public class DeliveryVehicleFactoryTest {
 		}
 		
 		// Generate 16 selectors from test_file_1
-		factory.generateSelectors(selectors, selectors, copertProfile, 16);
+		factory._generateSelectors(selectors, selectors, copertProfile, 16);
 		
 		CopertSelector heavyTrucksSelector = new CopertSelector();
 		heavyTrucksSelector.put(CopertHeader.CATEGORY, VehicleCategory.HEAVY_DUTY_TRUCK); // rate : 0.5

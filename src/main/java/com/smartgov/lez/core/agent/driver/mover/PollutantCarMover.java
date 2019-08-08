@@ -48,6 +48,10 @@ public class PollutantCarMover extends CarMover {
 		arcsCrossed = new ArrayList<>();
 	}
 	
+	/*
+	 * Set up necessary listeners to compute arc pollution while the agent
+	 * is moving.
+	 */
 	private void setUpPollutionListeners() {
 		((BasicGeoMover) agentBody.getMover()).addGeoMoveEventListener((event) -> {
 				if (currentSpeed > 0) {
@@ -78,6 +82,10 @@ public class PollutantCarMover extends CarMover {
 		time = 0;
 	}
 	
+	/*
+	 * Propagates pollution on the crossed arcs, when the distance threshold has been
+	 * reached (or when the agent plan has been completed).
+	 */
 	private void polluteArcs() {
 		for(Pollutant pollutant : Pollutant.values()) {
 			double emissions = 

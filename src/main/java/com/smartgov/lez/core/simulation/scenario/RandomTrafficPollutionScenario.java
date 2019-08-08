@@ -12,6 +12,7 @@ import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicleFactory;
 import com.smartgov.lez.core.copert.inputParser.CopertInputReader;
 import com.smartgov.lez.core.copert.inputParser.CopertProfile;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
+import com.smartgov.lez.core.environment.lez.Lez;
 
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
@@ -21,6 +22,11 @@ import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.scenario.lowLayer.RandomTrafficScenario;
 
 public class RandomTrafficPollutionScenario extends PollutionScenario {
+
+	public RandomTrafficPollutionScenario(Lez lez) {
+		super(lez);
+	}
+
 
 	public static final String name = "Pollution";
 
@@ -32,8 +38,7 @@ public class RandomTrafficPollutionScenario extends PollutionScenario {
 		CopertParser copertParser = new CopertParser(context.getFileLoader().load("copert_table"), new Random(1907190831l));
 		
 		// Load input profiles
-		CopertInputReader reader = new CopertInputReader();
-		CopertProfile copertProfile = reader.parseInputFile(context.getFileLoader().load("copert_profile"));
+		CopertProfile copertProfile = CopertInputReader.parseInputFile(context.getFileLoader().load("copert_profile"));
 		
 		// Create a vehicle factory
 		DeliveryVehicleFactory vehicleFactory = new DeliveryVehicleFactory(copertProfile, copertParser);

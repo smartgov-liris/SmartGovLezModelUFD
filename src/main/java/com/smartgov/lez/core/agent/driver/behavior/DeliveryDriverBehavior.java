@@ -7,10 +7,10 @@ import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.Round;
+import com.smartgov.lez.core.environment.lez.Lez;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.moving.behavior.MoverAction;
-import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
@@ -28,7 +28,7 @@ import smartgov.core.simulation.time.DelayedActionHandler;
  * 	establishment. </li>
  * </ul>
  */
-public class DeliveryDriverBehavior extends MovingBehavior {
+public class DeliveryDriverBehavior extends LezBehavior {
 	
 	private Round round;
 	private int currentPosition;
@@ -52,7 +52,8 @@ public class DeliveryDriverBehavior extends MovingBehavior {
 			agentBody,
 			round.getOrigin().getClosestOsmNode(),
 			round.getEstablishments().get(0).getClosestOsmNode(),
-			context
+			context,
+			Lez.none()
 			);
 		roundDepartureListeners = new ArrayList<>();
 		roundEndListeners = new ArrayList<>();

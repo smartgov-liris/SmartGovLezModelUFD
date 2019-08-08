@@ -18,17 +18,49 @@ import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.copert.tableParser.CopertSelector;
 import com.smartgov.lez.core.copert.tableParser.CopertTree;
 
+/**
+ * A delivery vehicle factory, used to build vehicle sets with a given size
+ * according to input copert parameters.
+ */
 public class DeliveryVehicleFactory {
 
 	private int index = 0;
 	private CopertProfile copertProfile;
 	private CopertParser copertParser;
 	
+	/**
+	 * DeliveryVehicleFactory constructor.
+	 *
+	 * @param copertProfile a loaded copert profile, that contains information about
+	 * vehicle proportions to generate
+	 * @param copertParser a loaded copert parser, from which vehicles and associated
+	 * pollution parameters will be selected
+	 */
 	public DeliveryVehicleFactory(CopertProfile copertProfile, CopertParser copertParser) {
 		this.copertProfile = copertProfile;
 		this.copertParser = copertParser;
 	}
 	
+	/**
+	 * Creates a list of vehicles, distributed according to the input copert profile
+	 * and copert parser.
+	 *
+	 * <p>
+	 * Notice that the generation method is determinist : if the copert profiles specifies
+	 * 50/50 proportions for DIESEL and PETROL, it doesn't mean that for each vehicle in
+	 * the generated set, we have 50% chance that the fuel is DIESEL and PETROL, but that
+	 * the generated set <b>contains exactly 5 DIESEL and 5 PETROL vehicles</b> if 10 vehicles
+	 * are created. 
+	 * </p>
+	 * <p>
+	 * If this last case, if we want to create 9 vehicles, the algorithm ensures that we will
+	 * obtain 5 DIESEL / 4 PETROL <b>OR</b> 4 DIESEL / 5 PETROL, but which case between those
+	 * two will occur is not guaranteed.
+	 * </p>
+	 *
+	 * @param vehicleCount number of vehicle to generate
+	 * @return generated vehicles
+	 */
 	public List<DeliveryVehicle> create(int vehicleCount) {
 		List<DeliveryVehicle> vehicles = new ArrayList<>();
 		LinkedList<CopertSelector> selectors = new LinkedList<>();
@@ -38,14 +70,14 @@ public class DeliveryVehicleFactory {
 		LinkedList<CopertSelector> initialSelectors = new LinkedList<>();
 		initialSelectors.addAll(selectors);
 		
-		generateSelectors(selectors, initialSelectors, copertProfile, vehicleCount);
+		_generateSelectors(selectors, initialSelectors, copertProfile, vehicleCount);
 
 		while(vehicles.size() < vehicleCount ) {
 			/*
 			 * TODO
 			 * The vehicle counts can be ceiled multiple times during the process.
 			 * With a LinkedList, we only select the last added vehicles.
-			 * It would be better to use a Priotity Queue with a random order, in 
+			 * It would be better to use a Priority Queue with a random order, in order
 			 * to have more uniform results that better represent the originally specified
 			 * rates.
 			 */
@@ -54,7 +86,10 @@ public class DeliveryVehicleFactory {
 		return vehicles;
 	}
 	
-	void generateSelectors(LinkedList<CopertSelector> originalSelectors, LinkedList<CopertSelector> currentSelectors, CopertProfile copertProfile, int vehicleCount) {
+	/*
+	 * Recursive function to generate copert selectors according to the given profile.
+	 */
+	void _generateSelectors(LinkedList<CopertSelector> originalSelectors, LinkedList<CopertSelector> currentSelectors, CopertProfile copertProfile, int vehicleCount) {
 		
 		if (copertProfile == null) {
 			return;
@@ -112,13 +147,13 @@ public class DeliveryVehicleFactory {
 				selector.put(header,
 						CopertField.valueOf(header, rate.getValue()));
 			}
-			generateSelectors(originalSelectors, childSelectors, rate.getSubProfile(), vehicleCountForThisRate);
+			_generateSelectors(originalSelectors, childSelectors, rate.getSubProfile(), vehicleCountForThisRate);
 		}
 	}
 	
 	
 	
-	public DeliveryVehicle generateVehicle(CopertSelector copertSelector) {
+	private DeliveryVehicle generateVehicle(CopertSelector copertSelector) {
 		/*
 		 * The previously generated CopertSelectors are initialized with fixed values from 
 		 * the input file.

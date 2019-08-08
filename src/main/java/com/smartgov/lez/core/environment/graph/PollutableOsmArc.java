@@ -20,6 +20,7 @@ import smartgov.urban.osm.environment.graph.Road;
 public class PollutableOsmArc extends OsmArc {
 
 	private Pollution pollution;
+	private boolean inLez;
 	
 	private Collection<EventHandler<PollutionIncreasedEvent>> pollutionIncreasedListeners;
 	
@@ -31,14 +32,17 @@ public class PollutableOsmArc extends OsmArc {
 	 * @param targetNode target node
 	 * @param road osm road
 	 * @param roadDirection BACKWARD or FORWARD
+	 * @param inLez true if this arc is contained in a LEZ
 	 */
 	public PollutableOsmArc(
 			String id,
 			OsmNode startNode,
 			OsmNode targetNode,
 			Road road,
-			RoadDirection roadDirection) {
+			RoadDirection roadDirection,
+			boolean inLez) {
 		super(id, startNode, targetNode, road, roadDirection);
+		this.inLez = inLez;
 		pollution = new Pollution();
 		pollutionIncreasedListeners = new ArrayList<>();
 	}
@@ -62,6 +66,10 @@ public class PollutableOsmArc extends OsmArc {
 	 */
 	public Pollution getPollution() {
 		return pollution;
+	}
+	
+	public boolean isInLez() {
+		return inLez;
 	}
 	
 	/**

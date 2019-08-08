@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.Round;
+import com.smartgov.lez.core.environment.lez.Lez;
 import com.smartgov.lez.core.simulation.scenario.DeliveriesScenario;
 import com.smartgov.lez.core.simulation.scenario.RandomTrafficPollutionScenario;
 
@@ -33,16 +34,16 @@ public class LezContext extends OsmContext {
 
 	
 	@Override
-	public Scenario loadScenario(String scenarioName) {
+	protected Scenario loadScenario(String scenarioName) {
 		Scenario superScenario = super.loadScenario(scenarioName);
 		if (superScenario != null) {
 			return superScenario;
 		}
 		switch(scenarioName){
 			case RandomTrafficPollutionScenario.name:
-				return new RandomTrafficPollutionScenario();
+				return new RandomTrafficPollutionScenario(Lez.none());
 			case DeliveriesScenario.name:
-				return new DeliveriesScenario();
+				return new DeliveriesScenario(Lez.none());
 			default:
 				return null;
 		}

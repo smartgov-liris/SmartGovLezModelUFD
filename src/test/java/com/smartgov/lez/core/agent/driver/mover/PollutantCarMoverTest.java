@@ -272,7 +272,7 @@ public class PollutantCarMoverTest {
 		@Override
 		public PollutableOsmArc create(String id, OsmNode startNode, OsmNode targetNode, Road road, RoadDirection roadDirection) {
 
-			PollutableOsmArc spy = PowerMockito.spy(new PollutableOsmArc(id, startNode, targetNode, road, roadDirection));
+			PollutableOsmArc spy = PowerMockito.spy(new PollutableOsmArc(id, startNode, targetNode, road, roadDirection, false));
 			spies.put(id, spy);
 			return spy;
 		}

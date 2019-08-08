@@ -16,6 +16,7 @@ import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArcFactory;
+import com.smartgov.lez.core.environment.lez.Lez;
 import com.smartgov.lez.input.establishment.EstablishmentLoader;
 
 import smartgov.SmartGov;
@@ -31,7 +32,8 @@ import smartgov.urban.osm.environment.graph.tags.Highway;
 import smartgov.urban.osm.utils.OsmArcsBuilder;
 
 public class DeliveriesScenario extends PollutionScenario {
-	
+
+
 	public static final String name = "Deliveries";
 	public static final Highway[] forbiddenClosestNodeHighways = {
 			Highway.MOTORWAY,
@@ -41,7 +43,11 @@ public class DeliveriesScenario extends PollutionScenario {
 			Highway.LIVING_STREET,
 			Highway.SERVICE
 	};
-
+	
+	public DeliveriesScenario(Lez lez) {
+		super(lez);
+	}
+	
 	@Override
 	public Collection<? extends Agent<?>> buildAgents(SmartGovContext context) {
 		int deadEnds = 0;
@@ -54,7 +60,7 @@ public class DeliveriesScenario extends PollutionScenario {
 		}
 		SmartgovLezApplication.logger.info(deadEnds + " dead ends found.");
 		
-		OsmArcsBuilder.fixDeadEnds((LezContext) context, new PollutableOsmArcFactory());
+		OsmArcsBuilder.fixDeadEnds((LezContext) context, new PollutableOsmArcFactory(getLez()));
 
 		// All the vehicles will belong to the loaded copert table
 		CopertParser parser = new CopertParser(context.getFileLoader().load("copert_table"), new Random(240720191835l));
@@ -149,7 +155,6 @@ public class DeliveriesScenario extends PollutionScenario {
 						);
 			
 			builtAgent = new DeliveryDriverAgent(String.valueOf(agentId), driver, builtBehavior);
-			context.ongoingRounds.put(builtAgent.getId(), builtBehavior.getRound());
 
 			builtBehavior.addRoundDepartureListener((event) -> {
 				SmartgovLezApplication.logger.info(
@@ -179,9 +184,11 @@ public class DeliveriesScenario extends PollutionScenario {
 		/*
 		 * Listeners are initialized there from the main thread to avoid
 		 * concurrent modifications errors.
+		 * Rounds are also added to the context there, for the same reasons.
 		 */
 		public DeliveryDriverAgent getBuiltAgent() {
 			builtBehavior.setUpListeners();
+			context.ongoingRounds.put(builtAgent.getId(), builtBehavior.getRound());
 			return builtAgent;
 		}
 		
