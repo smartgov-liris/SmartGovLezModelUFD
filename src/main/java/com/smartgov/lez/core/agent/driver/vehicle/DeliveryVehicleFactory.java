@@ -81,7 +81,7 @@ public class DeliveryVehicleFactory {
 			 * to have more uniform results that better represent the originally specified
 			 * rates.
 			 */
-			vehicles.add(generateVehicle(selectors.poll()));
+			vehicles.add(generateVehicle(selectors.poll(), copertParser, String.valueOf(index++)));
 		}
 		return vehicles;
 	}
@@ -153,7 +153,7 @@ public class DeliveryVehicleFactory {
 	
 	
 	
-	private DeliveryVehicle generateVehicle(CopertSelector copertSelector) {
+	public static DeliveryVehicle generateVehicle(CopertSelector copertSelector, CopertParser copertParser, String id) {
 		/*
 		 * The previously generated CopertSelectors are initialized with fixed values from 
 		 * the input file.
@@ -180,7 +180,7 @@ public class DeliveryVehicleFactory {
 		Copert copert = new Copert(completeTree);
 
 		return new DeliveryVehicle(
-				String.valueOf(index++),
+				id,
 				(VehicleCategory) finalSelector.get(CopertHeader.CATEGORY),
 				(Fuel) finalSelector.get(CopertHeader.FUEL),
 				(VehicleSegment) finalSelector.get(CopertHeader.SEGMENT),

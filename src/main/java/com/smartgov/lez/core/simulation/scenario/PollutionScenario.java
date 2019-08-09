@@ -1,8 +1,12 @@
 package com.smartgov.lez.core.simulation.scenario;
 
+import java.util.Random;
+
+import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArcFactory;
 import com.smartgov.lez.core.environment.lez.Lez;
 
+import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.scenario.GenericOsmScenario;
@@ -11,6 +15,7 @@ import smartgov.urban.osm.scenario.GenericOsmScenario;
 public abstract class PollutionScenario extends GenericOsmScenario<OsmNode, Road> {
 	
 	private Lez lez;
+	private CopertParser copertParser;
 	
 	public PollutionScenario(Lez lez) {
 		super(OsmNode.class, Road.class, new PollutableOsmArcFactory(lez));
@@ -23,6 +28,15 @@ public abstract class PollutionScenario extends GenericOsmScenario<OsmNode, Road
 	
 	public Lez getLez() {
 		return lez;
+	}
+	
+	protected CopertParser loadParser(SmartGovContext context) {
+		copertParser = new CopertParser(context.getFileLoader().load("copert_table"), new Random(240720191835l));
+		return copertParser;
+	}
+	
+	public CopertParser getCopertParser() {
+		return copertParser;
 	}
 		
 }

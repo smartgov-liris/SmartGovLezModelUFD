@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverAgent;
@@ -63,7 +62,8 @@ public class DeliveriesScenario extends PollutionScenario {
 		OsmArcsBuilder.fixDeadEnds((LezContext) context, new PollutableOsmArcFactory(getLez()));
 
 		// All the vehicles will belong to the loaded copert table
-		CopertParser parser = new CopertParser(context.getFileLoader().load("copert_table"), new Random(240720191835l));
+		CopertParser parser = loadParser(context);
+		
 		Map<String, Establishment> establishments = null;
 		try {
 			establishments = 
