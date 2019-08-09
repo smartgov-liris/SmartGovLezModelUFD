@@ -5,7 +5,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 
-@JsonIgnoreProperties({"roadDirection"})
+@JsonIgnoreProperties({"roadDirection", "inLez"})
 public class PollutedArc implements Comparable<PollutedArc>{
 
 	private String id;

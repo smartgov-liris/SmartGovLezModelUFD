@@ -8,6 +8,7 @@ import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicleFactory;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.Round;
 import com.smartgov.lez.core.copert.fields.EuroNorm;
+import com.smartgov.lez.core.copert.fields.Technology;
 import com.smartgov.lez.core.copert.tableParser.CopertHeader;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.copert.tableParser.CopertSelector;
@@ -23,7 +24,7 @@ public class LezPreprocessor {
 		this.parser = parser;
 	}
 
-	public void preprocess(Establishment establishment) {
+	public int preprocess(Establishment establishment) {
 		Collection<DeliveryVehicle> allowedVehicles = new ArrayList<>();
 		Collection<DeliveryVehicle> forbiddenVehicles = new ArrayList<>();
 		
@@ -35,6 +36,8 @@ public class LezPreprocessor {
 				forbiddenVehicles.add(vehicle);
 			}
 		}
+		
+		int replacedVehicles = 0;
 		
 		for(DeliveryVehicle vehicle : forbiddenVehicles) {
 			Round round = establishment.getRounds().get(vehicle.getId());
@@ -56,7 +59,7 @@ public class LezPreprocessor {
 				selector.put(CopertHeader.CATEGORY, vehicle.getCategory());
 				selector.put(CopertHeader.FUEL, vehicle.getFuel());
 				selector.put(CopertHeader.SEGMENT, vehicle.getSegment());
-				selector.put(CopertHeader.TECHNOLOGY, vehicle.getTechnology());
+				selector.put(CopertHeader.TECHNOLOGY, Technology.RANDOM); // Not all technologies are available for all euro norms
 				
 				selector.put(CopertHeader.EURO_STANDARD, EuroNorm.EURO6);
 				
@@ -68,7 +71,9 @@ public class LezPreprocessor {
 						);
 				
 				establishment.getFleet().put(newVehicle.getId(), newVehicle);
+				replacedVehicles++;
 			}
 		}
+		return replacedVehicles;
 	}
 }

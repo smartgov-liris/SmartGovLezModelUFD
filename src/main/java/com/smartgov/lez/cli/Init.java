@@ -64,7 +64,7 @@ public class Init {
 		File outputInitFolder = null;
 		
 		try {
-			File outputFolder = smartGov.getContext().getFileLoader().load("outputFolder");
+			File outputFolder = smartGov.getContext().getFileLoader().load("outputDir");
 			outputInitFolder = new File(outputFolder, "init");
 		} catch (IllegalArgumentException e) {
 			Main.logger.warn("No outputFolder specified in the input configuration.");

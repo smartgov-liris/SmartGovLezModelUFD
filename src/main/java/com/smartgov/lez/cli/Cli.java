@@ -14,12 +14,16 @@ import org.apache.commons.cli.ParseException;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.Main;
 import com.smartgov.lez.input.osm.OsmRoadParser;
 
 public class Cli {
 
 	public static void main(String[] args) throws ParseException, JsonGenerationException, JsonMappingException, IOException, JAXBException {
+
+		System.out.println(SmartgovLezApplication.logger.getName());
+		
 		if(args.length == 0) {
 			printMainHelp();
 			return;

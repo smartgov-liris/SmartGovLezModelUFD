@@ -6,7 +6,6 @@ public class PollutionIncreasedEvent extends ArcEvent {
 
 	public PollutionIncreasedEvent(PollutableOsmArc arc) {
 		super(arc);
-		// TODO Auto-generated constructor stub
 	}
 
 }

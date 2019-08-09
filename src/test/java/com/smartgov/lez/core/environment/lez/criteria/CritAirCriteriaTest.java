@@ -1,6 +1,6 @@
 package com.smartgov.lez.core.environment.lez.criteria;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 
-public class CritAirLyonTest {
+public class CritAirCriteriaTest {
 
 	@Test
 	public void testCritAir() {
@@ -22,7 +22,7 @@ public class CritAirLyonTest {
 				CritAir.CRITAIR_3
 				);
 		
-		CritAirLyon criteria = new CritAirLyon(
+		CritAirCriteria criteria = new CritAirCriteria(
 				allowed
 				);
 		

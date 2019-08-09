@@ -90,7 +90,7 @@ public class LezPreprocessorTest {
 				Fuel.DIESEL,
 				HeavyDutyTrucksSegment.ARTICULATED_14_20_T,
 				EuroNorm.EURO6,
-				Technology.DPF_SCR,
+				null,
 				null
 				);
 		
@@ -101,7 +101,19 @@ public class LezPreprocessorTest {
 		
 		for (DeliveryVehicle vehicle : testFleet.values()) {
 			assertThat(
-					vehicle.equalCharacteristics(expectedCharacteristics),
+					vehicle.getCategory().equals(expectedCharacteristics.getCategory()),
+					is(true)
+					);
+			assertThat(
+					vehicle.getSegment().equals(expectedCharacteristics.getSegment()),
+					is(true)
+					);
+			assertThat(
+					vehicle.getFuel().equals(expectedCharacteristics.getFuel()),
+					is(true)
+					);
+			assertThat(
+					vehicle.getEuroNorm().equals(expectedCharacteristics.getEuroNorm()),
 					is(true)
 					);
 		}
@@ -176,8 +188,21 @@ public class LezPreprocessorTest {
 				null
 				);
 		
+		DeliveryVehicle vehicle = origin.getFleet().get("0");
 		assertThat(
-				origin.getFleet().get("0").equalCharacteristics(expectedCharacteristics),
+				vehicle.getCategory().equals(expectedCharacteristics.getCategory()),
+				is(true)
+				);
+		assertThat(
+				vehicle.getSegment().equals(expectedCharacteristics.getSegment()),
+				is(true)
+				);
+		assertThat(
+				vehicle.getFuel().equals(expectedCharacteristics.getFuel()),
+				is(true)
+				);
+		assertThat(
+				vehicle.getEuroNorm().equals(expectedCharacteristics.getEuroNorm()),
 				is(true)
 				);
 	}

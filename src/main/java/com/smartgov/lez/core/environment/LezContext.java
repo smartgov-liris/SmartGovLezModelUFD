@@ -1,5 +1,6 @@
 package com.smartgov.lez.core.environment;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -9,6 +10,7 @@ import com.smartgov.lez.core.agent.establishment.Round;
 import com.smartgov.lez.core.environment.lez.Lez;
 import com.smartgov.lez.core.simulation.scenario.DeliveriesScenario;
 import com.smartgov.lez.core.simulation.scenario.RandomTrafficPollutionScenario;
+import com.smartgov.lez.input.lez.CritAirLezDeserializer;
 
 import smartgov.core.scenario.Scenario;
 import smartgov.urban.osm.environment.OsmContext;
@@ -42,8 +44,19 @@ public class LezContext extends OsmContext {
 		switch(scenarioName){
 			case RandomTrafficPollutionScenario.name:
 				return new RandomTrafficPollutionScenario(Lez.none());
+			case DeliveriesScenario.NoLezDeliveries.name:
+				return new DeliveriesScenario.NoLezDeliveries();
 			case DeliveriesScenario.name:
-				return new DeliveriesScenario(Lez.none());
+				try {
+					return new DeliveriesScenario(
+							CritAirLezDeserializer.load(
+									this.getFileLoader().load("lez")
+									)
+							);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			default:
 				return null;
 		}

@@ -72,12 +72,6 @@ public class Main {
         		new LezContext(configFile)
         		);
         
-        for(Arc arc : smartGov.getContext().arcs.values()) {
-        	((PollutableOsmArc) arc).addPollutionIncreasedListener((event) -> {
-        		System.out.println(arc.getId() + " " + ((PollutableOsmArc) arc).getPollution());
-        	});
-        }
-        
         SmartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 
 			@Override
@@ -127,7 +121,7 @@ public class Main {
 		File outputFolder = null;
 		
 		try {
-			outputFolder = smartGov.getContext().getFileLoader().load("outputFolder");
+			outputFolder = smartGov.getContext().getFileLoader().load("outputDir");
 		} catch (IllegalArgumentException e) {
 			logger.warn("No outputFolder specified in the input configuration.");
 		}
@@ -140,10 +134,10 @@ public class Main {
 			try {
 				// Using maps is simpler when processed in JS, but IDs are duplicated.
 				logger.info("Saving initial nodes to " + nodeOutput.getPath());
-				writer.writeValue(nodeOutput, smartGov.getContext().nodes);
+				writer.writeValue(nodeOutput, smartGov.getContext().nodes.values());
 				
 				logger.info("Saving initial arcs to " + arcOutput.getPath());
-				writer.writeValue(arcOutput, smartGov.getContext().arcs);
+				writer.writeValue(arcOutput, smartGov.getContext().arcs.values());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

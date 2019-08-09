@@ -12,6 +12,7 @@ import com.smartgov.lez.core.agent.driver.DeliveryDriverAgent;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
 import com.smartgov.lez.core.agent.establishment.Establishment;
+import com.smartgov.lez.core.agent.establishment.preprocess.LezPreprocessor;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArcFactory;
@@ -33,7 +34,7 @@ import smartgov.urban.osm.utils.OsmArcsBuilder;
 public class DeliveriesScenario extends PollutionScenario {
 
 
-	public static final String name = "Deliveries";
+	public static final String name = "LezDeliveries";
 	public static final Highway[] forbiddenClosestNodeHighways = {
 			Highway.MOTORWAY,
 			Highway.MOTORWAY_LINK,
@@ -54,7 +55,7 @@ public class DeliveriesScenario extends PollutionScenario {
 			if(node.getOutgoingArcs().isEmpty() || node.getIncomingArcs().isEmpty()) {
 				deadEnds++;
 				Road road = ((OsmNode) node).getRoad();
-				SmartgovLezApplication.logger.info("Dead end found on node " + node.getId() + ", road " + road.getId());
+				// SmartgovLezApplication.logger.debug("Dead end found on node " + node.getId() + ", road " + road.getId());
 			}
 		}
 		SmartgovLezApplication.logger.info(deadEnds + " dead ends found.");
@@ -92,22 +93,29 @@ public class DeliveriesScenario extends PollutionScenario {
 				);
 		}
 		
+		SmartgovLezApplication.logger.info("Applying lez...");
+		LezPreprocessor preprocessor = new LezPreprocessor(getLez(), parser);
+
+		int establishmentsInLez = 0;
+		int totalVehiclesReplaced = 0;
+		for(Establishment establishment : establishments.values()) {
+			if(getLez().contains(establishment.getClosestOsmNode())) {
+				SmartgovLezApplication.logger.info("[LEZ] " + establishment.getId() + " - " + establishment.getName());
+				int replacedVehiclesCount = preprocessor.preprocess(establishment);
+				totalVehiclesReplaced += replacedVehiclesCount;
+				SmartgovLezApplication.logger.info("[LEZ] Number of vehicles replaced : " + replacedVehiclesCount);
+				establishmentsInLez++;
+			}
+		}
+		SmartgovLezApplication.logger.info("[LEZ] Number of estbalishments in lez : " + establishmentsInLez);
+		SmartgovLezApplication.logger.info("[LEZ] Total number of vehicles replaced : " + totalVehiclesReplaced);
+		
 		int agentId = 0;
 		Collection<OsmAgent> agents = new ArrayList<>();
 		Collection<BuildAgentThread> threads = new ArrayList<>();
 		
 		for (Establishment establishment : establishments.values()) {
 			for(String vehicleId : establishment.getRounds().keySet()) {
-//				DeliveryDriverBody driver = new DeliveryDriverBody(establishment.getFleet().get(vehicleId));
-//				DeliveryDriverBehavior behavior
-//					= new DeliveryDriverBehavior(
-//							driver,
-//							establishment.getRounds().get(vehicleId),
-//							context
-//							);
-//				
-//				DeliveryDriverAgent agent = new DeliveryDriverAgent(String.valueOf(agentId++), driver, behavior);
-//				agents.add(agent);
 				BuildAgentThread thread = new BuildAgentThread(agentId++, vehicleId, establishment, (LezContext) context);
 				threads.add(thread);
 				thread.start();
@@ -123,7 +131,7 @@ public class DeliveriesScenario extends PollutionScenario {
 			}
 			
 		}
-
+		
 		return agents;
 	}
 	
@@ -190,6 +198,16 @@ public class DeliveriesScenario extends PollutionScenario {
 			builtBehavior.setUpListeners();
 			context.ongoingRounds.put(builtAgent.getId(), builtBehavior.getRound());
 			return builtAgent;
+		}
+		
+	}
+	
+	public static class NoLezDeliveries extends DeliveriesScenario {
+		
+		public static final String name = "Deliveries";
+
+		public NoLezDeliveries() {
+			super(Lez.none());
 		}
 		
 	}

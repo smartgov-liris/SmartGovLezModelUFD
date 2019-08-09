@@ -26,6 +26,7 @@ import smartgov.urban.osm.environment.graph.OsmNode;
  */
 public class Lez {
 	
+	private LatLon[] perimeter;
 	private PointOnGeometryLocator locator;
 	private LezCriteria lezCriteria;
 	
@@ -38,29 +39,30 @@ public class Lez {
 	 * @param lezCriteria criteria associated to this lez, that determines which
 	 * vehicles are allowed or not
 	 */
-	public Lez(LatLon[] geoCoordinates, LezCriteria lezCriteria) {
+	public Lez(LatLon[] perimeter, LezCriteria lezCriteria) {
+		this.perimeter = perimeter;
 		this.lezCriteria = lezCriteria;
 		
 		GeometryFactory factory = new GeometryFactory();
 		
 		Coordinate[] coordinates;
 		boolean closed;
-		if(geoCoordinates[0].equals(geoCoordinates[geoCoordinates.length - 1])) {
-			coordinates = new Coordinate[geoCoordinates.length];
+		if(perimeter[0].equals(perimeter[perimeter.length - 1])) {
+			coordinates = new Coordinate[perimeter.length];
 			closed = true;
 		}
 		else {
-			coordinates = new Coordinate[geoCoordinates.length + 1];
+			coordinates = new Coordinate[perimeter.length + 1];
 			closed = false;
 		}
 		
 		LonLat projector = new LonLat();
-		for(int i = 0; i < geoCoordinates.length; i++) {
-			coordinates[i] = projector.project(geoCoordinates[i]);
+		for(int i = 0; i < perimeter.length; i++) {
+			coordinates[i] = projector.project(perimeter[i]);
 		}
 		
 		if(!closed) {
-			coordinates[coordinates.length - 1] = projector.project(geoCoordinates[0]);
+			coordinates[coordinates.length - 1] = projector.project(perimeter[0]);
 		}
 		
 		locator = new IndexedPointInAreaLocator(
@@ -74,6 +76,10 @@ public class Lez {
 					));
 	}
 	
+	public LatLon[] getPerimeter() {
+		return perimeter;
+	}
+
 	/**
 	 * Return the LEZ criteria associated to this LEZ, that determines
 	 * which vehicles are allowed or not.
