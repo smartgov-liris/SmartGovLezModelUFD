@@ -33,9 +33,8 @@ public class Lez {
 	/**
 	 * Lez constructor.
 	 * 
-	 * @param geoCoordinates polygon that describes the perimeter of the LEZ.
+	 * @param perimeter polygon that describes the perimeter of the LEZ.
 	 * If the polygon is not closed, it will be completed automatically.
-	 * 
 	 * @param lezCriteria criteria associated to this lez, that determines which
 	 * vehicles are allowed or not
 	 */

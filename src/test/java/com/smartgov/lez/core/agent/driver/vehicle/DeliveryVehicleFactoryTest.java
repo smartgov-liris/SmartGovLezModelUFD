@@ -19,6 +19,7 @@ import org.junit.Test;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicleFactory;
 import com.smartgov.lez.core.copert.fields.CopertField;
+import com.smartgov.lez.core.copert.fields.EuroNorm;
 import com.smartgov.lez.core.copert.fields.Fuel;
 import com.smartgov.lez.core.copert.fields.LightWeightVehicleSegment;
 import com.smartgov.lez.core.copert.fields.VehicleCategory;
@@ -34,6 +35,7 @@ public class DeliveryVehicleFactoryTest {
 	private static final String test_file_0 = "test_copert_input_0.json";
 	private static final String test_file_1 = "test_copert_input_1.json";
 	private static final String test_file_2 = "test_copert_input_2.json";
+	private static final String test_file_3 = "test_copert_input_3.json";
 	private static final String copert_table_test = "copert_table_test.csv";
 	private static final String copert_table_full = "copert_table.csv";
 	private static final String invalid_copert_class = "invalid_copert_class.json";
@@ -293,19 +295,22 @@ public class DeliveryVehicleFactoryTest {
 	@Test
 	public void testRoundedVehiclesCount() {
 		/*
-		 * We specified 50 / 50 for Segments NI-I and NI-II.
+		 * We specified 50 / 50 for Segments N1-I and N1-II.
 		 * But we want 3 vehicles, so 4 selectors will be generated.
-		 * This test check that we really generate 4 selectors that correspond
-		 * to the specified parameters.
-		 * (With a former implementation, we would have generated 2 vehicles, and that last one
-		 * would have been a random selector.)
+		 * This test check that the 3 returned vehicles correspond to
+		 * to the specified parameters, without randomness.
+		 * Also, check that the third vehicle segment in uniformly chosen
+		 * among N1-I and N1-II.
+		 * 
 		 */
 		CopertProfile copertProfile = loadCopertProfile(test_file_2);
 		CopertParser copertParser = loadCopertParser(copert_table_full);
 		DeliveryVehicleFactory factory = new DeliveryVehicleFactory(copertProfile, copertParser);
 		
+		int count = 0;
 		for (int i = 0; i < 1000; i ++) {
 			List<DeliveryVehicle> vehicles = factory.create(3);
+			int _count = 0;
 			for (DeliveryVehicle vehicle : vehicles) {
 				assertThat(
 						vehicle.getSegment(),
@@ -314,8 +319,117 @@ public class DeliveryVehicleFactoryTest {
 							equalTo(LightWeightVehicleSegment.N1_II)
 							)
 						);
+				if(vehicle.getSegment() == LightWeightVehicleSegment.N1_I) {
+					_count ++;
+				}
+			}
+			// There should be at least one N1_I
+			assertThat(
+					_count,
+					greaterThan(0)
+					);
+			// There should be at least one N1_II
+			assertThat(
+					_count,
+					lessThan(3)
+					);
+			if (_count == 1) {
+				// When we have 1 N1_I and 2 N1_II
+				count ++;
 			}
 		}
+		// Actually, count should be more or less 500, but we won't introduce
+		// some randomness in the unit test.
+		assertThat(
+				count,
+				greaterThan(0)
+				);
+		assertThat(
+				count,
+				lessThan(1000)
+				);
+	}
+	
+	@Test
+	public void testNonConsecutiveSelectorsTest() {
+		/*
+		 * Test what append when, for example, we specify CATEGORY
+		 * and EURO_STANDARD without specifying SEGMENT and FUEL.
+		 */
+		CopertProfile copertProfile = loadCopertProfile(test_file_3);
+		CopertParser copertParser = loadCopertParser(copert_table_full);
+		DeliveryVehicleFactory factory = new DeliveryVehicleFactory(copertProfile, copertParser);
+		
+		List<DeliveryVehicle> vehicles = factory.create(12);
+		
+		int euro1 = 0;
+		int euro6 = 0;
+		for(DeliveryVehicle vehicle : vehicles) {
+			assertThat(
+					vehicle.getCategory(),
+					equalTo(VehicleCategory.LIGHT_WEIGHT)
+					);
+			assertThat(
+					vehicle.getEuroNorm(),
+					anyOf(
+						equalTo(EuroNorm.EURO1),
+						equalTo(EuroNorm.EURO6)
+						)
+					);
+			assertThat(
+					vehicle.getSegment(),
+					not(equalTo(LightWeightVehicleSegment.RANDOM))
+					);
+			assertThat(
+					vehicle.getFuel(),
+					not(equalTo(Fuel.RANDOM))
+					);
+			
+			switch(vehicle.getEuroNorm()) {
+			case EURO1:
+				euro1++;
+				break;
+			case EURO6:
+				euro6++;
+				break;
+			default:
+				break;
+			}
+		}
+		assertThat(
+			euro1,
+			equalTo(3)
+			);
+		
+		assertThat(
+			euro6,
+			equalTo(9)
+			);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalArgumentExceptionWhenInvalidSum() {
+		/*
+		 * Error when proportions sum not equal 1
+		 */
+		CopertProfile copertProfile = loadCopertProfile("bad_input_0.json");
+		CopertParser copertParser = loadCopertParser(copert_table_full);
+		DeliveryVehicleFactory factory = new DeliveryVehicleFactory(copertProfile, copertParser);
+		
+
+		factory.create(12);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalArgumentExceptionWhenInvalidRange() {
+		/*
+		 * Error when proportions not in [0, 1]
+		 */
+		CopertProfile copertProfile = loadCopertProfile("bad_input_1.json");
+		CopertParser copertParser = loadCopertParser(copert_table_full);
+		DeliveryVehicleFactory factory = new DeliveryVehicleFactory(copertProfile, copertParser);
+
+		factory.create(12);
 	}
 
 }

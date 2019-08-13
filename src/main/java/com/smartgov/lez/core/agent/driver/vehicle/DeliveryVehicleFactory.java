@@ -3,6 +3,8 @@ package com.smartgov.lez.core.agent.driver.vehicle;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Random;
 
 import com.smartgov.lez.core.copert.Copert;
 import com.smartgov.lez.core.copert.fields.CopertField;
@@ -59,9 +61,11 @@ public class DeliveryVehicleFactory {
 	 * </p>
 	 *
 	 * @param vehicleCount number of vehicle to generate
+	 * @param random random instance used to uniformly pick vehicles in the final set, when its bigger
+	 * than the required number of vehicles because of ceiling approximations.
 	 * @return generated vehicles
 	 */
-	public List<DeliveryVehicle> create(int vehicleCount) {
+	public List<DeliveryVehicle> create(int vehicleCount, Random random) {
 		List<DeliveryVehicle> vehicles = new ArrayList<>();
 		LinkedList<CopertSelector> selectors = new LinkedList<>();
 		selectors.add(new CopertSelector()); // Behaves as a seed
@@ -72,18 +76,25 @@ public class DeliveryVehicleFactory {
 		
 		_generateSelectors(selectors, initialSelectors, copertProfile, vehicleCount);
 
+		PriorityQueue<CopertSelectorWrapper> randomOrderSelectors = new PriorityQueue<>();
+		for(CopertSelector selector : selectors) {
+			randomOrderSelectors.add(new CopertSelectorWrapper(selector, random));
+		}
+		
 		while(vehicles.size() < vehicleCount ) {
-			/*
-			 * TODO
-			 * The vehicle counts can be ceiled multiple times during the process.
-			 * With a LinkedList, we only select the last added vehicles.
-			 * It would be better to use a Priority Queue with a random order, in order
-			 * to have more uniform results that better represent the originally specified
-			 * rates.
-			 */
-			vehicles.add(generateVehicle(selectors.poll(), copertParser, String.valueOf(index++)));
+			vehicles.add(generateVehicle(randomOrderSelectors.poll().get(), copertParser, String.valueOf(index++)));
 		}
 		return vehicles;
+	}
+	
+	/**
+	 * Same as {@link #create(int, Random)}, with a new Random() instance.
+	 * 
+	 * @param vehicleCount number of vehicle to generate
+	 * @return generated vehicles
+	 */
+	public List<DeliveryVehicle> create(int vehicleCount) {
+		return create(vehicleCount, new Random());
 	}
 	
 	/*
@@ -96,14 +107,38 @@ public class DeliveryVehicleFactory {
 		}
 		
 		int requiredNumberOfVehicles = 0;
+		float checkSum = 0;
 		for(CopertRate rate : copertProfile.getValues()) {
 			/*
 			 * We take the ceil of the vehicle number, so that we will have a final selector count
 			 * that is at least the number of vehicles to generate.
 			 * This will ensure that the final selectors list contains enough selectors to generate
 			 * the required number of vehicles, without using any RANDOM selectors.
+			 * 
+			 * For example, if 0.33 / 0.23 / 0.44 proportions are specified for 10 vehicles,
+			 * 3 + 3 + 5 = 11 selectors to ensure that enough selectors will be generated to
+			 * get 10 vehicles at the end.
+			 * 
+			 * If we took the floor or the round value in this example for example, we would have
+			 * 3 + 2 + 4 = 9 vehicles, so we would need to generate a RANDOM vehicle to have
+			 * 10 vehicles, what is not the required behavior. 
 			 */
+			if(rate.getRate() < 0 || rate.getRate() > 1) {
+				throw new IllegalArgumentException(
+						"Bad proportion at level " + copertProfile.getHeader()
+						+ " for value " + rate.getValue() + " : " + rate.getRate() + ". "
+						+ "Proportions must be in [0, 1]."
+						);
+				
+			}
 			requiredNumberOfVehicles += (int) Math.ceil(vehicleCount * rate.getRate());
+			checkSum += rate.getRate();
+		}
+		if (checkSum != 1.) {
+			throw new IllegalArgumentException(
+					"Bad proportions at level " + copertProfile.getHeader() + ". "
+					+ "Specified proportions sum must exactly be 1, but was " + checkSum + "."
+					);
 		}
 		while (currentSelectors.size() < requiredNumberOfVehicles) {
 			/*
@@ -188,5 +223,32 @@ public class DeliveryVehicleFactory {
 				(Technology) finalSelector.get(CopertHeader.TECHNOLOGY),
 				copert
 				);
+	}
+	
+	private static class CopertSelectorWrapper implements Comparable<CopertSelectorWrapper> {
+		private CopertSelector selector;
+		private double random;
+		
+		public CopertSelectorWrapper(CopertSelector selector, Random random) {
+			this.selector = selector;
+			this.random = random.nextDouble();
+		}
+		
+		public CopertSelector get() {
+			return selector;
+		}
+
+		@Override
+		public int compareTo(CopertSelectorWrapper o) {
+			if(this.random < o.random) {
+				return -1;
+			}
+			else if (this.random > o.random) {
+				return 1;
+			}
+			return 0;
+		}
+		
+		
 	}
 }

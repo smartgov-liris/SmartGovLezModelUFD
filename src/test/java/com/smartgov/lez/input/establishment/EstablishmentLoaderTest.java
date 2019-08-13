@@ -43,7 +43,8 @@ public class EstablishmentLoaderTest {
 			return EstablishmentLoader.loadEstablishments(
 					new File(EstablishmentLoaderTest.class.getResource(fileName).getFile()),
 					new File(EstablishmentLoaderTest.class.getResource("fleetProfiles.json").getFile()),
-					parser
+					parser,
+					new Random(130815022018l)
 					);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

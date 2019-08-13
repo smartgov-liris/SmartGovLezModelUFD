@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverAgent;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
+import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.preprocess.LezPreprocessor;
+import com.smartgov.lez.core.copert.fields.EuroNorm;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArcFactory;
@@ -71,7 +74,8 @@ public class DeliveriesScenario extends PollutionScenario {
 					EstablishmentLoader.loadEstablishments(
 							context.getFileLoader().load("establishments"),
 							context.getFileLoader().load("fleet_profiles"),
-							parser
+							parser,
+							PollutionScenario.random
 							);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -107,7 +111,7 @@ public class DeliveriesScenario extends PollutionScenario {
 				establishmentsInLez++;
 			}
 		}
-		SmartgovLezApplication.logger.info("[LEZ] Number of estbalishments in lez : " + establishmentsInLez);
+		SmartgovLezApplication.logger.info("[LEZ] Number of establishments in lez : " + establishmentsInLez);
 		SmartgovLezApplication.logger.info("[LEZ] Total number of vehicles replaced : " + totalVehiclesReplaced);
 		
 		int agentId = 0;
@@ -130,6 +134,19 @@ public class DeliveriesScenario extends PollutionScenario {
 				e.printStackTrace();
 			}
 			
+		}
+		
+		for(Establishment establishment : establishments.values()) {
+			if(!establishment.getFleet().isEmpty()) {
+				List<EuroNorm> euroNorms = new ArrayList<>();
+				for(DeliveryVehicle vehicle : establishment.getFleet().values()) {
+					euroNorms.add(vehicle.getEuroNorm());
+				}
+				SmartgovLezApplication.logger.info(
+						"[" + establishment.getId() + "] " + establishment.getName()
+						+ " - fleet norms : " + euroNorms
+						);
+			}
 		}
 		
 		return agents;

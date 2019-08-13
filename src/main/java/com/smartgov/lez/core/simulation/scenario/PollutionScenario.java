@@ -14,6 +14,7 @@ import smartgov.urban.osm.scenario.GenericOsmScenario;
 
 public abstract class PollutionScenario extends GenericOsmScenario<OsmNode, Road> {
 	
+	protected static Random random = new Random(240720191835l);
 	private Lez lez;
 	private CopertParser copertParser;
 	
@@ -31,7 +32,7 @@ public abstract class PollutionScenario extends GenericOsmScenario<OsmNode, Road
 	}
 	
 	protected CopertParser loadParser(SmartGovContext context) {
-		copertParser = new CopertParser(context.getFileLoader().load("copert_table"), new Random(240720191835l));
+		copertParser = new CopertParser(context.getFileLoader().load("copert_table"), random);
 		return copertParser;
 	}
 	

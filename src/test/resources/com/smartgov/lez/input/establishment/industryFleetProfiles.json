@@ -1,0 +1,26 @@
+{
+	"INDUSTRY": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 0.5
+			},
+			{
+				"value": "HEAVY_DUTY_TRUCK",
+				"rate": 0.5
+			}
+		]
+	},
+	"default": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 1.0
+			}
+		]
+	}
+}

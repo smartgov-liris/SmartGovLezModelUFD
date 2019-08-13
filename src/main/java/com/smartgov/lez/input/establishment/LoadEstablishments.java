@@ -24,7 +24,8 @@ public class LoadEstablishments {
 		else
 			copertTable = new File(LoadEstablishments.class.getResource(defaultCopertTable).getFile());
 		System.out.println("Loading Copert table from " + copertTable);
-		CopertParser parser = new CopertParser(copertTable, new Random(170720191337l));
+		Random random = new Random(170720191337l);
+		CopertParser parser = new CopertParser(copertTable, random);
 		
 		File fleetProfiles;
 		if(args.length > 2)
@@ -38,7 +39,8 @@ public class LoadEstablishments {
 			Map<String, Establishment> establishments = EstablishmentLoader.loadEstablishments(
 					new File(args[0]),
 					fleetProfiles,
-					parser
+					parser,
+					random
 					);
 			System.out.println("Number of establishments loaded : " + establishments.size());
 			

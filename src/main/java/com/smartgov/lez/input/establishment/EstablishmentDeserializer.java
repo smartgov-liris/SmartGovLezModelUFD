@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateXY;
@@ -28,13 +29,15 @@ import smartgov.urban.geo.utils.LatLon;
  */
 public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoader>{
 
+	private Random random;
 	private File fleetProfiles;
 	private CopertParser copertParser;
 	
 	private static final long serialVersionUID = 1L;
 
-	public EstablishmentDeserializer(File fleetProfiles, CopertParser copertParser) {
+	public EstablishmentDeserializer(File fleetProfiles, CopertParser copertParser, Random random) {
 		this(null);
+		this.random = random;
 		this.fleetProfiles = fleetProfiles;
 		this.copertParser = copertParser;
 	}
@@ -46,7 +49,7 @@ public class EstablishmentDeserializer extends StdDeserializer<EstablishmentLoad
 	@Override
 	public EstablishmentLoader deserialize(JsonParser p, DeserializationContext ctxt)
 			throws IOException, JsonProcessingException {
-		EstablishmentLoader loader = new EstablishmentLoader();
+		EstablishmentLoader loader = new EstablishmentLoader(random);
 		
 		// Load establishment data
 		JsonNode establishmentArray = p.getCodec().readTree(p);

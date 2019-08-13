@@ -47,7 +47,7 @@ public class RandomTrafficPollutionScenario extends PollutionScenario {
 		
 		// Feed the stock with delivery vehicles
 		int vehicleNumber = Integer.parseInt((String) context.getConfig().get("AgentNumber"));
-		vehiclesStock.addAll(vehicleFactory.create(vehicleNumber));
+		vehiclesStock.addAll(vehicleFactory.create(vehicleNumber, new Random()));
 		
 		Collection<OsmAgent> drivers = new ArrayList<>();
 		for(int i = 0; i < vehicleNumber; i++) {

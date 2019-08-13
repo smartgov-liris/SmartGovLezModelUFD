@@ -1,0 +1,25 @@
+{
+	"header": "CATEGORY",
+	"values": 
+	[
+		{
+			"value": "LIGHT_WEIGHT",
+			"rate": 1,
+			"subProfile":
+			{
+				"header": "EURO_STANDARD",
+				"values":
+				[
+					{
+						"value": "EURO1",
+						"rate": 0.25
+					},
+					{
+						"value": "EURO6",
+						"rate": 0.75
+					}
+				]
+			}
+		}
+	]
+}

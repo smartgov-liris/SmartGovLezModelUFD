@@ -1,0 +1,12 @@
+{
+"default": {
+		"header": "CATEGORY",
+		"values": 
+		[
+			{
+				"value": "LIGHT_WEIGHT",
+				"rate": 1.0
+			}
+		]
+	}
+}

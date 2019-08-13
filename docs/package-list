@@ -7,6 +7,7 @@ com.smartgov.lez.core.agent.driver.behavior
 com.smartgov.lez.core.agent.driver.mover
 com.smartgov.lez.core.agent.driver.vehicle
 com.smartgov.lez.core.agent.establishment
+com.smartgov.lez.core.agent.establishment.preprocess
 com.smartgov.lez.core.copert
 com.smartgov.lez.core.copert.fields
 com.smartgov.lez.core.copert.inputParser
@@ -20,6 +21,7 @@ com.smartgov.lez.core.output.establishment
 com.smartgov.lez.core.output.pollution
 com.smartgov.lez.core.simulation.scenario
 com.smartgov.lez.input.establishment
+com.smartgov.lez.input.lez
 com.smartgov.lez.input.osm
 com.smartgov.lez.output
 com.smartgov.lez.process.arcs.build
