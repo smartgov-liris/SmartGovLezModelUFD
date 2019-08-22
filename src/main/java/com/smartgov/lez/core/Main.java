@@ -130,7 +130,8 @@ public class Main {
 			File initOutput = new File(outputFolder, "init");
 			File nodeOutput = new File(initOutput, "nodes.json");
 			File arcOutput = new File(initOutput, "arcs.json");
-
+			File establishmentsOutput = new File(initOutput, "establishments.json");
+			
 			try {
 				// Using maps is simpler when processed in JS, but IDs are duplicated.
 				logger.info("Saving initial nodes to " + nodeOutput.getPath());
@@ -138,6 +139,10 @@ public class Main {
 				
 				logger.info("Saving initial arcs to " + arcOutput.getPath());
 				writer.writeValue(arcOutput, smartGov.getContext().arcs.values());
+				
+				
+				Main.logger.info("Saving initial establishments to " + establishmentsOutput);
+				writer.writeValue(establishmentsOutput, ((LezContext) smartGov.getContext()).getEstablishments().values());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

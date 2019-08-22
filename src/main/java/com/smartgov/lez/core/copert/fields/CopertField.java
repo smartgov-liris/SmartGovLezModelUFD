@@ -81,8 +81,6 @@ public interface CopertField {
 			return Technology.valueOf(value);
 		default :
 			return null;
-//			String errorMessage = "Unknown field " + value + "for header " + header;
-//			throw (new BadCopertFieldException(errorMessage));
 		}
 	}
 	

@@ -31,9 +31,9 @@ public class PollutantCarMover extends CarMover {
 	public static final double pollutionDistanceTreshold = 1000;
 	
 	// Record of the distance traveled since the last pollution emission.
-	private double traveledDistance;
-	private double time;
-	private double currentSpeed;
+	private double traveledDistance; // m
+	private double time; // s
+	private double currentSpeed; // m/s
 	
 	private ArrayList<PollutableOsmArc> arcsCrossed;
 

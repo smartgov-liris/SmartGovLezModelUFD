@@ -42,11 +42,11 @@ public class CopertParameters {
 	/**
 	 * Return particles emission in g/km according to the COPERT model.
 	 * 
-	 * @param meanSpeed Average vehicle speed.
+	 * @param meanSpeed Average vehicle speed in m/s.
 	 * @return emissions in g/km
 	 */
 	public double emissions(double meanSpeed) {
-		if (meanSpeed < minSpeed) {
+		if (meanSpeed < minSpeed * 1000 / 3600) {
 			return copertFormula(minSpeed);
 		}
 		if (meanSpeed > maxSpeed) {

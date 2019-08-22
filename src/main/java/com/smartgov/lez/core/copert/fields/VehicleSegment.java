@@ -19,12 +19,11 @@ public interface VehicleSegment extends CopertField {
 	}
 	
 	public static VehicleSegment valueOf(String string) {
-		LightWeightVehicleSegment lightSegment;
-		lightSegment = LightWeightVehicleSegment.valueOf(string);
-		if (lightSegment != null) {
-			return lightSegment;
+		try {
+			return LightWeightVehicleSegment.valueOf(string);
 		}
-		else {
+		catch(IllegalArgumentException e) {
+			// String was not a LightWeightVehicleSegment : should be an HeavyTrucksSegment
 			return HeavyDutyTrucksSegment.valueOf(string);
 		}
 	}

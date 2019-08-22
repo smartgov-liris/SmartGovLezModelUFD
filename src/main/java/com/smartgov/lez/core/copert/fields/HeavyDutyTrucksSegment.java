@@ -22,7 +22,6 @@ public enum HeavyDutyTrucksSegment implements VehicleSegment {
 	ARTICULATED_40_50_T ("Articulated 40 - 50 t"),
 	ARTICULATED_50_60_T ("Articulated 50 - 60 t"),
 	RIGID (
-			"(?:" + SUP_3_5_T.matcher() + ")|" +
 			"(?:" + RIGID_INF_7_5_T.matcher() + ")|" +
 			"(?:" + RIGID_7_5_12_T.matcher() + ")|" +
 			"(?:" + RIGID_12_14_T.matcher() + ")|" +
@@ -63,4 +62,5 @@ public enum HeavyDutyTrucksSegment implements VehicleSegment {
 	public static HeavyDutyTrucksSegment randomSelector() {
 		return RANDOM;
 	}
+
 }

@@ -140,7 +140,7 @@ public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 	 * Compute emissions in g according to the COPERT model.
 	 * 
 	 * @param pollutant pollutant to consider
-	 * @param meanSpeed Mean speed of the vehicle.
+	 * @param meanSpeed Mean speed of the vehicle in m/s.
 	 * @param distance Traveled distance.
 	 * @return computed emissions (g)
 	 */
