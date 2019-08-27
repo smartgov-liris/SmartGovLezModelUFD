@@ -10,7 +10,7 @@ import org.apache.commons.cli.ParseException;
 
 import com.smartgov.lez.core.environment.LezContext;
 
-import smartgov.SmartGov;
+import org.liris.smartgov.simulator.SmartGov;
 
 public class Lez {
 

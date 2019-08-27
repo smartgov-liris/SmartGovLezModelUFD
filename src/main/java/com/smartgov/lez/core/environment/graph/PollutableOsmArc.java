@@ -6,10 +6,10 @@ import java.util.Collection;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 
-import smartgov.core.events.EventHandler;
-import smartgov.urban.osm.environment.graph.OsmArc;
-import smartgov.urban.osm.environment.graph.OsmNode;
-import smartgov.urban.osm.environment.graph.Road;
+import org.liris.smartgov.simulator.core.events.EventHandler;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmArc;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.Road;
 
 /**
  * An OsmArc that can be polluted with some particles.

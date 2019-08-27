@@ -19,18 +19,16 @@ configurations {
 repositories {
 	mavenCentral()
 	maven {
+		// Used to fetch the SmartGovSimulator from GitHub
 		url 'https://jitpack.io'
     }
-	mavenCentral artifactUrls: ["https://bio.informatik.uni-jena.de/repository/libs-release-oss/"]
-
 }
 
 dependencies {
-	implementation 'com.github.PaulBreugnot:SmartGovSimulator:master-SNAPSHOT'
+	implementation 'com.github.smartgov-liris:SmartGovSimulator:master-SNAPSHOT'
 	implementation 'com.github.PaulBreugnot:SmartGovOsmParser:master-SNAPSHOT'
 	implementation 'org.apache.commons:commons-csv:1.6'
 	implementation 'org.locationtech.jts:jts-core:1.16.1'
-//   	implementation 'org.graphstream:gs-algo:1.3'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'

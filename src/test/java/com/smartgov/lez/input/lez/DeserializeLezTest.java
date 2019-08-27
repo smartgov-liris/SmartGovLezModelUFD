@@ -15,7 +15,7 @@ import com.smartgov.lez.core.environment.lez.Lez;
 import com.smartgov.lez.core.environment.lez.criteria.CritAir;
 import com.smartgov.lez.core.environment.lez.criteria.CritAirCriteria;
 
-import smartgov.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 
 public class DeserializeLezTest {
 

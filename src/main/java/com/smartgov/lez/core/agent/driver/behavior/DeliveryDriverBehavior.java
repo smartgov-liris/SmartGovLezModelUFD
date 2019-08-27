@@ -9,12 +9,12 @@ import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.Round;
 import com.smartgov.lez.core.environment.lez.Lez;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.moving.behavior.MoverAction;
-import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Node;
-import smartgov.core.events.EventHandler;
-import smartgov.core.simulation.time.DelayedActionHandler;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.agent.moving.behavior.MoverAction;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.core.environment.graph.Node;
+import org.liris.smartgov.simulator.core.events.EventHandler;
+import org.liris.smartgov.simulator.core.simulation.time.DelayedActionHandler;
 
 /**
  * A delivery driver behavior, that can be described as follow :

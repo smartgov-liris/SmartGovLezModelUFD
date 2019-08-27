@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import com.smartgov.lez.core.environment.lez.Lez;
 
-import smartgov.urban.geo.utils.LatLon;
-import smartgov.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
 
 public class LezTest {
 

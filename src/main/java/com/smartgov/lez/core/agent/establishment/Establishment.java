@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverAgent;
 import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 
-import smartgov.core.agent.moving.MovingAgent;
-import smartgov.core.agent.moving.ParkingArea;
-import smartgov.core.output.node.NodeIdSerializer;
-import smartgov.urban.geo.utils.LatLon;
-import smartgov.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.core.agent.moving.MovingAgent;
+import org.liris.smartgov.simulator.core.agent.moving.ParkingArea;
+import org.liris.smartgov.simulator.core.output.node.NodeIdSerializer;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
 
 /**
  * Represents establishments that can receive and perform deliveries.

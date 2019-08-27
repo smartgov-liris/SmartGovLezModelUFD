@@ -1,12 +1,12 @@
 package com.smartgov.lez.core.environment.graph;
 
-import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmArc.RoadDirection;
 
 import com.smartgov.lez.core.environment.lez.Lez;
 
-import smartgov.urban.osm.environment.graph.OsmNode;
-import smartgov.urban.osm.environment.graph.Road;
-import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.Road;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.factory.OsmArcFactory;
 
 public class PollutableOsmArcFactory  implements OsmArcFactory<PollutableOsmArc> {
 	

@@ -22,17 +22,17 @@ import com.smartgov.lez.core.environment.graph.PollutableOsmArcFactory;
 import com.smartgov.lez.core.environment.lez.Lez;
 import com.smartgov.lez.input.establishment.EstablishmentLoader;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.core.Agent;
-import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Node;
-import smartgov.urban.geo.environment.graph.GeoKdTree;
-import smartgov.urban.geo.utils.lonLat.LonLat;
-import smartgov.urban.osm.agent.OsmAgent;
-import smartgov.urban.osm.environment.graph.OsmNode;
-import smartgov.urban.osm.environment.graph.Road;
-import smartgov.urban.osm.environment.graph.tags.Highway;
-import smartgov.urban.osm.utils.OsmArcsBuilder;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.agent.core.Agent;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.core.environment.graph.Node;
+import org.liris.smartgov.simulator.urban.geo.environment.graph.GeoStrTree;
+import org.liris.smartgov.simulator.urban.geo.utils.lonLat.LonLat;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgent;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.Road;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.tags.Highway;
+import org.liris.smartgov.simulator.urban.osm.utils.OsmArcsBuilder;
 
 public class DeliveriesScenario extends PollutionScenario {
 
@@ -88,7 +88,7 @@ public class DeliveriesScenario extends PollutionScenario {
 			if(!Arrays.asList(forbiddenClosestNodeHighways).contains(node.getRoad().getHighway()))
 					geoNodes.put(id, node);
 		}
-		GeoKdTree kdTree = new GeoKdTree(geoNodes);
+		GeoStrTree kdTree = new GeoStrTree(geoNodes);
 		
 		for (Establishment establishment : establishments.values()) {
 			establishment.setClosestOsmNode((OsmNode) kdTree.getNearestNodeFrom(

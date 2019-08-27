@@ -25,25 +25,25 @@ import com.smartgov.lez.core.agent.driver.vehicle.DeliveryVehicle;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.core.Agent;
-import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.behavior.MoverAction;
-import smartgov.core.agent.moving.behavior.MovingBehavior;
-import smartgov.core.agent.moving.events.arc.ArcLeftEvent;
-import smartgov.core.agent.moving.events.node.DestinationReachedEvent;
-import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Arc;
-import smartgov.core.events.EventHandler;
-import smartgov.core.scenario.Scenario;
-import smartgov.urban.osm.agent.OsmAgent;
-import smartgov.urban.osm.agent.OsmAgentBody;
-import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
-import smartgov.urban.osm.environment.graph.OsmNode;
-import smartgov.urban.osm.environment.graph.Road;
-import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
-import smartgov.urban.osm.scenario.GenericOsmScenario;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.agent.core.Agent;
+import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
+import org.liris.smartgov.simulator.core.agent.moving.behavior.MoverAction;
+import org.liris.smartgov.simulator.core.agent.moving.behavior.MovingBehavior;
+import org.liris.smartgov.simulator.core.agent.moving.events.arc.ArcLeftEvent;
+import org.liris.smartgov.simulator.core.agent.moving.events.node.DestinationReachedEvent;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.core.environment.graph.Arc;
+import org.liris.smartgov.simulator.core.events.EventHandler;
+import org.liris.smartgov.simulator.core.scenario.Scenario;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgent;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgentBody;
+import org.liris.smartgov.simulator.urban.osm.environment.OsmContext;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmArc.RoadDirection;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.Road;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.factory.OsmArcFactory;
+import org.liris.smartgov.simulator.urban.osm.scenario.GenericOsmScenario;
 
 public class PollutantCarMoverTest {
 	

@@ -14,11 +14,11 @@ import com.smartgov.lez.core.environment.lez.criteria.AllAllowedCriteria;
 import com.smartgov.lez.core.environment.lez.criteria.LezCosts;
 import com.smartgov.lez.core.environment.lez.criteria.LezCriteria;
 
-import smartgov.core.environment.graph.astar.Costs;
-import smartgov.urban.geo.environment.graph.DistanceCosts;
-import smartgov.urban.geo.utils.LatLon;
-import smartgov.urban.geo.utils.lonLat.LonLat;
-import smartgov.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.core.environment.graph.astar.Costs;
+import org.liris.smartgov.simulator.urban.geo.environment.graph.DistanceCosts;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.urban.geo.utils.lonLat.LonLat;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
 
 /**
  * A Low Emission Zone representation.

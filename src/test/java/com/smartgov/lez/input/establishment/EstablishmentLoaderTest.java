@@ -27,9 +27,9 @@ import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.copert.tableParser.CopertParserTest;
 import com.smartgov.lez.input.establishment.EstablishmentLoader;
 
-import smartgov.core.simulation.time.Date;
-import smartgov.core.simulation.time.WeekDay;
-import smartgov.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.core.simulation.time.Date;
+import org.liris.smartgov.simulator.core.simulation.time.WeekDay;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 
 public class EstablishmentLoaderTest {
 	

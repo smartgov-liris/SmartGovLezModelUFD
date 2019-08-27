@@ -12,8 +12,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.smartgov.lez.core.copert.fields.Pollutant;
 
-import smartgov.SmartGov;
-import smartgov.core.simulation.SimulationRuntime;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.simulation.SimulationRuntime;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SmartGov.class)

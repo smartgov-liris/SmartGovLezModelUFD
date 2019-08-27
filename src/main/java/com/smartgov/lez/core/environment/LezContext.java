@@ -12,8 +12,8 @@ import com.smartgov.lez.core.simulation.scenario.DeliveriesScenario;
 import com.smartgov.lez.core.simulation.scenario.RandomTrafficPollutionScenario;
 import com.smartgov.lez.input.lez.CritAirLezDeserializer;
 
-import smartgov.core.scenario.Scenario;
-import smartgov.urban.osm.environment.OsmContext;
+import org.liris.smartgov.simulator.core.scenario.Scenario;
+import org.liris.smartgov.simulator.urban.osm.environment.OsmContext;
 
 public class LezContext extends OsmContext {
 	

@@ -15,9 +15,9 @@ import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.environment.LezContext;
 
-import smartgov.SmartGov;
-import smartgov.core.environment.graph.Node;
-import smartgov.urban.osm.agent.OsmAgent;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.environment.graph.Node;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgent;
 
 public class DeliveriesScenarioTest {
 	

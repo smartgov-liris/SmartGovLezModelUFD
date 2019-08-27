@@ -31,7 +31,7 @@ import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.lez.Lez;
 import com.smartgov.lez.core.environment.lez.criteria.NothingAllowedCriteria;
 
-import smartgov.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
 
 public class LezPreprocessorTest {
 

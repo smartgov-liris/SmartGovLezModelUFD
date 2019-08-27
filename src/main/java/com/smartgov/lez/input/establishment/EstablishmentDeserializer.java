@@ -19,9 +19,9 @@ import com.smartgov.lez.core.agent.establishment.ST8;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.input.establishment.EstablishmentLoader.TemporaryRound;
 
-import smartgov.core.simulation.time.Date;
-import smartgov.core.simulation.time.WeekDay;
-import smartgov.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.core.simulation.time.Date;
+import org.liris.smartgov.simulator.core.simulation.time.WeekDay;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 
 /**
  * Custom Jackson deserializer class used to load and build establishments from json inputs.

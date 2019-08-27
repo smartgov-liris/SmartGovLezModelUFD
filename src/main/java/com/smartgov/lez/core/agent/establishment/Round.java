@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.output.establishment.EstablishmentListIdSerializer;
 
-import smartgov.core.simulation.time.Date;
-import smartgov.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.core.simulation.time.Date;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
 
 /**
  * Represents a round that a delivery agent might perform between

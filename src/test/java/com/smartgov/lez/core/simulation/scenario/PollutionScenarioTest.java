@@ -1,8 +1,8 @@
 package com.smartgov.lez.core.simulation.scenario;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.core.Agent;
-import smartgov.core.environment.graph.Arc;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.agent.core.Agent;
+import org.liris.smartgov.simulator.core.environment.graph.Arc;
 
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;

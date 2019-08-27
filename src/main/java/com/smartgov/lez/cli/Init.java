@@ -19,7 +19,7 @@ import com.smartgov.lez.core.Main;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 
-import smartgov.SmartGov;
+import org.liris.smartgov.simulator.SmartGov;
 
 public class Init {
 

@@ -5,7 +5,7 @@ import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.output.establishment.EstablishmentIdSerializer;
 
-import smartgov.urban.osm.agent.OsmAgent;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgent;
 
 /**
  * An OsmAgent associated to an establishment, that can perform deliveries

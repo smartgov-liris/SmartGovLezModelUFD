@@ -21,7 +21,7 @@ import com.smartgov.lez.core.agent.establishment.Round;
 import com.smartgov.lez.core.agent.establishment.VehicleCapacity;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 
-import smartgov.core.simulation.time.Date;
+import org.liris.smartgov.simulator.core.simulation.time.Date;
 
 /**
  * Class used to load establishments from an input json file.

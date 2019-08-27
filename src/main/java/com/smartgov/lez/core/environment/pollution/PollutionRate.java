@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.output.pollution.PollutionRateSerializer;
 
-import smartgov.SmartGov;
+import org.liris.smartgov.simulator.SmartGov;
 
 /**
  * Represents an emitted amount of pollution for a given pollutant.

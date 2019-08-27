@@ -3,9 +3,9 @@ package com.smartgov.lez.core.agent.driver.behavior;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.environment.lez.Lez;
 
-import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Node;
-import smartgov.urban.geo.agent.behavior.GeoMovingBehavior;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.core.environment.graph.Node;
+import org.liris.smartgov.simulator.urban.geo.agent.behavior.GeoMovingBehavior;
 
 /**
  * Abstract behavior that describes the behavior of an agent

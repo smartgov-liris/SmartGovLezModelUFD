@@ -20,17 +20,17 @@ import com.smartgov.lez.core.environment.lez.Lez;
 import com.smartgov.lez.core.environment.lez.LezTest;
 import com.smartgov.lez.core.simulation.scenario.PollutionScenario;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.core.Agent;
-import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.behavior.MoverAction;
-import smartgov.core.agent.moving.behavior.MovingBehavior;
-import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Arc;
-import smartgov.core.environment.graph.astar.Costs;
-import smartgov.core.scenario.Scenario;
-import smartgov.urban.geo.utils.LatLon;
-import smartgov.urban.osm.agent.OsmAgent;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.agent.core.Agent;
+import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
+import org.liris.smartgov.simulator.core.agent.moving.behavior.MoverAction;
+import org.liris.smartgov.simulator.core.agent.moving.behavior.MovingBehavior;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.core.environment.graph.Arc;
+import org.liris.smartgov.simulator.core.environment.graph.astar.Costs;
+import org.liris.smartgov.simulator.core.scenario.Scenario;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgent;
 
 public class LezCostsTest {
 	private static final Lez testLez = new Lez(new LatLon[] {

@@ -20,14 +20,14 @@ import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 import com.smartgov.lez.output.BufferedSender;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.core.Agent;
-import smartgov.core.environment.graph.Arc;
-import smartgov.core.environment.graph.Node;
-import smartgov.core.events.EventHandler;
-import smartgov.core.simulation.SimulationRuntime;
-import smartgov.core.simulation.events.SimulationStep;
-import smartgov.core.simulation.events.SimulationStopped;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.agent.core.Agent;
+import org.liris.smartgov.simulator.core.environment.graph.Arc;
+import org.liris.smartgov.simulator.core.environment.graph.Node;
+import org.liris.smartgov.simulator.core.events.EventHandler;
+import org.liris.smartgov.simulator.core.simulation.SimulationRuntime;
+import org.liris.smartgov.simulator.core.simulation.events.SimulationStep;
+import org.liris.smartgov.simulator.core.simulation.events.SimulationStopped;
 
 @Controller
 @RequestMapping("/api")

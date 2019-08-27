@@ -2,11 +2,11 @@ package com.smartgov.lez.core.environment.lez.criteria;
 
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
-import smartgov.core.environment.graph.Arc;
-import smartgov.core.environment.graph.Node;
-import smartgov.core.environment.graph.astar.Costs;
-import smartgov.urban.geo.environment.graph.GeoNode;
-import smartgov.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.core.environment.graph.Arc;
+import org.liris.smartgov.simulator.core.environment.graph.Node;
+import org.liris.smartgov.simulator.core.environment.graph.astar.Costs;
+import org.liris.smartgov.simulator.urban.geo.environment.graph.GeoNode;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 
 /**
  * Costs implementation that can be used by a vehicle that is not allowed in

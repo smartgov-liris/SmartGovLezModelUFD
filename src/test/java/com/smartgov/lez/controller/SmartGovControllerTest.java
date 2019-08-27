@@ -18,9 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.smartgov.lez.controller.SmartGovController;
 
-import smartgov.SmartGov;
-import smartgov.core.events.EventHandler;
-import smartgov.core.simulation.events.SimulationStep;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.events.EventHandler;
+import org.liris.smartgov.simulator.core.simulation.events.SimulationStep;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

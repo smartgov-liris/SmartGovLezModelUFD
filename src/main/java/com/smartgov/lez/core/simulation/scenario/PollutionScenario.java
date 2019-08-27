@@ -6,10 +6,10 @@ import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArcFactory;
 import com.smartgov.lez.core.environment.lez.Lez;
 
-import smartgov.core.environment.SmartGovContext;
-import smartgov.urban.osm.environment.graph.OsmNode;
-import smartgov.urban.osm.environment.graph.Road;
-import smartgov.urban.osm.scenario.GenericOsmScenario;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.Road;
+import org.liris.smartgov.simulator.urban.osm.scenario.GenericOsmScenario;
 
 
 public abstract class PollutionScenario extends GenericOsmScenario<OsmNode, Road> {

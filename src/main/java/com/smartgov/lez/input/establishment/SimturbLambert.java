@@ -1,6 +1,6 @@
 package com.smartgov.lez.input.establishment;
 
-import smartgov.urban.geo.utils.lambert.Lambert;
+import org.liris.smartgov.simulator.urban.geo.utils.lambert.Lambert;
 
 /**
  * For unknown reasons, the "official" Lambert II projection brought bad results :

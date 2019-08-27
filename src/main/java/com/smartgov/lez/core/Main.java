@@ -19,10 +19,10 @@ import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 
-import smartgov.SmartGov;
-import smartgov.core.environment.graph.Arc;
-import smartgov.core.events.EventHandler;
-import smartgov.core.simulation.events.SimulationStopped;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.environment.graph.Arc;
+import org.liris.smartgov.simulator.core.events.EventHandler;
+import org.liris.smartgov.simulator.core.simulation.events.SimulationStopped;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
 public class Main {

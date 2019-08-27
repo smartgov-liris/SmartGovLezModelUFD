@@ -14,12 +14,12 @@ import com.smartgov.lez.core.copert.inputParser.CopertProfile;
 import com.smartgov.lez.core.copert.tableParser.CopertParser;
 import com.smartgov.lez.core.environment.lez.Lez;
 
-import smartgov.core.agent.core.Agent;
-import smartgov.core.environment.SmartGovContext;
-import smartgov.urban.osm.agent.OsmAgent;
-import smartgov.urban.osm.agent.OsmAgentBody;
-import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.scenario.lowLayer.RandomTrafficScenario;
+import org.liris.smartgov.simulator.core.agent.core.Agent;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgent;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgentBody;
+import org.liris.smartgov.simulator.urban.osm.environment.OsmContext;
+import org.liris.smartgov.simulator.urban.osm.scenario.lowLayer.RandomTrafficScenario;
 
 public class RandomTrafficPollutionScenario extends PollutionScenario {
 

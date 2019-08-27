@@ -12,9 +12,9 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import smartgov.core.simulation.time.Date;
-import smartgov.core.simulation.time.WeekDay;
-import smartgov.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.core.simulation.time.Date;
+import org.liris.smartgov.simulator.core.simulation.time.WeekDay;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
 
 public class RoundTest {
 

@@ -28,17 +28,17 @@ import com.smartgov.lez.core.agent.establishment.Round;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.simulation.scenario.PollutionScenario;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.core.Agent;
-import smartgov.core.environment.SmartGovContext;
-import smartgov.core.scenario.Scenario;
-import smartgov.core.simulation.time.Clock;
-import smartgov.core.simulation.time.Date;
-import smartgov.core.simulation.time.Time;
-import smartgov.urban.osm.agent.OsmAgent;
-import smartgov.urban.osm.agent.mover.CarMover;
-import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.OsmNode;
+import org.liris.smartgov.simulator.SmartGov;
+import org.liris.smartgov.simulator.core.agent.core.Agent;
+import org.liris.smartgov.simulator.core.environment.SmartGovContext;
+import org.liris.smartgov.simulator.core.scenario.Scenario;
+import org.liris.smartgov.simulator.core.simulation.time.Clock;
+import org.liris.smartgov.simulator.core.simulation.time.Date;
+import org.liris.smartgov.simulator.core.simulation.time.Time;
+import org.liris.smartgov.simulator.urban.osm.agent.OsmAgent;
+import org.liris.smartgov.simulator.urban.osm.agent.mover.CarMover;
+import org.liris.smartgov.simulator.urban.osm.environment.OsmContext;
+import org.liris.smartgov.simulator.urban.osm.environment.graph.OsmNode;
 
 public class DeliveryDriverBehaviorTest {
 	

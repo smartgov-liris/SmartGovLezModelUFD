@@ -7,13 +7,13 @@ import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 import com.smartgov.lez.core.environment.graph.PollutionIncreasedEvent;
 
-import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.urban.geo.agent.GeoAgentBody;
-import smartgov.urban.geo.agent.mover.BasicGeoMover;
-import smartgov.urban.osm.agent.mover.CarMover;
+import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
+import org.liris.smartgov.simulator.urban.geo.agent.GeoAgentBody;
+import org.liris.smartgov.simulator.urban.geo.agent.mover.BasicGeoMover;
+import org.liris.smartgov.simulator.urban.osm.agent.mover.CarMover;
 
 /**
- * This class implements the same behavior has the {@link smartgov.urban.osm.agent.mover.CarMover CarMover},
+ * This class implements the same behavior has the {@link org.liris.smartgov.simulator.urban.osm.agent.mover.CarMover CarMover},
  * but with utilities to compute pollution emissions. To do so, it records the traveled distance and propagate the
  * pollution on crossed arcs each time a distance threshold has been reached.
  * 

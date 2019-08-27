@@ -3,4 +3,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'smartgov-lez'
+rootProject.name = 'SmartGovLez'

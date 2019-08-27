@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.smartgov.lez.SmartgovLezApplication;
 
-import smartgov.SmartGov;
+import org.liris.smartgov.simulator.SmartGov;
 
 @Controller
 @RequestMapping("/api")

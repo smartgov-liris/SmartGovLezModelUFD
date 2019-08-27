@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-import smartgov.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 
 public class Bounds {
 	private LatLon topLeft;

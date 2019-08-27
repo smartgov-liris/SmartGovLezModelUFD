@@ -12,7 +12,7 @@ import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.process.arcs.load.PollutedArc;
 import com.smartgov.lez.process.arcs.load.PollutedNode;
 
-import smartgov.urban.geo.utils.LatLon;
+import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 
 public class TileMap {
 
