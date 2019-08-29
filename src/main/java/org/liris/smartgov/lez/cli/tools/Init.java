@@ -14,8 +14,9 @@ import org.apache.commons.cli.ParseException;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
+import org.liris.smartgov.lez.cli.Cli;
 import org.liris.smartgov.lez.core.environment.LezContext;
 import org.liris.smartgov.lez.core.environment.pollution.Pollution;
 import org.liris.smartgov.simulator.SmartGov;
@@ -58,7 +59,7 @@ public class Init {
 
 		SmartGov smartGov = new SmartGov(context);
 		
-		ObjectWriter mapper = new ObjectMapper().writerWithDefaultPrettyPrinter();
+		ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);;
 		
 		File outputInitFolder = null;
 		
@@ -66,23 +67,23 @@ public class Init {
 			File outputFolder = smartGov.getContext().getFileLoader().load("outputDir");
 			outputInitFolder = new File(outputFolder, "init");
 		} catch (IllegalArgumentException e) {
-			Run.logger.warn("No outputFolder specified in the input configuration.");
+			Run.logger.error("No outpurDir specified in the input configuration.");
 		}
-		
+
 		File nodesFile = new File(outputInitFolder, "nodes.json");
 		Run.logger.info("Writting nodes to " + nodesFile);
-		mapper.writeValue(nodesFile, context.nodes.values());
+		Cli.writeOutput(context.nodes.values(), nodesFile, mapper);
 		
 		File arcsFile = new File(outputInitFolder, "arcs.json");
 		Run.logger.info("Writting arcs to " + arcsFile);
-		mapper.writeValue(arcsFile, context.arcs.values());
+		Cli.writeOutput(context.arcs.values(), arcsFile, mapper);
 		
 		File establishmentsFile = new File(outputInitFolder, "establishments.json");
 		Run.logger.info("Writting establishments to " + establishmentsFile);
-		mapper.writeValue(establishmentsFile, context.getEstablishments().values());
+		Cli.writeOutput(context.getEstablishments().values(), establishmentsFile, mapper);
 		
 		File pollutionPeeksFile = new File(outputInitFolder, "pollution_peeks.json");
 		Run.logger.info("Writting pollution peeks to " + pollutionPeeksFile);
-		mapper.writeValue(pollutionPeeksFile, Pollution.pollutionRatePeeks);
+		Cli.writeOutput(Pollution.pollutionRatePeeks, pollutionPeeksFile, mapper);
 	}
 }

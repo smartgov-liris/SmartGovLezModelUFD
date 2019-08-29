@@ -198,11 +198,19 @@ public class Roads {
         // Custom object mapper to indent output
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-        logger.info("Writing filtered roads to " + new File(mainCmd.getOptionValue("w")));
-        parser.writeWays(new File(mainCmd.getOptionValue("w")), mapper);
+        File waysOutputFile = new File(mainCmd.getOptionValue("w"));
+        File waysOutputDir = waysOutputFile.getParentFile();
+        if(!waysOutputDir.exists())
+        	waysOutputDir.mkdirs();
+        logger.info("Writing filtered roads to " + waysOutputFile);
+        parser.writeWays(waysOutputFile, mapper);
         
-        logger.info("Writing filtered nodes to " + new File(mainCmd.getOptionValue("n")));
-        parser.writeNodes(new File(mainCmd.getOptionValue("n")), mapper);
+        File nodeOutputFile = new File(mainCmd.getOptionValue("n"));
+        File nodeOutputDir = nodeOutputFile.getParentFile();
+        if(!nodeOutputDir.exists())
+        	nodeOutputDir.mkdirs();
+        logger.info("Writing filtered nodes to " + nodeOutputFile);
+        parser.writeNodes(nodeOutputFile, mapper);
         
         logger.info("Parsing end. Total process time : " + (System.currentTimeMillis() - beginTime) + "ms");
 

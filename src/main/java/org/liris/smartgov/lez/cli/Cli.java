@@ -1,5 +1,6 @@
 package org.liris.smartgov.lez.cli;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -20,6 +21,7 @@ import org.liris.smartgov.lez.cli.tools.Tile;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Cli {
 	
@@ -71,5 +73,17 @@ public class Cli {
 				+ "\t run - run simulation\n"
 				+ "\t tile - aggregate output results in tiles");
 		System.out.println("Use \"<task> -h\" to get detailed information about each task options.");
+	}
+	
+	public static void writeOutput(Object data, File output, ObjectMapper mapper) {
+		File outputDir = output.getParentFile();
+		if(!outputDir.exists())
+			outputDir.mkdirs();
+		
+		try {
+			mapper.writeValue(output, data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
