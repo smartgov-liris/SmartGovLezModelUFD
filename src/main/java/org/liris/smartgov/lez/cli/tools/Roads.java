@@ -1,4 +1,4 @@
-package org.liris.smartgov.lez.input.osm;
+package org.liris.smartgov.lez.cli.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.liris.smartgov.lez.cli.tools.Run;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -28,7 +29,9 @@ import com.smartgov.osmparser.filters.tags.TagMatcher;
  * A pre-process used to extract json nodes and roads file from an input osm
  * file.
  */
-public class OsmRoadParser {
+public class Roads {
+	
+	public static Logger logger = LogManager.getLogger(Roads.class);
 	
 	/**
 	 * Highways types extracted from the osm file.
@@ -122,14 +125,14 @@ public class OsmRoadParser {
 		long beginTime = System.currentTimeMillis();
 		OsmParser parser = new OsmParser();
 		
-		Run.logger.info("Parsing osm data from : " + new File(mainCmd.getOptionValue("f")));
+		logger.info("Parsing osm data from : " + new File(mainCmd.getOptionValue("f")));
 	    // Parse the test osm file
 	    Osm osm = (Osm) parser.parse(new File(mainCmd.getOptionValue("f")));
 	    
-	    Run.logger.info("Nodes found : " + osm.getNodes().size());
-	    Run.logger.info("Ways found : " + osm.getWays().size());
+	    logger.info("Nodes found : " + osm.getNodes().size());
+	    logger.info("Ways found : " + osm.getWays().size());
 	    
-	    Run.logger.info("Applying filters...");
+	    logger.info("Applying filters...");
 	    
 	    // Start from a tag matche that doesn't match anything
 	    TagMatcher highwaysTagMatcher = new NoneTagMatcher();
@@ -172,50 +175,46 @@ public class OsmRoadParser {
         		.or("oneway", ".*")
         		);
 
-        Run.logger.info("Filtering ways...");
+        logger.info("Filtering ways...");
         long filterBeginTime = System.currentTimeMillis();
         // Filter the ways and their tags
         parser.filterWays();
-        Run.logger.info("Ways filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
+        logger.info("Ways filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
         // Keep only nodes that belong to ways
         parser.setNodeFilter(new WayNodesFilter(osm.getWays()));
         
         // Does not keep any tag for nodes
         parser.setNodeTagMatcher(new NoneTagMatcher());
         
-        Run.logger.info("Filtering nodes...");
+        logger.info("Filtering nodes...");
         filterBeginTime = System.currentTimeMillis();
         // Filter nodes
         parser.filterNodes();
-        Run.logger.info("Nodes filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
+        logger.info("Nodes filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
         
-        Run.logger.info("Number of filtered roads : " + osm.getWays().size());
-        Run.logger.info("Number of filtered nodes : " + osm.getNodes().size());
+        logger.info("Number of filtered roads : " + osm.getWays().size());
+        logger.info("Number of filtered nodes : " + osm.getNodes().size());
         
         // Custom object mapper to indent output
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-        Run.logger.info("Writing filtered roads to " + new File(mainCmd.getOptionValue("w")));
+        logger.info("Writing filtered roads to " + new File(mainCmd.getOptionValue("w")));
         parser.writeWays(new File(mainCmd.getOptionValue("w")), mapper);
         
-        Run.logger.info("Writing filtered nodes to " + new File(mainCmd.getOptionValue("n")));
+        logger.info("Writing filtered nodes to " + new File(mainCmd.getOptionValue("n")));
         parser.writeNodes(new File(mainCmd.getOptionValue("n")), mapper);
         
-        Run.logger.info("Parsing end. Total process time : " + (System.currentTimeMillis() - beginTime) + "ms");
+        logger.info("Parsing end. Total process time : " + (System.currentTimeMillis() - beginTime) + "ms");
 
 	}
 	
 	private static void printHelp(Options opts) {
-		String header = "Build JSON nodes and ways input file from the specified osm node.";
-		String footer =""
-				+ "\t - Loads OSM data from preprocessed nodes and ways files, specified as <nodes> and "
-				+ "<roads> fields in the specified configuration.\n"
-				+ "\t - Builds establishments, delivery drivers and fleets, and compute the shortest path of the "
-				+ "first step of each round.\n"
-				+ "\t - Writes initial nodes and arcs to <output>/init folder.\n"
-				+ "\nNotice that this step is just a convenient way to check the initial configuration, "
-				+ "but is not required before launching the \"run\" task, that will perform the initialization "
-				+ "step anyway.";
+		String header = "\nBuild JSON nodes and ways input file from the specified osm node.";
+		String footer ="\n Process :\n"
+				+ "- Loads the input .osm file.\n"
+				+ "- Filters ways to keep required highways.\n"
+				+ "- Filters tags to keep 'highway', 'name', 'ref', 'oneway' and 'service' tags.\n"
+				+ "- Writes the output nodes and ways files to [nodes-file] and [ways-file]\n";
 		HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp("smartgovlez roads", header, opts, footer, true);
 	}

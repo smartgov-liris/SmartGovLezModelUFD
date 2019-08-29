@@ -14,9 +14,9 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.liris.smartgov.lez.cli.tools.Init;
+import org.liris.smartgov.lez.cli.tools.Roads;
 import org.liris.smartgov.lez.cli.tools.Run;
 import org.liris.smartgov.lez.cli.tools.Tile;
-import org.liris.smartgov.lez.input.osm.OsmRoadParser;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -37,7 +37,7 @@ public class Cli {
 			printMainHelp();
 			return;
 		case "roads":
-			OsmRoadParser.main(Arrays.copyOfRange(args, 1, args.length));
+			Roads.main(Arrays.copyOfRange(args, 1, args.length));
 			return;
 		case "init":
 			Init.main(Arrays.copyOfRange(args, 1, args.length));
