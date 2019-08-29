@@ -48,6 +48,15 @@ To build the project using the [Gradle CLI](https://docs.gradle.org/current/user
 
 This will compile the Java classes, and run all the unit tests.
 
+Also :
+- a simple .jar file of the project classes is built in the `build/libs` subfolder
+- a [Shadow runnable
+	.jar](https://imperceptiblethoughts.com/shadow/introduction/) is built at
+	the root of the project (`SmartGovLez-MASTER.jar`)
+See the
+[wiki](https://github.com/smartgov-liris/SmartGovLezModel/wiki) for
+usage instructions.
+
 ### IntelliJ IDEA
 
 To import the project in the IntelliJ IDEA :
