@@ -36,12 +36,12 @@ public class Init {
 		String configFile = "config.properties";
 		if(cmd.hasOption("h")) {
 			String header = "Run the initialization process, without launching the simulation.";
-			String footer =""
-					+ "\t - Loads OSM data from preprocessed nodes and ways files, specified as <nodes> and "
+			String footer ="\nProcess:\n"
+					+ "- Loads OSM data from preprocessed nodes and ways files, specified as <nodes> and "
 					+ "<roads> fields in the specified configuration.\n"
-					+ "\t - Builds establishments, delivery drivers and fleets, and compute the shortest path of the "
+					+ "- Builds establishments, delivery drivers and fleets, and compute the shortest path of the "
 					+ "first step of each round.\n"
-					+ "\t - Writes initial nodes and arcs to <output>/init folder.\n"
+					+ "- Writes initial nodes and arcs to <output>/init folder.\n"
 					+ "\nNotice that this step is just a convenient way to check the initial configuration, "
 					+ "but is not required before launching the \"main\" task, that will perform the initialization "
 					+ "step anyway.";

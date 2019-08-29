@@ -20,6 +20,5 @@ org.liris.smartgov.lez.core.output.pollution
 org.liris.smartgov.lez.core.simulation.scenario
 org.liris.smartgov.lez.input.establishment
 org.liris.smartgov.lez.input.lez
-org.liris.smartgov.lez.input.osm
 org.liris.smartgov.lez.process.arcs.build
 org.liris.smartgov.lez.process.arcs.load
