@@ -3,7 +3,7 @@ plugins {
 	id 'application'
 }
 
-group = 'com.smartgov'
+group = 'org.liris.smartgov'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -42,5 +42,5 @@ shadowJar {
 }
 
 application {
-	mainClassName = "com.smartgov.lez.cli.Cli"
+	mainClassName = "org.liris.smartgov.lez.cli.Cli"
 }
