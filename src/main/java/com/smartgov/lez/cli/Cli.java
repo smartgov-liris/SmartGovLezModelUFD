@@ -11,18 +11,21 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.smartgov.lez.SmartgovLezApplication;
-import com.smartgov.lez.core.Main;
+import com.smartgov.lez.cli.tools.Init;
+import com.smartgov.lez.cli.tools.Run;
+import com.smartgov.lez.cli.tools.Tile;
 import com.smartgov.lez.input.osm.OsmRoadParser;
 
 public class Cli {
+	
+	// public static Logger logger = LogManager.getLogger(Cli.class);
 
 	public static void main(String[] args) throws ParseException, JsonGenerationException, JsonMappingException, IOException, JAXBException {
-
-		System.out.println(SmartgovLezApplication.logger.getName());
 		
 		if(args.length == 0) {
 			printMainHelp();
@@ -40,7 +43,7 @@ public class Cli {
 			Init.main(Arrays.copyOfRange(args, 1, args.length));
 			return;
 		case "run":
-			Main.main(Arrays.copyOfRange(args, 1, args.length));
+			Run.main(Arrays.copyOfRange(args, 1, args.length));
 			return;
 		case "tile":
 			Tile.main(Arrays.copyOfRange(args, 1, args.length));

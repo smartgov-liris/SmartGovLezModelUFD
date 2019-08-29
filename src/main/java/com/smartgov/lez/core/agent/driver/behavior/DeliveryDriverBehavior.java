@@ -3,7 +3,7 @@ package com.smartgov.lez.core.agent.driver.behavior;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.smartgov.lez.SmartgovLezApplication;
+import com.smartgov.lez.cli.tools.Run;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.establishment.Establishment;
 import com.smartgov.lez.core.agent.establishment.Round;
@@ -97,7 +97,7 @@ public class DeliveryDriverBehavior extends LezBehavior {
 			
 			if (currentPosition <= round.getEstablishments().size() - 1) {
 				Establishment currentEstablishment = round.getEstablishments().get(currentPosition);
-				SmartgovLezApplication.logger.info(
+				Run.logger.info(
 						"[" + SmartGov.getRuntime().getClock().getHour()
 						+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
 						+ "Agent " + getAgentBody().getAgent().getId()
@@ -113,7 +113,7 @@ public class DeliveryDriverBehavior extends LezBehavior {
 						// Sometimes, two consecutive establishment has the same closest osm node.
 						currentPosition++;
 						currentEstablishment = round.getEstablishments().get(currentPosition);
-						SmartgovLezApplication.logger.info(
+						Run.logger.info(
 								"[" + SmartGov.getRuntime().getClock().getHour()
 								+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
 								+ "Agent " + getAgentBody().getAgent().getId()

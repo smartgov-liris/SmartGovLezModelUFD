@@ -1,4 +1,4 @@
-package com.smartgov.lez.core;
+package com.smartgov.lez.cli.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,19 +15,16 @@ import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.environment.LezContext;
 import com.smartgov.lez.core.environment.pollution.Pollution;
 
 import org.liris.smartgov.simulator.SmartGov;
-import org.liris.smartgov.simulator.core.environment.graph.Arc;
 import org.liris.smartgov.simulator.core.events.EventHandler;
 import org.liris.smartgov.simulator.core.simulation.events.SimulationStopped;
-import com.smartgov.lez.core.environment.graph.PollutableOsmArc;
 
-public class Main {
+public class Run {
 	
-	public static final Logger logger = LogManager.getLogger(Main.class);
+	public static final Logger logger = LogManager.getLogger(Run.class);
 	
     public static void main(String[] args) throws ParseException {
 		Options opts = new Options();
@@ -141,7 +138,7 @@ public class Main {
 				writer.writeValue(arcOutput, smartGov.getContext().arcs.values());
 				
 				
-				Main.logger.info("Saving initial establishments to " + establishmentsOutput);
+				Run.logger.info("Saving initial establishments to " + establishmentsOutput);
 				writer.writeValue(establishmentsOutput, ((LezContext) smartGov.getContext()).getEstablishments().values());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -155,7 +152,7 @@ public class Main {
 			int hours = (int) Math.floor((simulationTime - days * 24 * 3600) / 3600);
 			int minutes = (int) Math.floor((simulationTime - days * 24 * 3600 - hours * 3600) / 60);
 			int seconds = (int) Math.floor((simulationTime - days * 24 * 3600 - hours * 3600 - minutes * 60));
-			SmartgovLezApplication.logger.info(
+			logger.info(
 				"Total simulated period : "
 				+ days + " days, "
 				+ hours + " hours, "

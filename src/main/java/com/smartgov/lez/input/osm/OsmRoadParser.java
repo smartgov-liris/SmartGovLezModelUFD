@@ -12,11 +12,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.smartgov.lez.cli.tools.Run;
 import com.smartgov.osmparser.Osm;
 import com.smartgov.osmparser.OsmParser;
 import com.smartgov.osmparser.examples.roads.WayNodesFilter;
@@ -30,8 +29,6 @@ import com.smartgov.osmparser.filters.tags.TagMatcher;
  * file.
  */
 public class OsmRoadParser {
-	
-	private static final Logger logger = LogManager.getLogger(OsmRoadParser.class);
 	
 	/**
 	 * Highways types extracted from the osm file.
@@ -125,14 +122,14 @@ public class OsmRoadParser {
 		long beginTime = System.currentTimeMillis();
 		OsmParser parser = new OsmParser();
 		
-		logger.info("Parsing osm data from : " + new File(mainCmd.getOptionValue("f")));
+		Run.logger.info("Parsing osm data from : " + new File(mainCmd.getOptionValue("f")));
 	    // Parse the test osm file
 	    Osm osm = (Osm) parser.parse(new File(mainCmd.getOptionValue("f")));
 	    
-	    logger.info("Nodes found : " + osm.getNodes().size());
-	    logger.info("Ways found : " + osm.getWays().size());
+	    Run.logger.info("Nodes found : " + osm.getNodes().size());
+	    Run.logger.info("Ways found : " + osm.getWays().size());
 	    
-	    logger.info("Applying filters...");
+	    Run.logger.info("Applying filters...");
 	    
 	    // Start from a tag matche that doesn't match anything
 	    TagMatcher highwaysTagMatcher = new NoneTagMatcher();
@@ -175,36 +172,36 @@ public class OsmRoadParser {
         		.or("oneway", ".*")
         		);
 
-        logger.info("Filtering ways...");
+        Run.logger.info("Filtering ways...");
         long filterBeginTime = System.currentTimeMillis();
         // Filter the ways and their tags
         parser.filterWays();
-        logger.info("Ways filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
+        Run.logger.info("Ways filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
         // Keep only nodes that belong to ways
         parser.setNodeFilter(new WayNodesFilter(osm.getWays()));
         
         // Does not keep any tag for nodes
         parser.setNodeTagMatcher(new NoneTagMatcher());
         
-        logger.info("Filtering nodes...");
+        Run.logger.info("Filtering nodes...");
         filterBeginTime = System.currentTimeMillis();
         // Filter nodes
         parser.filterNodes();
-        logger.info("Nodes filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
+        Run.logger.info("Nodes filtered in " + (System.currentTimeMillis() - filterBeginTime) + "ms");
         
-        logger.info("Number of filtered roads : " + osm.getWays().size());
-        logger.info("Number of filtered nodes : " + osm.getNodes().size());
+        Run.logger.info("Number of filtered roads : " + osm.getWays().size());
+        Run.logger.info("Number of filtered nodes : " + osm.getNodes().size());
         
         // Custom object mapper to indent output
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-        logger.info("Writing filtered roads to " + new File(mainCmd.getOptionValue("w")));
+        Run.logger.info("Writing filtered roads to " + new File(mainCmd.getOptionValue("w")));
         parser.writeWays(new File(mainCmd.getOptionValue("w")), mapper);
         
-        logger.info("Writing filtered nodes to " + new File(mainCmd.getOptionValue("n")));
+        Run.logger.info("Writing filtered nodes to " + new File(mainCmd.getOptionValue("n")));
         parser.writeNodes(new File(mainCmd.getOptionValue("n")), mapper);
         
-        logger.info("Parsing end. Total process time : " + (System.currentTimeMillis() - beginTime) + "ms");
+        Run.logger.info("Parsing end. Total process time : " + (System.currentTimeMillis() - beginTime) + "ms");
 
 	}
 	

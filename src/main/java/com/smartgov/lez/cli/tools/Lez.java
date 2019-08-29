@@ -1,4 +1,4 @@
-package com.smartgov.lez.cli;
+package com.smartgov.lez.cli.tools;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

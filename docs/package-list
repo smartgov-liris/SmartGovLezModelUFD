@@ -1,7 +1,5 @@
-com.smartgov.lez
 com.smartgov.lez.cli
-com.smartgov.lez.controller
-com.smartgov.lez.core
+com.smartgov.lez.cli.tools
 com.smartgov.lez.core.agent.driver
 com.smartgov.lez.core.agent.driver.behavior
 com.smartgov.lez.core.agent.driver.mover
@@ -23,6 +21,5 @@ com.smartgov.lez.core.simulation.scenario
 com.smartgov.lez.input.establishment
 com.smartgov.lez.input.lez
 com.smartgov.lez.input.osm
-com.smartgov.lez.output
 com.smartgov.lez.process.arcs.build
 com.smartgov.lez.process.arcs.load

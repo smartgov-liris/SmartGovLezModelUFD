@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.smartgov.lez.SmartgovLezApplication;
 import com.smartgov.lez.core.copert.fields.Pollutant;
 import com.smartgov.lez.process.arcs.load.PollutedArc;
 import com.smartgov.lez.process.arcs.load.PollutedNode;
@@ -45,7 +44,7 @@ public class TileMap {
 
 	public void build(Map<String, PollutedArc> arcs, Map<String, PollutedNode> nodes, double tileSize) {
 		bounds = boundingBox(arcs.values(), nodes);
-		SmartgovLezApplication.logger.info(
+		com.smartgov.lez.cli.tools.Tile.logger.info(
 				"Computed bounding box :"
 				+ " top=" + bounds.getTopLeft().lat
 				+ " left=" + bounds.getTopLeft().lon
@@ -56,14 +55,16 @@ public class TileMap {
 				new LatLon(bounds.getTopLeft().lat, bounds.getTopLeft().lon),
 				new LatLon(bounds.getBottomRight().lat, bounds.getTopLeft().lon)
 				);
-		SmartgovLezApplication.logger.info("Bounding box height : " + meterHeight + " m");
+		
+		com.smartgov.lez.cli.tools.Tile.logger.info("Bounding box height : " + meterHeight + " m");
 		double latitudeHeight = bounds.getTopLeft().lat - bounds.getBottomRight().lat;
 		
 		double meterWidth = LatLon.distance(
 				new LatLon(bounds.getTopLeft().lat, bounds.getTopLeft().lon),
 				new LatLon(bounds.getTopLeft().lat, bounds.getBottomRight().lon)
 				);
-		SmartgovLezApplication.logger.info("Bounding box width : " + meterWidth + " m");
+		
+		com.smartgov.lez.cli.tools.Tile.logger.info("Bounding box width : " + meterWidth + " m");
 		double longitudeWidth = bounds.getBottomRight().lon - bounds.getTopLeft().lon;
 		
 		int widthTileCount = (int) Math.ceil(meterWidth / tileSize);

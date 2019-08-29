@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.smartgov.lez.SmartgovLezApplication;
+import com.smartgov.lez.cli.tools.Run;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverAgent;
 import com.smartgov.lez.core.agent.driver.DeliveryDriverBody;
 import com.smartgov.lez.core.agent.driver.behavior.DeliveryDriverBehavior;
@@ -58,10 +58,10 @@ public class DeliveriesScenario extends PollutionScenario {
 			if(node.getOutgoingArcs().isEmpty() || node.getIncomingArcs().isEmpty()) {
 				deadEnds++;
 				Road road = ((OsmNode) node).getRoad();
-				// SmartgovLezApplication.logger.debug("Dead end found on node " + node.getId() + ", road " + road.getId());
+				Run.logger.debug("Dead end found on node " + node.getId() + ", road " + road.getId());
 			}
 		}
-		SmartgovLezApplication.logger.info(deadEnds + " dead ends found.");
+		Run.logger.info(deadEnds + " dead ends found.");
 		
 		OsmArcsBuilder.fixDeadEnds((LezContext) context, new PollutableOsmArcFactory(getLez()));
 
@@ -97,22 +97,22 @@ public class DeliveriesScenario extends PollutionScenario {
 				);
 		}
 		
-		SmartgovLezApplication.logger.info("Applying lez...");
+		Run.logger.info("Applying lez...");
 		LezPreprocessor preprocessor = new LezPreprocessor(getLez(), parser);
 
 		int establishmentsInLez = 0;
 		int totalVehiclesReplaced = 0;
 		for(Establishment establishment : establishments.values()) {
 			if(getLez().contains(establishment.getClosestOsmNode())) {
-				SmartgovLezApplication.logger.info("[LEZ] " + establishment.getId() + " - " + establishment.getName());
+				Run.logger.info("[LEZ] " + establishment.getId() + " - " + establishment.getName());
 				int replacedVehiclesCount = preprocessor.preprocess(establishment);
 				totalVehiclesReplaced += replacedVehiclesCount;
-				SmartgovLezApplication.logger.info("[LEZ] Number of vehicles replaced : " + replacedVehiclesCount);
+				Run.logger.info("[LEZ] Number of vehicles replaced : " + replacedVehiclesCount);
 				establishmentsInLez++;
 			}
 		}
-		SmartgovLezApplication.logger.info("[LEZ] Number of establishments in lez : " + establishmentsInLez);
-		SmartgovLezApplication.logger.info("[LEZ] Total number of vehicles replaced : " + totalVehiclesReplaced);
+		Run.logger.info("[LEZ] Number of establishments in lez : " + establishmentsInLez);
+		Run.logger.info("[LEZ] Total number of vehicles replaced : " + totalVehiclesReplaced);
 		
 		int agentId = 0;
 		Collection<OsmAgent> agents = new ArrayList<>();
@@ -142,7 +142,7 @@ public class DeliveriesScenario extends PollutionScenario {
 				for(DeliveryVehicle vehicle : establishment.getFleet().values()) {
 					euroNorms.add(vehicle.getEuroNorm());
 				}
-				SmartgovLezApplication.logger.info(
+				Run.logger.info(
 						"[" + establishment.getId() + "] " + establishment.getName()
 						+ " - fleet norms : " + euroNorms
 						);
@@ -182,7 +182,7 @@ public class DeliveriesScenario extends PollutionScenario {
 			builtAgent = new DeliveryDriverAgent(String.valueOf(agentId), driver, builtBehavior);
 
 			builtBehavior.addRoundDepartureListener((event) -> {
-				SmartgovLezApplication.logger.info(
+				Run.logger.info(
 				"[" + SmartGov.getRuntime().getClock().getHour()
 				+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
 				+ "Agent " + builtAgent.getId()
@@ -191,19 +191,20 @@ public class DeliveriesScenario extends PollutionScenario {
 			});
 				
 			builtBehavior.addRoundEndListener((event) -> {
-				SmartgovLezApplication.logger.info(
-				"[" + SmartGov.getRuntime().getClock().getHour()
-				+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
-				+ "Agent " + builtAgent.getId()
-				+ " ended round for [" + establishment.getId() + "] "
-				+ establishment.getName());
+				Run.logger.info(
+					"[" + SmartGov.getRuntime().getClock().getHour()
+					+ ":" + SmartGov.getRuntime().getClock().getMinutes() + "]"
+					+ "Agent " + builtAgent.getId()
+					+ " ended round for [" + establishment.getId() + "] "
+					+ establishment.getName()
+					);
 				context.ongoingRounds.remove(builtAgent.getId());
-				SmartgovLezApplication.logger.info("Rounds still ongoing : " + context.ongoingRounds.size());
+				Run.logger.info("Rounds still ongoing : " + context.ongoingRounds.size());
 				if(context.ongoingRounds.isEmpty()) {
 					SmartGov.getRuntime().stop();
 				}
 			});
-			SmartgovLezApplication.logger.info("Agent " + builtAgent.getId() + " : " + builtBehavior.getRound());
+			Run.logger.info("Agent " + builtAgent.getId() + " : " + builtBehavior.getRound());
 		}
 		
 		/*

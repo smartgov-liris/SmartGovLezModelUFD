@@ -1,4 +1,4 @@
-package com.smartgov.lez.cli;
+package com.smartgov.lez.cli.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,15 +10,19 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smartgov.lez.SmartgovLezApplication;
+import com.smartgov.lez.cli.Cli;
 import com.smartgov.lez.process.arcs.build.TileMap;
 import com.smartgov.lez.process.arcs.load.PollutedArcsLoader;
 
 public class Tile {
+
+	public static Logger logger = LogManager.getLogger(Tile.class);
 
 	public static void main(String[] args) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
 		Options helpOpts = new Options();
@@ -82,8 +86,8 @@ public class Tile {
 		TileMap map = new TileMap();
 		map.build(loader.getArcs(), loader.getNodes(), tileSizeValue);
 		
-		SmartgovLezApplication.logger.info("Tiles width count : " + map.getTiles().get(0).size());
-		SmartgovLezApplication.logger.info("Tiles height count : " + map.getTiles().size());
+		logger.info("Tiles width count : " + map.getTiles().get(0).size());
+		logger.info("Tiles height count : " + map.getTiles().size());
 
 		ObjectMapper mapper = new ObjectMapper();
 		
