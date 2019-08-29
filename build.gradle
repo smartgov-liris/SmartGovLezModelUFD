@@ -1,5 +1,6 @@
 plugins {
-	id 'java'
+	id 'com.github.johnrengelman.shadow' version '5.1.0'
+	id 'application'
 }
 
 group = 'com.smartgov'
@@ -33,6 +34,13 @@ dependencies {
 
 javadoc.destinationDir = file("docs")
 
-// bootJar {
-//	mainClassName = "com.smartgov.lez.cli.Cli"
-//}
+shadowJar {
+	archiveBaseName = "SmartGovLez"
+	archiveVersion = "MASTER"
+	archiveClassifier = ""
+	destinationDirectory = file("$rootDir")
+}
+
+application {
+	mainClassName = "com.smartgov.lez.cli.Cli"
+}
