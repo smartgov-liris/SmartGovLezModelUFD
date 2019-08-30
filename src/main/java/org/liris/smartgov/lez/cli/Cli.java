@@ -12,8 +12,6 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.liris.smartgov.lez.cli.tools.Init;
 import org.liris.smartgov.lez.cli.tools.Roads;
 import org.liris.smartgov.lez.cli.tools.Run;
@@ -23,9 +21,11 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Main command line interface.
+ * 
+ */
 public class Cli {
-	
-	// public static Logger logger = LogManager.getLogger(Cli.class);
 
 	public static void main(String[] args) throws ParseException, JsonGenerationException, JsonMappingException, IOException, JAXBException {
 		

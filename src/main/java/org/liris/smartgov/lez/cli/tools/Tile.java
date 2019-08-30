@@ -19,6 +19,7 @@ import org.liris.smartgov.lez.process.arcs.load.PollutedArcsLoader;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class Tile {
 
@@ -86,22 +87,18 @@ public class Tile {
 		TileMap map = new TileMap();
 		map.build(loader.getArcs(), loader.getNodes(), tileSizeValue);
 		
-		logger.info("Tiles width count : " + map.getTiles().get(0).size());
 		logger.info("Tiles height count : " + map.getTiles().size());
+		logger.info("Tiles width count : " + map.getTiles().get(0).size());
 
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper;
 		
 		if(mainCmd.hasOption("p")) {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(
-					new File(mainCmd.getOptionValue("o")),
-					map);
+			mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 		}
 		else {
-			mapper.writeValue(
-					new File(mainCmd.getOptionValue("o")),
-					map
-					);
+			mapper = new ObjectMapper();
 		}
+		Cli.writeOutput(map, new File(mainCmd.getOptionValue("o")), mapper);
 	}
 	
 	private static void printHelp(Options opts) {

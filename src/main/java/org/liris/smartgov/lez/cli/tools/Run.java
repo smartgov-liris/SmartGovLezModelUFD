@@ -1,7 +1,6 @@
 package org.liris.smartgov.lez.cli.tools;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -14,14 +13,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
+import org.liris.smartgov.lez.cli.Cli;
 import org.liris.smartgov.lez.core.environment.LezContext;
 import org.liris.smartgov.lez.core.environment.pollution.Pollution;
 import org.liris.smartgov.simulator.SmartGov;
 import org.liris.smartgov.simulator.core.events.EventHandler;
 import org.liris.smartgov.simulator.core.simulation.events.SimulationStopped;
 
+/**
+ * Run task.
+ *
+ */
 public class Run {
 	
 	public static final Logger logger = LogManager.getLogger(Run.class);
@@ -46,7 +50,7 @@ public class Run {
 		
 		if(cmd.hasOption("h")) {
 			String header = "Run the simutation, with the specified configuration.";
-			String footer = ""
+			String footer = "\n"
 					+ "Raw results are written to the <outputDir>/simulation folder.\n"
 					+ "The simulation runs until max ticks count as been reached (default to 10 days) or "
 					+ "when the last round has ended.";
@@ -82,45 +86,42 @@ public class Run {
 				File pollutionPeeksOutput = new File(outputFolder, "pollution_peeks_" + SmartGov.getRuntime().getTickCount() +".json");
 				
 				
-				ObjectWriter writer;
+				ObjectMapper mapper;
 
 				if(cmd.hasOption("p")) {
-					writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
+					mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 				}
 				else {
-					writer = new ObjectMapper().writer();
+					mapper = new ObjectMapper();
 				}
-				try {
-					// logger.info("Saving agents state to " + agentOutput.getPath());
-					// objectMapper.writeValue(agentOutput, smartGov.getContext().agents.values());
-					
-					logger.info("Saving arcs state to " + arcsOutput.getPath());
-					writer.writeValue(arcsOutput, smartGov.getContext().arcs.values());
-					
-					logger.info("Saving pollution peeks to " + pollutionPeeksOutput.getPath());
-					writer.writeValue(pollutionPeeksOutput, Pollution.pollutionRatePeeks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				
+				// logger.info("Saving agents state to " + agentOutput.getPath());
+				// objectMapper.writeValue(agentOutput, smartGov.getContext().agents.values());
+				
+				logger.info("Saving arcs state to " + arcsOutput.getPath());
+				Cli.writeOutput(smartGov.getContext().arcs.values(), arcsOutput, mapper);
+				
+				logger.info("Saving pollution peeks to " + pollutionPeeksOutput.getPath());
+				Cli.writeOutput(Pollution.pollutionRatePeeks, pollutionPeeksOutput, mapper);
 			}
         	
         });
         
     	
-		ObjectWriter writer;
+		ObjectMapper mapper;
 
 		if(cmd.hasOption("p")) {
-			writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
+			mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 		}
 		else {
-			writer = new ObjectMapper().writer();
+			mapper = new ObjectMapper();
 		}
 		File outputFolder = null;
 		
 		try {
 			outputFolder = smartGov.getContext().getFileLoader().load("outputDir");
 		} catch (IllegalArgumentException e) {
-			logger.warn("No outputFolder specified in the input configuration.");
+			logger.error("No outputFolder specified in the input configuration.");
 		}
 		
 		if(outputFolder != null) {
@@ -129,20 +130,19 @@ public class Run {
 			File arcOutput = new File(initOutput, "arcs.json");
 			File establishmentsOutput = new File(initOutput, "establishments.json");
 			
-			try {
-				// Using maps is simpler when processed in JS, but IDs are duplicated.
-				logger.info("Saving initial nodes to " + nodeOutput.getPath());
-				writer.writeValue(nodeOutput, smartGov.getContext().nodes.values());
-				
-				logger.info("Saving initial arcs to " + arcOutput.getPath());
-				writer.writeValue(arcOutput, smartGov.getContext().arcs.values());
-				
-				
-				Run.logger.info("Saving initial establishments to " + establishmentsOutput);
-				writer.writeValue(establishmentsOutput, ((LezContext) smartGov.getContext()).getEstablishments().values());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			
+			logger.info("Saving initial nodes to " + nodeOutput.getPath());
+			Cli.writeOutput(smartGov.getContext().nodes.values(), nodeOutput, mapper);
+			
+			logger.info("Saving initial arcs to " + arcOutput.getPath());
+			Cli.writeOutput(smartGov.getContext().arcs.values(), arcOutput, mapper);
+			
+			logger.info("Saving initial establishments to " + establishmentsOutput);
+			Cli.writeOutput(
+					((LezContext) smartGov.getContext()).getEstablishments().values(),
+					establishmentsOutput,
+					mapper
+					);
 			
 		}
 		
@@ -160,7 +160,7 @@ public class Run {
 				+ seconds + "s"
 				);
 		});
-		// SmartGov.getRuntime().start();
+		
 		SmartGov.getRuntime().start((int) Math.floor(maxTicksValue));
     }
     

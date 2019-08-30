@@ -21,6 +21,10 @@ import org.liris.smartgov.lez.core.environment.LezContext;
 import org.liris.smartgov.lez.core.environment.pollution.Pollution;
 import org.liris.smartgov.simulator.SmartGov;
 
+/**
+ * Init task
+ *
+ */
 public class Init {
 
 	public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException, ParseException {
@@ -59,7 +63,7 @@ public class Init {
 
 		SmartGov smartGov = new SmartGov(context);
 		
-		ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);;
+		ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 		
 		File outputInitFolder = null;
 		

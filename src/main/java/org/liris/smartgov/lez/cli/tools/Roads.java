@@ -26,6 +26,8 @@ import com.smartgov.osmparser.filters.tags.NoneTagMatcher;
 import com.smartgov.osmparser.filters.tags.TagMatcher;
 
 /**
+ * Roads task.
+ * 
  * A pre-process used to extract json nodes and roads file from an input osm
  * file.
  */
