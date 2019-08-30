@@ -71,3 +71,11 @@ To import the project in the Eclipse Java IDE :
 
 `File` -> `Import...` -> `Gradle` -> `Existing Gradle Project` ->  select the `SmartGovLezModel` folder -> `Finish`<Paste> 
 
+
+# Contacts
+
+SmartGov is developped at the [LIRIS](https://liris.cnrs.fr/en) within the Multi-Agent System team.
+
+For any extra information about the project, you may contact :
+- Veronique Deslandres : veronique.deslandres@liris.cnrs.fr
+- Paul Breugnot : paul.breugnot@etu.emse.fr
