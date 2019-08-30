@@ -5,7 +5,12 @@ A Low Emission Zones model implementation for the
 
 ![LEZ example](lez.png)
 
-## Introduction
+# Documentation
+The project is documented in detail in the [wiki of this repository](https://github.com/smartgov-liris/SmartGovLezModel/wiki).
+
+The complete Javadoc is also [available online](https://smartgov-liris.github.io/SmartGovLezModel/).
+
+# Introduction
 
 A Low Emission Zone (LEZ) is a special urban area where more polluting vehicles are
 not allowed to enter.
@@ -15,7 +20,7 @@ Union, so this project from the [LIRIS](https://liris.cnrs.fr/en) is an attempt
 to evaluate the impact of such zones on pollutant emissions, in the context of
 the Urban Goods Transport.
 
-## Features
+# Features
 
 The following features have been implemented :
 - Fleet generation from an input establishment set
@@ -34,14 +39,14 @@ and takes various input and output parameters. See the
 [wiki](https://github.com/smartgov-liris/SmartGovLezModel/wiki) for detailed
 usage instructions.
 
-## Build from source
+# Build from source
 
 From the repository where you want to install the source code, run :
 `git clone https://github.com/smartgov-liris/SmartGovLezModel`
 
 `cd SmartGovSimulator`
 
-### Command line build
+## Command line build
 
 To build the project using the [Gradle CLI](https://docs.gradle.org/current/userguide/command_line_interface.html), run :
 
@@ -59,13 +64,13 @@ See the
 [wiki](https://github.com/smartgov-liris/SmartGovLezModel/wiki) for
 usage instructions.
 
-### IntelliJ IDEA
+## IntelliJ IDEA
 
 To import the project in the IntelliJ IDEA :
 
 `File` -> `New` -> `Project from Existing Sources` (or `Module from Existing Sources`) -> select the `SmartGovLezModel` folder -> `Import project from external model` -> select `Gradle` -> `Finish`
 
-### Eclipse IDE
+## Eclipse IDE
 
 To import the project in the Eclipse Java IDE :
 
