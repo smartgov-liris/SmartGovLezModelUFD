@@ -56,15 +56,17 @@ public class Copert {
 	}
 	
 	/**
-	 * Returns the copertParameters according to the given
+	 * Returns the copertParameters according to the given Pollutant.
+	 * Work only if the parameters does not depend on Mode, Road Slope, or Load.
+	 * (ex : NOx for light weight vehicles)
 	 * 
-	 * {@link org.liris.smartgov.lez.core.copert.fields.Pollutant Pollutant}.
 	 * @param pollutant Pollutant
 	 * @return Copert parameters
+	 * @throws IllegalStateException if the COPERT parameters actually depend on other variables.
 	 */
 	public CopertParameters getCopertParameters(Pollutant pollutant) {
 		if(!copertParameters.get(pollutant).isSingleLine()) {
-			throw new IllegalStateException("Multiple entries correspond to the given pollutant");
+			throw new IllegalStateException("Multiple entries correspond to the pollutant " + pollutant);
 		}
 		CopertTree finalTree = copertParameters.get(pollutant);
 		Map<String, String> finalLine = finalTree.getSubTable().getLine();
@@ -72,6 +74,17 @@ public class Copert {
 		return getCopertParameters(finalLine);
 	}
 	
+	/**
+	 * Returns the copertParameters according to the given
+	 * Pollutant and Mode.
+	 * Work only if the parameters does not depend Road Slope or Load.
+	 * (ex : CH4 for light weight vehicles)
+	 * 
+	 * @param pollutant Pollutant
+	 * @param mode Circulation mode
+	 * @return Copert parameters
+	 * @throws IllegalStateException if the COPERT parameters actually depend on other variables.
+	 */
 	public CopertParameters getCopertParameters(Pollutant pollutant, Mode mode) {
 		CopertTree selection = copertParameters.get(pollutant).select(mode.matcher());
 		if(!selection.isSingleLine()) {
@@ -83,17 +96,51 @@ public class Copert {
 		return getCopertParameters(finalLine);
 	}
 	
+	/**
+	 * Returns the copertParameters according to the given
+	 * Pollutant, Road slope and load.
+	 * Work only if the parameters does not depend on mode.
+	 * (ex : CO, NOx, VOC... for heavy duty trucks)
+	 * 
+	 * @param pollutant Pollutant
+	 * @param roadSlope Road slope
+	 * @param load Vehicle load
+	 * @return Copert parameters
+	 * @throws IllegalStateException if the COPERT parameters actually depend on other variables.
+	 */
 	public CopertParameters getCopertParameters(Pollutant pollutant, RoadSlope roadSlope, Load load) {
 		CopertTree parameters = copertParameters.get(pollutant)
 				.select() // Select the only mode that should be available (none...)
 				.select(roadSlope.matcher()) // Road slope, doesn't seem to be used
 				.select(load.matcher());
 
+		if(!parameters.isSingleLine()) {
+			throw new IllegalStateException(
+					"Multiple entries correspond to roadSlope " + roadSlope
+					+ " and load " + load 
+					+ " for pollutant " + pollutant
+					);
+		}
+		
 		Map<String, String> finalLine = parameters.getSubTable().getLine(0);
 
 		return getCopertParameters(finalLine);
 	}
 	
+	/**
+	 * Returns the copertParameters according to the given
+	 * Pollutant, Mode, Road slope and load.
+	 * 
+	 * Using this function is required when the parameters depend on
+	 * all parameters.
+	 * (ex : PM Exhaust for heavy duty trucks)
+	 * 
+	 * @param pollutant Pollutant
+	 * @param mode circulation mode
+	 * @param roadSlope Road slope
+	 * @param load Vehicle load
+	 * @return Copert parameters
+	 */
 	public CopertParameters getCopertParameters(Pollutant pollutant, Mode mode, RoadSlope roadSlope, Load load) {
 		CopertTree parameters = copertParameters.get(pollutant);
 		if(parameters == null) {
@@ -124,13 +171,14 @@ public class Copert {
 	
 	private CopertParameters getCopertParameters(Map<String, String> copertLine) {
 		return new CopertParameters(
-				Double.valueOf(copertLine.get("Alpha")),
-				Double.valueOf(copertLine.get("Beta")),
-				Double.valueOf(copertLine.get("Gamma")),
-				Double.valueOf(copertLine.get("Delta")),
-				Double.valueOf(copertLine.get("Epsilon")),
-				Double.valueOf(copertLine.get("Zita")),
-				Double.valueOf(copertLine.get("Hta")),
+				Double.valueOf(copertLine.get(CopertHeader.ALPHA.columnName())),
+				Double.valueOf(copertLine.get(CopertHeader.BETA.columnName())),
+				Double.valueOf(copertLine.get(CopertHeader.GAMMA.columnName())),
+				Double.valueOf(copertLine.get(CopertHeader.DELTA.columnName())),
+				Double.valueOf(copertLine.get(CopertHeader.EPSILON.columnName())),
+				Double.valueOf(copertLine.get(CopertHeader.ZITA.columnName())),
+				Double.valueOf(copertLine.get(CopertHeader.HTA.columnName())),
+				Double.valueOf(copertLine.get(CopertHeader.REDUCTION_FACTOR.columnName())),
 				Double.valueOf(copertLine.get(CopertHeader.MIN_SPEED.columnName())),
 				Double.valueOf(copertLine.get(CopertHeader.MAX_SPEED.columnName()))
 				);

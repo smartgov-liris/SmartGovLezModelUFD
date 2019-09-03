@@ -15,6 +15,7 @@ public class CopertParameters {
 	private double epsilon;
 	private double zita;
 	private double hta;
+	private double rf; // Given in percentage
 	private double minSpeed;
 	private double maxSpeed;
 	
@@ -26,6 +27,7 @@ public class CopertParameters {
 			double epsilon,
 			double zita,
 			double hta,
+			double rf,
 			double minSpeed,
 			double maxSpeed) {
 		this.alpha = alpha;
@@ -35,6 +37,7 @@ public class CopertParameters {
 		this.epsilon = epsilon;
 		this.zita = zita;
 		this.hta = hta;
+		this.rf = rf;
 		this.minSpeed = minSpeed;
 		this.maxSpeed = maxSpeed;
 	}
@@ -42,11 +45,11 @@ public class CopertParameters {
 	/**
 	 * Return particles emission in g/km according to the COPERT model.
 	 * 
-	 * @param meanSpeed Average vehicle speed in m/s.
+	 * @param meanSpeed Average vehicle speed in km/h.
 	 * @return emissions in g/km
 	 */
 	public double emissions(double meanSpeed) {
-		if (meanSpeed < minSpeed * 1000 / 3600) {
+		if (meanSpeed < minSpeed) {
 			return copertFormula(minSpeed);
 		}
 		if (meanSpeed > maxSpeed) {
@@ -57,7 +60,7 @@ public class CopertParameters {
 	}
 	
 	private double copertFormula(double speed) {
-		return (alpha * Math.pow(speed, 2) + beta * speed + gamma + delta / speed)
+		return (1 - rf / 100) * (alpha * Math.pow(speed, 2) + beta * speed + gamma + delta / speed)
 				/ (epsilon * Math.pow(speed, 2) + zita * speed + hta);
 	}
 
@@ -110,6 +113,8 @@ public class CopertParameters {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(minSpeed);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(rf);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(zita);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
@@ -140,6 +145,8 @@ public class CopertParameters {
 			return false;
 		if (Double.doubleToLongBits(minSpeed) != Double.doubleToLongBits(other.minSpeed))
 			return false;
+		if (Double.doubleToLongBits(rf) != Double.doubleToLongBits(other.rf))
+			return false;
 		if (Double.doubleToLongBits(zita) != Double.doubleToLongBits(other.zita))
 			return false;
 		return true;
@@ -148,8 +155,8 @@ public class CopertParameters {
 	@Override
 	public String toString() {
 		return "CopertParameters [alpha=" + alpha + ", beta=" + beta + ", gamma=" + gamma + ", delta=" + delta
-				+ ", epsilon=" + epsilon + ", zita=" + zita + ", hta=" + hta + ", minSpeed=" + minSpeed + ", maxSpeed="
-				+ maxSpeed + "]";
+				+ ", epsilon=" + epsilon + ", zita=" + zita + ", hta=" + hta + ", rf=" + rf + "%, minSpeed=" + minSpeed
+				+ ", maxSpeed=" + maxSpeed + "]";
 	}
 	
 }

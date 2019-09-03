@@ -142,7 +142,7 @@ public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 	 * 
 	 * @param pollutant pollutant to consider
 	 * @param meanSpeed Mean speed of the vehicle in m/s.
-	 * @param distance Traveled distance.
+	 * @param distance Traveled distance in m.
 	 * @return computed emissions (g)
 	 */
 	public double getEmissions(Pollutant pollutant, double meanSpeed, double distance) {
@@ -152,7 +152,10 @@ public class DeliveryVehicle implements Comparable<DeliveryVehicle> {
 				RoadSlope._0,
 				Load._50);
 		if (copertParameters != null) {
-			return copertParameters.emissions(meanSpeed) * distance;
+			/*
+			 * Conversions needed because COPERT works in km/h, g/km
+			 */
+			return copertParameters.emissions(meanSpeed * 3600 / 1000) * distance / 1000;
 		}
 		return 0;
 	}

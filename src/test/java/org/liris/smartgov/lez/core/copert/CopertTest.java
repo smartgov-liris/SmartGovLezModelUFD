@@ -92,6 +92,7 @@ public class CopertTest {
 						-0.0000000000003946197723497,
 						0.000000000186443632739188,
 						153.532821297973,
+						0.,
 						10,
 						130
 						)
@@ -124,6 +125,7 @@ public class CopertTest {
 						-0.0000000000003946197723497,
 						0.000000000186443632739188,
 						153.532821297973,
+						0.,
 						10,
 						130
 						)
@@ -152,7 +154,7 @@ public class CopertTest {
 		
 		assertThat(
 				noxParameters,
-				equalTo(new CopertParameters(0., 0., 131., 0., 0., 0., 1000., 10, 130))
+				equalTo(new CopertParameters(0., 0., 131., 0., 0., 0., 1000., 0., 10, 130))
 				);
 	}
 	
@@ -180,6 +182,7 @@ public class CopertTest {
 						0.000598849577695,
 						0.01837331918092,
 						0.090855417491015,
+						0.,
 						12,
 						86
 						)
@@ -204,10 +207,40 @@ public class CopertTest {
 						0.0000314367823010959,
 						0.007026665411491,
 						0.075881074248783,
+						0.,
 						12,
 						86
 						)
 					)
 				);
+	}
+	
+	@Test
+	public void loadReductionFactor() {
+		Copert copert = loadLightVehicle();
+		
+		CopertParameters fcParameters = copert.getCopertParameters(Pollutant.FC);
+		
+		/*
+		 * The 22.5 reduction factor is fictional and has been added manually.
+		 */
+		assertThat(
+				fcParameters,
+				equalTo(
+					new CopertParameters(
+						0.000230977790806,
+						-0.022251145165247,
+						0.702928128250708,
+						16.6133248595622,
+						4.56724968688701E-05,
+						-0.004662246911848,
+						0.255671022047122,
+						22.5,
+						10.,
+						130.
+						)
+					)
+				);
+		
 	}
 }
