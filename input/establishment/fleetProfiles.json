@@ -1,5 +1,5 @@
 {
-	"AGRICULTURE": {
+	"default": {
 		"header": "CATEGORY",
 		"values": 
 		[
@@ -10,7 +10,7 @@
 					"header": "EURO_STANDARD",
 					"values":
 					[ {
-						"value": "EURO6",
+						"value": "EURO1",
 						"rate": 1.0
 					} ]
 				}
@@ -19,11 +19,39 @@
 				"value": "HEAVY_DUTY_TRUCK",
 				"rate": 0.5,
 				"subProfile": {
-					"header": "EURO_STANDARD",
+					"header": "FUEL",
 					"values":
 					[ {
-						"value": "EURO6",
-						"rate": 1.0
+						"value": "DIESEL",
+						"rate": 1,
+						"subProfile": {
+							"header": "SEGMENT",
+							"values":
+							[ {
+								"value": "ARTICULATED",
+								"rate": 0.2,
+								"subProfile": {
+									"header": "EURO_STANDARD",
+									"values":
+									[ {
+										"value": "EURO1",
+										"rate": 1.0
+									} ]
+								}
+							},
+							{
+								"value": "RIGID",
+								"rate": 0.8,
+								"subProfile": {
+									"header": "EURO_STANDARD",
+									"values":
+									[ {
+										"value": "EURO1",
+										"rate": 1.0
+									} ]
+								}
+							} ]
+						}
 					} ]
 				}
 			}
@@ -35,95 +63,15 @@
 		[
 			{
 				"value": "LIGHT_WEIGHT",
-				"rate": 0.5
-			},
-			{
-				"value": "HEAVY_DUTY_TRUCK",
-				"rate": 0.5
-			}
-		]
-	},
-	"INDUSTRY": {
-		"header": "CATEGORY",
-		"values": 
-		[
-			{
-				"value": "LIGHT_WEIGHT",
-				"rate": 0.5
-			},
-			{
-				"value": "HEAVY_DUTY_TRUCK",
-				"rate": 0.5
-			}
-		]
-	},
-	"WHOLESALE_BUSINESS": {
-		"header": "CATEGORY",
-		"values": 
-		[
-			{
-				"value": "LIGHT_WEIGHT",
-				"rate": 0.5
-			},
-			{
-				"value": "HEAVY_DUTY_TRUCK",
-				"rate": 0.5
-			}
-		]
-	},
-	"LARGE_RETAILERS": {
-		"header": "CATEGORY",
-		"values": 
-		[
-			{
-				"value": "LIGHT_WEIGHT",
-				"rate": 0.5
-			},
-			{
-				"value": "HEAVY_DUTY_TRUCK",
-				"rate": 0.5
-			}
-		]
-	},
-	"SMALL_SHOP": {
-		"header": "CATEGORY",
-		"values": 
-		[
-			{
-				"value": "LIGHT_WEIGHT",
-				"rate": 0.5
-			},
-			{
-				"value": "HEAVY_DUTY_TRUCK",
-				"rate": 0.5
-			}
-		]
-	},
-	"TERTIARY_OFFICE": {
-		"header": "CATEGORY",
-		"values": 
-		[
-			{
-				"value": "LIGHT_WEIGHT",
-				"rate": 0.5
-			},
-			{
-				"value": "HEAVY_DUTY_TRUCK",
-				"rate": 0.5
-			}
-		]
-	},
-	"TRANSPORT_WAREHOUSE": {
-		"header": "CATEGORY",
-		"values": 
-		[
-			{
-				"value": "LIGHT_WEIGHT",
-				"rate": 0.5
-			},
-			{
-				"value": "HEAVY_DUTY_TRUCK",
-				"rate": 0.5
+				"rate": 1.0,
+				"subProfile": {
+					"header": "EURO_STANDARD",
+					"values":
+					[ {
+						"value": "EURO1",
+						"rate": 1.0
+					} ]
+				}
 			}
 		]
 	}
