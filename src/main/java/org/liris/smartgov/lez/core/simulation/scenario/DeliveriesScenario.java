@@ -33,10 +33,37 @@ import org.liris.smartgov.simulator.urban.osm.environment.graph.Road;
 import org.liris.smartgov.simulator.urban.osm.environment.graph.tags.Highway;
 import org.liris.smartgov.simulator.urban.osm.utils.OsmArcsBuilder;
 
+/**
+ * Scenario used to model deliveries between establishments with
+ * pollutant emissions.
+ *
+ */
 public class DeliveriesScenario extends PollutionScenario {
 
 
+	/**
+	 * LezDeliveries
+	 */
 	public static final String name = "LezDeliveries";
+	
+	/**
+	 * Establishments won't be delivered in those highways, even
+	 * if they can be used in trajectories.
+	 * 
+	 * <ul>
+	 * <li> {@link Highway#MOTORWAY} </li>
+	 * <li> {@link Highway#MOTORWAY_LINK} </li>
+	 * <li> {@link Highway#TRUNK} </li>
+	 * <li> {@link Highway#TRUNK_LINK} </li>
+	 * <li> {@link Highway#LIVING_STREET} </li>
+	 * <li> {@link Highway#SERVICE} </li>
+	 * </ul>
+	 * 
+	 * <p>
+	 * Living streets and service ways are not used, because their
+	 * usage to often bring situations with dead ends.
+	 * </p>
+	 */
 	public static final Highway[] forbiddenClosestNodeHighways = {
 			Highway.MOTORWAY,
 			Highway.MOTORWAY_LINK,
@@ -46,6 +73,11 @@ public class DeliveriesScenario extends PollutionScenario {
 			Highway.SERVICE
 	};
 	
+	/**
+	 * DeliveriesScenario constructor.
+	 * 
+	 * @param lez LEZ used in this scenario
+	 */
 	public DeliveriesScenario(Lez lez) {
 		super(lez);
 	}
@@ -219,10 +251,22 @@ public class DeliveriesScenario extends PollutionScenario {
 		
 	}
 	
+	/**
+	 * Special scenario used to model deliveries without LEZ.
+	 *
+	 */
 	public static class NoLezDeliveries extends DeliveriesScenario {
 		
+		/**
+		 * NoLezDeliveries
+		 */
 		public static final String name = "NoLezDeliveries";
 
+		/**
+		 * NoLezDeliveries constructor.
+		 * 
+		 * {@link Lez#none()} is used as the LEZ for this scenario.
+		 */
 		public NoLezDeliveries() {
 			super(Lez.none());
 		}
