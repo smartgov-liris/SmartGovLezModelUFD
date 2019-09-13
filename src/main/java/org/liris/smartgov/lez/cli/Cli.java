@@ -77,7 +77,7 @@ public class Cli {
 	
 	public static void writeOutput(Object data, File output, ObjectMapper mapper) {
 		File outputDir = output.getParentFile();
-		if(!outputDir.exists())
+		if(!(outputDir == null) && !(outputDir.exists()))
 			outputDir.mkdirs();
 		
 		try {
