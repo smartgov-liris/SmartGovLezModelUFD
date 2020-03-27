@@ -83,4 +83,4 @@ SmartGov is developped at the [LIRIS](https://liris.cnrs.fr/en) within the Multi
 
 For any extra information about the project, you may contact :
 - Veronique Deslandres : veronique.deslandres@liris.cnrs.fr
-- Paul Breugnot : paul.breugnot@etu.emse.fr
+- Paul Breugnot : paul.breugnot@univ-fcomte.fr
