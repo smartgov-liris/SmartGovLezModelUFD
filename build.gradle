@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
 	implementation 'com.github.smartgov-liris:SmartGovSimulator:master-SNAPSHOT'
-	implementation 'com.github.PaulBreugnot:SmartGovOsmParser:master-SNAPSHOT'
+	implementation 'com.github.smartgov-liris:SmartGovOsmParser:master-SNAPSHOT'
 	implementation 'org.apache.commons:commons-csv:1.6'
 	implementation 'org.locationtech.jts:jts-core:1.16.1'
 	implementation 'commons-cli:commons-cli:1.4'
