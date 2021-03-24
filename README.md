@@ -1,4 +1,4 @@
-# SmartGovLezModel
+# SmartGovLezModelUFD
 
 A Low Emission Zones model implementation for the
 [SmartGovSimulator](https://github.com/smartgov-liris/SmartGovSimulator).
@@ -6,9 +6,9 @@ A Low Emission Zones model implementation for the
 ![LEZ example](lez.png)
 
 # Documentation
-The project is documented in detail in the [wiki of this repository](https://github.com/smartgov-liris/SmartGovLezModel/wiki).
+The project is documented in detail [here](documentation/Home.md).
 
-The complete Javadoc is also [available online](https://smartgov-liris.github.io/SmartGovLezModel/).
+The complete Javadoc is also [available online](https://smartgov-liris.github.io/SmartGovLezModelUFD/).
 
 # Introduction
 
@@ -34,17 +34,17 @@ The following features have been implemented :
 
 The final model is provided as a Command Line Interface wrapped in a [single
 .jar
-file](https://github.com/smartgov-liris/SmartGovLezModel/blob/master/SmartGovLez-MASTER.jar),
+file](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/SmartGovLez-MASTER.jar),
 and takes various input and output parameters. See the
-[wiki](https://github.com/smartgov-liris/SmartGovLezModel/wiki) for detailed
-usage instructions.
+[documentation](documentation/Home.md) for detailed usage instructions.
 
 # Build from source
 
-From the repository where you want to install the source code, run :
-`git clone https://github.com/smartgov-liris/SmartGovLezModel`
+From the repository where you want to install the source code, run:
 
-`cd SmartGovSimulator`
+`git clone https://github.com/smartgov-liris/SmartGovLezModelUFD`
+
+`cd SmartGovLezModelUFD`
 
 ## Command line build
 
@@ -60,21 +60,19 @@ Also :
 - a [Shadow runnable
 	.jar](https://imperceptiblethoughts.com/shadow/introduction/) is built at
 	the root of the project (`SmartGovLez-MASTER.jar`)
-See the
-[wiki](https://github.com/smartgov-liris/SmartGovLezModel/wiki) for
-usage instructions.
+See the [documentation](documentation/Home.md) for usage instructions.
 
 ## IntelliJ IDEA
 
 To import the project in the IntelliJ IDEA :
 
-`File` -> `New` -> `Project from Existing Sources` (or `Module from Existing Sources`) -> select the `SmartGovLezModel` folder -> `Import project from external model` -> select `Gradle` -> `Finish`
+`File` -> `New` -> `Project from Existing Sources` (or `Module from Existing Sources`) -> select the `SmartGovLezModelUFD` folder -> `Import project from external model` -> select `Gradle` -> `Finish`
 
 ## Eclipse IDE
 
 To import the project in the Eclipse Java IDE :
 
-`File` -> `Import...` -> `Gradle` -> `Existing Gradle Project` ->  select the `SmartGovLezModel` folder -> `Finish`<Paste> 
+`File` -> `Import...` -> `Gradle` -> `Existing Gradle Project` ->  select the `SmartGovLezModelUFD` folder -> `Finish`<Paste> 
 
 
 # Contacts
