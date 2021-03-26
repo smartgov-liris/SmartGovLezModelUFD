@@ -1,9 +1,9 @@
 The SmartGovSimulator is generally [compliant with
-Jackson](https://github.com/smartgov-liris/SmartGovSimulator/wiki/Running-simulations#monitoring-shuttle-using-json-outputs),
+Jackson](https://github.com/smartgov-liris/SmartGovSimulatorDocExamples/blob/master/documentation/Running-simulations.md#monitoring-shuttle-using-json-outputs),
 and so the natural and priviledge output is the JSON format.
 
 The SmartGovLezModel provides a few standard outputs, that are produced by the
-[init](The-SmartGovLez-CLI#init) and [run](The-SmartGovLez-CLI#init)
+[init](/documentation/The-SmartGovLez-CLI.md#init) and [run](/documentation/The-SmartGovLez-CLI.md#run)
 tasks.
 
 
@@ -29,7 +29,7 @@ Nodes are written in the following format :
 - `position` : geographical position in latitude / longitude
 
 Notice the differences with the [OSM nodes input
-file](https://github.com/smartgov-liris/SmartGovSimulator/wiki/Osm-Data#nodes-file).
+file](https://github.com/smartgov-liris/SmartGovSimulatorDocExamples/blob/master/documentation/Osm-Data.md#nodes-file).
 Those files must actually be distincts, because the concept of *arcs* does not
 directly exists in OSM : only *ways* (i.e. *roads*) are used, so incoming and
 outgoing arcs of each node are actually generated during the initialization
@@ -132,7 +132,7 @@ Where values are given in **g/s** for each pollutant.
 - `id` : establishment id
 - `name` : establisment name
 - `activity` : [ST8
-	category](https://smartgov-liris.github.io/SmartGovLezModel/org/liris/smartgov/lez/core/agent/establishment/ST8.html)
+	category](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/agent/establishment/ST8.html)
 - `location` : original location, in latitude / longitude
 - `closestOsmNode` : id of the closest OSM node, used as a delivery point
 - `fleet` : generated fleet
@@ -140,7 +140,7 @@ Where values are given in **g/s** for each pollutant.
 	   (**only usable by establishment**)
       - `id` : vehicle id (same as key)
       - `field` : `value`, [COPERT
-		  characteristics](https://smartgov-liris.github.io/SmartGovLezModel/org/liris/smartgov/lez/core/copert/fields/package-frame.html)
+		  characteristics](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/copert/fields/package-frame.html)
 - `rounds` : establishment rounds
    - `[vehicle id]` : id of the vehicle that must perform this round
       - `establishments` : ordered list of establishment ids to deliver,
@@ -151,5 +151,5 @@ Where values are given in **g/s** for each pollutant.
 round.
 
 Notice the differences with the [establishments input
-file](Establishments#establishments-json-input-file-format), mainly
+file](/documentation/inputs/Establishments.md#establishments-json-input-file-format), mainly
 due to the OSM integration and the fleet generation.

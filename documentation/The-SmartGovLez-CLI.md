@@ -1,9 +1,8 @@
 The provided command line interface provides a way to manage model inputs and
 outputs.
 
-The [last
-build](https://github.com/smartgov-liris/SmartGovLezModel/blob/master/SmartGovLez-MASTER.jar)
-can be found at the root of the repository, as `SmartGovLez-MASTER.jar`.
+The last build can be found at the root of the repository, as
+`SmartGovLez-MASTER.jar`.
 
 # Launch
 
@@ -49,8 +48,9 @@ tags.
 
 The first required task is the `road` task. It allows you to build the `nodes`
 and `ways` file from a preprocessed .osm file (see the [SmartGovSimulator
-documentation](https://github.com/smartgov-liris/SmartGovSimulator/wiki/Osm-Data#preprocess-data)
+documentation](https://github.com/smartgov-liris/SmartGovSimulatorDocExamples/blob/master/documentation/Osm-Data#preprocess-data)
 for details).
+
 
 More precisely, the following *highways* are kept :
 - "motorway"
@@ -103,14 +103,14 @@ of each round) is computed : if, for some reason, a path can't be built, errors
 will be thrown.
 
 This task takes as input a valid [configuration
-file](Configuration-File). If the option is not specify, the task will
+file](inputs/Configuration-File.md). If the option is not specify, the task will
 look for a `config.properties` file in the current working directory.
 
 All the entries should obviously point to valid input files, as specified in
-the [configuration file documentation](Configuration-File). Only the
+the [configuration file documentation](inputs/Configuration-File.md). Only the
 `lez` field is optional, is the selected `scenario` is `NoLezDeliveries`.
 
-[Standard outputs](Standard-Outputs) are finally written to the
+[Standard outputs](outputs/Standard-Outputs.md) are finally written to the
 `[outputDir]/init` directory.
 
 ## Run
@@ -134,15 +134,15 @@ The differences is once the initialization process is done (without errors),
 the simulation runs until the `max-ticks` count has been reach (if not specify,
 a `max-ticks` count that correspond to 10 days is applied) or when all the
 rounds [specified in
-input](Establishments#Establishments-json-input-file-format) have ended.
+input](inputs/Establishments.md#Establishments-json-input-file-format) have ended.
 
 If the `--pretty-print` option is enabled, JSON outputs will be indented,
 otherwise a compact syntax is used.
 
-[Standard outputs](Standard-Outputs) are finally written to the
+[Standard outputs](outputs/Standard-Outputs.md) are finally written to the
 `[outputDir]/simulation` directory.
 
-Also, [Standard outputs](Standard-Outputs) are writte to the `[outputDir]/init`
+Also, [Standard outputs](outputs/Standard-Outputs.md) are written to the `[outputDir]/init`
 directory at the end of the initialization process, just as the [init](#Init)
 task does.
 
@@ -160,7 +160,7 @@ Build JSON tiles with pollution values from simulation output.
 ```
 
 The `tile` task can be used to generate [pollution tiles
-output](Tile-Map-Generation) from the [output polluted arcs](Standard-Outputs#Arcs).
+output](outputs/Tile-Map-Generation.md) from the [output polluted arcs](outputs/Standard-Outputs.md#Arcs).
 
 - `--arcs-file` : the output arc file path
 - `--nodes-file` : the output nodes file path

@@ -2,7 +2,7 @@ COPERT profiles are a concept introduced with the model to generate some
 vehicle populations, from each pollutant emissions can be computed using the
 [COPERT model](https://www.emisia.com/utilities/copert/).
 
-Values mentionned in this part comes from the input [COPERT Data](COPERT-Data).
+Values mentionned in this part comes from the input [COPERT Data](COPERT-Data.md).
 
 # Concept
 
@@ -61,8 +61,8 @@ Here is the general form of a COPERT profile :
 - `values` : The set of values used for this header. Each value can itself
 	define sub-categories
    - `value` : value associated to the header. See the
-	   [COPERT data](COPERT-Data) and the
-	   [javadoc](https://smartgov-liris.github.io/SmartGovLezModel/org/liris/smartgov/lez/core/copert/fields/package-frame.html)
+	   [COPERT data](COPERT-Data.md) and the
+	   [javadoc](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/copert/fields/package-frame.html)
 	   to check which values are available for each header.
    - `rate` : proportion of the given value. The sum of all rates at a given
 	   level must equal to 1.0, otherwise errors will be thrown.
@@ -139,7 +139,7 @@ Here is an example COPERT Profile :
 
 Graphically speaking, this profile could be understood as the following tree :
 
-![COPERT Profile](copert_profile.png)
+![COPERT Profile](/documentation/copert_profile.png)
 
 Formally speaking, it should be understood as :
 - We consider a population constituted by 50% HEAVY_DUTY_TRUCKs and 50%
@@ -171,10 +171,10 @@ The final input profile should have the following format :
 - `default` : default profile, used for ST8 categories that are not explicitly
 	defined. An input file can only contain only a default profile.
 - `ST8_CATEGORY` : Custom value for [ST8
-	categories](https://smartgov-liris.github.io/SmartGovLezModel/org/liris/smartgov/lez/core/agent/establishment/ST8.html)
+	categories](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/agent/establishment/ST8.html)
 
 A complete example COPERT input profile can be found on [this
-repository](https://github.com/smartgov-liris/SmartGovLezModel/blob/master/input/establishment/defaultFleetProfile.json).
+repository](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/input/establishment/fleetProfiles.json).
 
 The final input should be reference in the [configuration
-file](Configuration-File) using the `fleet_profiles` field.
+file](Configuration-File.md) using the `fleet_profiles` field.

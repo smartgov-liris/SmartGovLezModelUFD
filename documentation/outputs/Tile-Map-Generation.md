@@ -2,8 +2,8 @@
 
 Tile maps are a convenient way to visualize pollution data.
 
-Tiles can be generated from the [run task](The-SmartGovLez-CLI#Run) outputs,
-thanks to the [tile task](The-SmartGovLez-CLI#Run).
+Tiles can be generated from the [run task](/documentation/The-SmartGovLez-CLI.md#run) outputs,
+thanks to the [tile task](/documentation/The-SmartGovLez-CLI.md#tile).
 
 # Visualization
 

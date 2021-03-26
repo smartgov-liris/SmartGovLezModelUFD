@@ -6,12 +6,12 @@ have been defined.
 The following table presents all the vehicle characteristics available in
 COPERT, that can be seen as a tree :
 
-![COPERT Table](copert.png)
+![COPERT Table](/documentation/copert.png)
 
 Check the
-[javadoc](https://smartgov-liris.github.io/SmartGovLezModel/org/liris/smartgov/lez/core/copert/fields/package-frame.html)
+[javadoc](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/copert/fields/package-frame.html)
 to see the corresponding Java enumerations, that can be used to define [COPERT
-profiles](COPERT-Profiles).
+profiles](COPERT-Profiles.md).
 
 Notice that only **commercial vehicles** are handled by the simulator for now.
 
@@ -25,7 +25,7 @@ as a .csv file.
 > using Excel or Libre Office for example.
 
 A clean table is also directly available to [download from this
-repository](https://github.com/smartgov-liris/SmartGovLezModel/blob/master/input/copert/Hot_Emissions_Parameters_France.csv).
+repository](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/input/copert/Hot_Emissions_Parameters_France.csv).
 
-The .csv file should be reference in the [configuration
-file](Configuration-File) using the `copert_table` field.
+The .csv file should be referenced in the [configuration
+file](Configuration-File.md) using the `copert_table` field.

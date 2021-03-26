@@ -25,8 +25,7 @@ Establishments are described using the following format :
 ]
 ```
 - `ST8` : The establishment ST8 category. Can be specified using the enum
-	names, or the corresponding code (see the [associated
-	javadoc](https://smartgov-liris.github.io/SmartGovLezModel/org/liris/smartgov/lez/core/agent/establishment/ST8.html))
+	names, or the corresponding code (see the [associated javadoc](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/agent/establishment/ST8.html))
 - `id` : An arbitrary id. For France, the SIRET is a good choice.
 - `name` : Establishment name
 - `rounds` : A list of rounds the establishment should perform.
@@ -38,14 +37,14 @@ Establishments are described using the following format :
 - `lon` : establishment longitude
 
 Establishments can then be references in the [configuration
-file](Configuration-File) using the `establishments` field.
+file](Configuration-File.md) using the `establishments` field.
 
 # Notes
 
 ## OSM links
 
 `lat` and `lon` will actually be used to compute the shortest OSM node
-available in the [preprocessed OSM graph](https://github.com/smartgov-liris/SmartGovLezModel/wiki/The-SmartGovLez-CLI#roads),
+available in the [preprocessed OSM graph](/documentation/The-SmartGovLez-CLI.md#roads),
 so coordinates does not need to exactly correspond to anything.
 
 ## x / y coordinates 
