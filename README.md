@@ -32,19 +32,19 @@ The following features have been implemented :
 	model](https://www.emisia.com/utilities/copert/).
 - Pollution tile map generation from the output
 
-The final model is provided as a Command Line Interface wrapped in a [single
-.jar
-file](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/SmartGovLez-MASTER.jar),
-and takes various input and output parameters. See the
-[documentation](documentation/Home.md) for detailed usage instructions.
+The final model is provided as a Command Line Interface wrapped in a single
+.jar file (SmartGovLez-MASTER.jar), and takes various input and output
+parameters.  See the [documentation](documentation/Home.md) for detailed usage
+instructions.
 
 # Build from source
 
 From the repository where you want to install the source code, run:
 
-`git clone https://github.com/smartgov-liris/SmartGovLezModelUFD`
-
-`cd SmartGovLezModelUFD`
+```
+git clone https://github.com/smartgov-liris/SmartGovLezModelUFD
+cd SmartGovLezModelUFD
+```
 
 ## Command line build
 
