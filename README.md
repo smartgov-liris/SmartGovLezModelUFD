@@ -8,7 +8,7 @@ A Low Emission Zones model implementation for the
 # Documentation
 The project is documented in detail in the [wiki of this repository](https://github.com/smartgov-liris/SmartGovLezModel/wiki).
 
-The complete Javadoc is also [available online](https://smartgov-liris.github.io/SmartGovLezModel/).
+The complete Javadoc is also [available here](https://smartgov-liris.github.io/SmartGovLezModelUFD/).
 
 # Introduction
 
