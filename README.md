@@ -6,7 +6,7 @@ A Low Emission Zones model implementation for the
 ![LEZ example](lez.png)
 
 # Documentation
-The project is documented in detail in the [wiki of this repository](https://github.com/smartgov-liris/SmartGovLezModel/wiki).
+The project is documented in detail in the Doc repository.
 
 The complete Javadoc is also [available here](https://smartgov-liris.github.io/SmartGovLezModelUFD/).
 
@@ -18,7 +18,7 @@ not allowed to enter.
 Perimeters and permissions of such zones is very variable in the European
 Union, so this project from the [LIRIS](https://liris.cnrs.fr/en) is an attempt
 to evaluate the impact of such zones on pollutant emissions, in the context of
-the Urban Goods Transport.
+the Urban Freight Transport.
 
 # Features
 
@@ -34,15 +34,13 @@ The following features have been implemented :
 
 The final model is provided as a Command Line Interface wrapped in a [single
 .jar
-file](https://github.com/smartgov-liris/SmartGovLezModel/blob/master/SmartGovLez-MASTER.jar),
-and takes various input and output parameters. See the
-[wiki](https://github.com/smartgov-liris/SmartGovLezModel/wiki) for detailed
-usage instructions.
+file](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/SmartGovLez-MASTER.jar),
+and takes various input and output parameters. See the documentation for detailed usage instructions.
 
 # Build from source
 
 From the repository where you want to install the source code, run :
-`git clone https://github.com/smartgov-liris/SmartGovLezModel`
+`git clone https://github.com/smartgov-liris/SmartGovLezModelUFD`
 
 `cd SmartGovSimulator`
 
@@ -60,9 +58,7 @@ Also :
 - a [Shadow runnable
 	.jar](https://imperceptiblethoughts.com/shadow/introduction/) is built at
 	the root of the project (`SmartGovLez-MASTER.jar`)
-See the
-[wiki](https://github.com/smartgov-liris/SmartGovLezModel/wiki) for
-usage instructions.
+See the documentation for usage instructions.
 
 ## IntelliJ IDEA
 
@@ -79,7 +75,7 @@ To import the project in the Eclipse Java IDE :
 
 # Contacts
 
-SmartGov is developped at the [LIRIS](https://liris.cnrs.fr/en) within the Multi-Agent System team.
+SmartGov is developped at the [LIRIS](https://liris.cnrs.fr/en) within the Multi-Agent System team (SyCoSMA).
 
 For any extra information about the project, you may contact :
 - Veronique Deslandres : veronique.deslandres@liris.cnrs.fr
