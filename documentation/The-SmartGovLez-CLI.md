@@ -48,7 +48,7 @@ tags.
 
 The first required task is the `road` task. It allows you to build the `nodes`
 and `ways` file from a preprocessed .osm file (see the [SmartGovSimulator
-documentation](https://github.com/smartgov-liris/SmartGovSimulatorDocExamples/blob/master/documentation/Osm-Data#preprocess-data)
+documentation](https://github.com/smartgov-liris/SmartGovSimulatorDocExamples/blob/master/documentation/Osm-Data.md#preprocess-data)
 for details).
 
 
@@ -134,7 +134,7 @@ The differences is once the initialization process is done (without errors),
 the simulation runs until the `max-ticks` count has been reach (if not specify,
 a `max-ticks` count that correspond to 10 days is applied) or when all the
 rounds [specified in
-input](inputs/Establishments.md#Establishments-json-input-file-format) have ended.
+input](inputs/Establishments.md#establishments-json-input-file-format) have ended.
 
 If the `--pretty-print` option is enabled, JSON outputs will be indented,
 otherwise a compact syntax is used.

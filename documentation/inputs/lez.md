@@ -36,8 +36,8 @@ An input LEZ is described using the following JSON format :
 	point is specified as `[latitude, longitude]`. If the polygon is not close,
 	it will be automatically at runtime.
 - `allowed` : List of permissions, based on the [French
-	Crit'Airs](https://www.crit-air.fr/en/information-about-the-critair-vignette/the-french-vignette-critair/who-will-get-which-critair-colours.html).
-	([possible values](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/environment/lez/criteria/CritAir.html))
+	Crit'Airs](https://www.crit-air.fr/en/information-about-the-critair-vignette/the-french-vignette-critair/who-will-get-which-critair-colours.html)
+	([possible values](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/environment/lez/criteria/CritAir.html)).
 	The API actually provide a [generic
 	interface](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/environment/lez/criteria/LezCriteria.html)
 	to build other criterias, however only CritAirs have been used in the

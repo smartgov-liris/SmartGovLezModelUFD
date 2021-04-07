@@ -47,9 +47,9 @@ file](Configuration-File.md) using the `establishments` field.
 available in the [preprocessed OSM graph](/documentation/The-SmartGovLez-CLI.md#roads),
 so coordinates does not need to exactly correspond to anything.
 
-## x / y coordinates 
+## x / y coordinates
 
-In some example input files, you could encounted something like this instead of
+In some example input files, you might encounter something like this instead of
 the `lat` / `lon` coordinates :
 ```json
 	"x": "779191.638039029",

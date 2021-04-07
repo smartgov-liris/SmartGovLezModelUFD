@@ -48,10 +48,8 @@ task](/documentation/The-SmartGovLez-CLI.md#roads).
 ## Establishments
 
 - `establishments` : path to an [establishment input file](Establishments.md)
-- `fleet_profiles` : path to an [establishments COPERT fleet profiles
-	file](COPERT-Profiles.md)
+- `fleet_profiles` : path to an [establishments COPERT fleet profiles file](COPERT-Profiles.md)
 
 ## Copert
 
 - `copert_table` : path to a .csv [COPERT table](COPERT-Data.md)
-

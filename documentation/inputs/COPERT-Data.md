@@ -25,7 +25,7 @@ as a .csv file.
 > using Excel or Libre Office for example.
 
 A clean table is also directly available to [download from this
-repository](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/input/copert/Hot_Emissions_Parameters_France.csv).
+repository](../../input/copert/Hot_Emissions_Parameters_France.csv).
 
 The .csv file should be referenced in the [configuration
 file](Configuration-File.md) using the `copert_table` field.

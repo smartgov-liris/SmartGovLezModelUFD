@@ -173,8 +173,7 @@ The final input profile should have the following format :
 - `ST8_CATEGORY` : Custom value for [ST8
 	categories](https://smartgov-liris.github.io/SmartGovLezModelUFD/org/liris/smartgov/lez/core/agent/establishment/ST8.html)
 
-A complete example COPERT input profile can be found on [this
-repository](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/input/establishment/fleetProfiles.json).
+A complete example COPERT input profile can be found [here](../../input/establishment/fleetProfiles.json).
 
 The final input should be reference in the [configuration
 file](Configuration-File.md) using the `fleet_profiles` field.

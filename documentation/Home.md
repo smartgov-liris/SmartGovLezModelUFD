@@ -1,8 +1,8 @@
 The SmartGovLezModel is an implementation of a Low Emission Zones problem, based on the [SmartGovSimulator](https://github.com/smartgov-liris/SmartGovSimulator).
 
-For instructions about how to build the project and a few extra information, consult the [README file](https://github.com/smartgov-liris/SmartGovLezModelUFD/blob/master/README.md).
+For instructions about how to build the project and a few extra information, refer to the [documentation landing page](../README.md).
 
-This wiki will mainly focus on detailed functionalities, and above all on input and output processes.
+The following documentation mainly focuses on input and output processes and also provides some details concerning the simulator functionalities.
 
 1. [The SmartGovLez CLI](The-SmartGovLez-CLI.md)
 1. Inputs
@@ -15,5 +15,3 @@ This wiki will mainly focus on detailed functionalities, and above all on input 
 1. Outputs
    1. [Standard outputs](outputs/Standard-Outputs.md)
    1. [Tile map generation](outputs/Tile-Map-Generation.md)
-
-
