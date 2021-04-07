@@ -6,6 +6,7 @@ A Low Emission Zones model implementation for the
 ![LEZ example](lez.png)
 
 # Documentation
+
 The project is documented in detail [here](documentation/Home.md).
 
 The complete Javadoc is also [available online](https://smartgov-liris.github.io/SmartGovLezModelUFD/).
