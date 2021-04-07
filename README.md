@@ -18,7 +18,7 @@ not allowed to enter.
 Perimeters and permissions of such zones is very variable in the European
 Union, so this project from the [LIRIS](https://liris.cnrs.fr/en) is an attempt
 to evaluate the impact of such zones on pollutant emissions, in the context of
-the Urban Goods Transport.
+the Urban Freight Transport.
 
 # Features
 
@@ -40,7 +40,6 @@ instructions.
 # Build from source
 
 From the repository where you want to install the source code, run:
-
 ```
 git clone https://github.com/smartgov-liris/SmartGovLezModelUFD
 cd SmartGovLezModelUFD
@@ -62,6 +61,7 @@ Also :
 	the root of the project (`SmartGovLez-MASTER.jar`)
 See the [documentation](documentation/Home.md) for usage instructions.
 
+
 ## IntelliJ IDEA
 
 To import the project in the IntelliJ IDEA :
@@ -77,7 +77,7 @@ To import the project in the Eclipse Java IDE :
 
 # Contacts
 
-SmartGov is developped at the [LIRIS](https://liris.cnrs.fr/en) within the Multi-Agent System team.
+SmartGov is developped at the [LIRIS](https://liris.cnrs.fr/en) within the Multi-Agent System team (SyCoSMA).
 
 For any extra information about the project, you may contact :
 - Veronique Deslandres : veronique.deslandres@liris.cnrs.fr
